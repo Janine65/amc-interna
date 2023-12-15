@@ -7,6 +7,7 @@ WORKDIR /dist
 # install package.json (o sea las dependencies)
 COPY package.json /dist/package.json
 RUN npm install
+RUN npm install @nx/nx-linux-x64-musl
 
 # add .bin to $PATH
 ENV PATH /dist/node_modules/.bin:$PATH
@@ -15,7 +16,7 @@ ENV PATH /dist/node_modules/.bin:$PATH
 COPY . .
 
 # start app
-RUN npm run build --configuration=production
+RUN npx nx run amc-interna:build:production --verbose=true --skip-nx-cache=true
 
 # Stage 1, for copying the compiled app from the previous step and making it ready for production with Nginx
 FROM nginx:alpine

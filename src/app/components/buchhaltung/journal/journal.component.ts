@@ -5,7 +5,7 @@ import { BackendService } from '@service/backend.service';
 import { TableOptions, TableToolbar } from '@shared/basetable/basetable.component';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Observable, from, map, zip } from 'rxjs';
+import { Observable, map, zip } from 'rxjs';
 import { AttachementListComponent } from '../attachement-list/attachement-list.component';
 import { AttachmentAddComponent } from '../attachment-add/attachment-add.component';
 import { DatePipe, DecimalPipe } from '@angular/common';
@@ -186,19 +186,16 @@ export class JournalComponent implements OnInit {
   }
 
   fromAccountSel(acc: Account) {
-    // TODO document why this method 'fromAccountSel' is empty
     this.lstFromAccounts = []
     this.selJournal.fromAccount = acc;
   }
 
   toAccountSel(acc: Account) {
-    // TODO document why this method 'fromAccountSel' is empty
     this.lstToAccounts = []
     this.selJournal.toAccount = acc;
   }
 
   fromAccountSearch(event: AutoCompleteCompleteEvent) {
-    // TODO document why this method 'fromAccountSel' is empty
     this.lstFromAccounts = []
     const lstString = event.query.split(" ");
     if (!lstString || lstString.length == 0)
@@ -221,7 +218,6 @@ export class JournalComponent implements OnInit {
   }
 
   toAccountSearch(event: AutoCompleteCompleteEvent) {
-    // TODO document why this method 'toAccountSel' is empty
     this.lstToAccounts = []
     const lstString = event.query.split(" ");
     if (!lstString || lstString.length == 0)

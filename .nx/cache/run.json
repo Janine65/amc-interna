@@ -1,8 +1,8 @@
 {
   "run": {
-    "command": "nx build",
-    "startTime": "2023-11-26T13:42:35.931Z",
-    "endTime": "2023-11-26T13:42:47.854Z",
+    "command": "nx run amc-interna:build:production --verbose=true",
+    "startTime": "2023-11-26T18:27:21.649Z",
+    "endTime": "2023-11-26T18:27:30.998Z",
     "inner": false
   },
   "tasks": [
@@ -10,12 +10,12 @@
       "taskId": "amc-interna:build:production",
       "target": "build",
       "projectName": "amc-interna",
-      "hash": "5862528307604916966",
-      "startTime": "2023-11-26T13:42:35.934Z",
-      "endTime": "2023-11-26T13:42:47.852Z",
+      "hash": "183238550026903633",
+      "startTime": "2023-11-26T18:27:21.651Z",
+      "endTime": "2023-11-26T18:27:30.997Z",
       "params": "",
       "cacheStatus": "cache-miss",
-      "status": 1
+      "status": 0
     }
   ]
 }

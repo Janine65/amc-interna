@@ -2,67 +2,56 @@
   "version": "6.0",
   "nxVersion": "17.1.3",
   "deps": {
-    "@angular/animations": "17.0.4",
-    "@angular/common": "17.0.4",
-    "@angular/compiler": "17.0.4",
-    "@angular/core": "17.0.4",
-    "@angular/forms": "17.0.4",
-    "@angular/platform-browser": "17.0.4",
-    "@angular/platform-browser-dynamic": "17.0.4",
-    "@angular/router": "17.0.4",
-    "@nx/angular": "17.1.3",
-    "chart.js": "4.4.0",
-    "ngx-editor": "16.0.1",
+    "@angular-devkit/build-angular": "^16.2.10",
+    "@angular/animations": "^16.2.12",
+    "@angular/cdk": "^16.2.12",
+    "@angular/cli": "^17.0.3",
+    "@angular/common": "^16.2.12",
+    "@angular/compiler": "^16.2.12",
+    "@angular/core": "^16.2.12",
+    "@angular/forms": "^16.2.12",
+    "@angular/material": "^16.2.12",
+    "@angular/platform-browser": "^16.2.12",
+    "@angular/platform-browser-dynamic": "^16.2.12",
+    "@angular/router": "^16.2.12",
+    "chart.js": "^4.3.0",
+    "ngx-editor": "^15.3.0",
     "nodeman": "^1.1.2",
     "nx": "17.1.3",
-    "primeflex": "3.3.1",
+    "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
-    "primeng": "16.9.1",
+    "primeng": "^16.9.1",
     "prosemirror-codemirror-6": "^1.0.1",
-    "rxjs": "7.8.1",
-    "tslib": "2.6.2",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
     "web-animations-js": "^2.3.2",
-    "zone.js": "0.14.2",
-    "@angular-devkit/build-angular": "17.0.3",
-    "@angular-devkit/core": "17.0.3",
-    "@angular-devkit/schematics": "17.0.3",
-    "@angular-eslint/builder": "17.0.3",
-    "@angular-eslint/schematics": "17.0.3",
-    "@angular-eslint/eslint-plugin": "17.0.1",
-    "@angular-eslint/eslint-plugin-template": "17.0.1",
-    "@angular-eslint/template-parser": "17.0.1",
-    "@angular/cli": "~17.0.0",
-    "@angular/compiler-cli": "17.0.4",
-    "@angular/language-service": "17.0.4",
-    "@nx/eslint-plugin": "17.1.3",
-    "@nx/jest": "17.1.3",
-    "@nx/js": "17.1.3",
+    "zone.js": "0.13.3",
+    "@angular-devkit/core": "^17.0.3",
+    "@angular-devkit/schematics": "^17.0.3",
+    "@angular-eslint/builder": "17.1.0",
+    "@angular-eslint/eslint-plugin": "17.1.0",
+    "@angular-eslint/eslint-plugin-template": "17.1.0",
+    "@angular-eslint/schematics": "17.1.0",
+    "@angular-eslint/template-parser": "17.1.0",
+    "@nx/angular": "17.1.3",
+    "@nx/devkit": "^17.1.3",
     "@nx/workspace": "17.1.3",
-    "@schematics/angular": "17.0.3",
-    "@types/jest": "^29.5.7",
-    "@types/node": "16.11.7",
-    "@typescript-eslint/eslint-plugin": "6.12.0",
-    "@typescript-eslint/parser": "6.12.0",
-    "eslint": "~8.46.0",
-    "eslint-config-prettier": "9.0.0",
-    "@types/jasmine": "5.1.4",
-    "jasmine-core": "5.1.1",
-    "karma": "6.4.2",
+    "@schematics/angular": "^17.0.3",
+    "@types/jasmine": "~4.3.0",
+    "@types/node": "^20.4.10",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "jasmine-core": "~4.6.0",
+    "karma": "^6.4.2",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "2.1.0",
+    "karma-jasmine-html-reporter": "~2.0.0",
     "ts-loader": "^9.4.4",
-    "typescript": "5.2.2",
-    "@nx/eslint": "17.1.3"
+    "typescript": "~5.1.6"
   },
   "pathMappings": {
-    "@app/*": [
-      "src/app/*"
-    ],
-    "@environments/*": [
-      "src/environments/*"
-    ],
     "@model/*": [
       "src/app/models/*"
     ],
@@ -71,10 +60,17 @@
     ],
     "@shared/*": [
       "src/app/components/shared/*"
+    ],
+    "@app/*": [
+      "src/app/*"
+    ],
+    "@environments/*": [
+      "src/environments/*"
     ]
   },
   "nxJsonPlugins": [],
   "fileMap": {
+    "nonProjectFiles": [],
     "projectFileMap": {
       "amc-interna": [
         {
@@ -91,7 +87,7 @@
         },
         {
           "file": ".gitignore",
-          "hash": "4897397371253127026"
+          "hash": "15827671216226804470"
         },
         {
           "file": ".vscode/extensions.json",
@@ -107,7 +103,7 @@
         },
         {
           "file": "Dockerfile",
-          "hash": "529584570936391406"
+          "hash": "12816370741426090892"
         },
         {
           "file": "README.md",
@@ -127,74 +123,15 @@
         },
         {
           "file": "nx.json",
-          "hash": "9601069381582937402"
-        },
-        {
-          "file": "package-lock.json",
-          "hash": "7252206734822773239"
+          "hash": "12584912730859752263"
         },
         {
           "file": "package.json",
-          "hash": "13001915373677445253",
-          "deps": [
-            "npm:@angular/animations",
-            "npm:@angular/common",
-            "npm:@angular/compiler",
-            "npm:@angular/core",
-            "npm:@angular/forms",
-            "npm:@angular/platform-browser",
-            "npm:@angular/platform-browser-dynamic",
-            "npm:@angular/router",
-            "npm:@nx/angular",
-            "npm:chart.js",
-            "npm:ngx-editor",
-            "npm:nodeman",
-            "npm:nx",
-            "npm:primeflex",
-            "npm:primeicons",
-            "npm:primeng",
-            "npm:prosemirror-codemirror-6",
-            "npm:rxjs",
-            "npm:tslib",
-            "npm:web-animations-js",
-            "npm:zone.js",
-            "npm:@angular-devkit/build-angular",
-            "npm:@angular-devkit/core",
-            "npm:@angular-devkit/schematics",
-            "npm:@angular-eslint/builder",
-            "npm:@angular-eslint/schematics",
-            "npm:@angular-eslint/eslint-plugin",
-            "npm:@angular-eslint/eslint-plugin-template",
-            "npm:@angular-eslint/template-parser",
-            "npm:@angular/cli",
-            "npm:@angular/compiler-cli",
-            "npm:@angular/language-service",
-            "npm:@nx/eslint-plugin",
-            "npm:@nx/jest",
-            "npm:@nx/js",
-            "npm:@nx/workspace",
-            "npm:@schematics/angular",
-            "npm:@types/jest",
-            "npm:@types/node",
-            "npm:@typescript-eslint/eslint-plugin",
-            "npm:@typescript-eslint/parser",
-            "npm:eslint",
-            "npm:eslint-config-prettier",
-            "npm:@types/jasmine",
-            "npm:jasmine-core",
-            "npm:karma",
-            "npm:karma-chrome-launcher",
-            "npm:karma-coverage",
-            "npm:karma-jasmine",
-            "npm:karma-jasmine-html-reporter",
-            "npm:ts-loader",
-            "npm:typescript",
-            "npm:@nx/eslint"
-          ]
+          "hash": "872980146794757091"
         },
         {
           "file": "project.json",
-          "hash": "11272163128344361533"
+          "hash": "11284018222121047083"
         },
         {
           "file": "src/app/app-routing.module.ts",
@@ -217,7 +154,7 @@
           "hash": "17203313187955284938",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng"
+            "npm:primeng/api"
           ]
         },
         {
@@ -229,9 +166,46 @@
             "npm:@angular/platform-browser",
             "npm:@angular/forms",
             "npm:@angular/router",
-            "npm:primeng",
-            "npm:@angular/material",
-            "npm:ngx-editor"
+            "npm:@angular/common/http",
+            "npm:@angular/platform-browser/animations",
+            "npm:primeng/autocomplete",
+            "npm:@angular/material/icon",
+            "npm:primeng/sidebar",
+            "npm:primeng/radiobutton",
+            "npm:primeng/button",
+            "npm:primeng/inputswitch",
+            "npm:primeng/inputtext",
+            "npm:primeng/badge",
+            "npm:primeng/ripple",
+            "npm:primeng/panel",
+            "npm:primeng/fieldset",
+            "npm:primeng/dataview",
+            "npm:primeng/table",
+            "npm:primeng/dynamicdialog",
+            "npm:primeng/dialog",
+            "npm:primeng/scrollpanel",
+            "npm:primeng/calendar",
+            "npm:primeng/inputnumber",
+            "npm:primeng/toolbar",
+            "npm:primeng/dropdown",
+            "npm:primeng/toast",
+            "npm:primeng/messages",
+            "npm:primeng/message",
+            "npm:primeng/selectbutton",
+            "npm:primeng/password",
+            "npm:primeng/contextmenu",
+            "npm:primeng/confirmdialog",
+            "npm:primeng/fileupload",
+            "npm:primeng/splitter",
+            "npm:ngx-editor",
+            "npm:primeng/inputtextarea",
+            "npm:primeng/chart",
+            "npm:primeng/tabview",
+            "npm:primeng/styleclass",
+            "npm:primeng/autofocus",
+            "npm:primeng/progressbar",
+            "npm:primeng/tag",
+            "npm:primeng/api"
           ]
         },
         {
@@ -246,7 +220,7 @@
           "file": "src/app/components/account/login/login.component.spec.ts",
           "hash": "8438157372561286702",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -256,8 +230,8 @@
             "npm:@angular/core",
             "npm:@angular/router",
             "npm:@angular/forms",
-            "npm:rxjs",
-            "npm:primeng"
+            "npm:rxjs/operators",
+            "npm:primeng/api"
           ]
         },
         {
@@ -272,7 +246,7 @@
           "file": "src/app/components/account/profile/profile.component.spec.ts",
           "hash": "10632263293700839563",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -280,7 +254,7 @@
           "hash": "11116032537626689386",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/dynamicdialog",
             "npm:@angular/router"
           ]
         },
@@ -296,7 +270,7 @@
           "file": "src/app/components/auswertung/auswertung/auswertung.component.spec.ts",
           "hash": "2105675636356818272",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -304,7 +278,7 @@
           "hash": "1292261549973058984",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng"
+            "npm:primeng/api"
           ]
         },
         {
@@ -319,7 +293,7 @@
           "file": "src/app/components/auswertung/meisterschaft/meisterschaft.component.spec.ts",
           "hash": "3068971143911085869",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -327,7 +301,7 @@
           "hash": "1713395568818578448",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
             "npm:rxjs"
           ]
         },
@@ -343,7 +317,7 @@
           "file": "src/app/components/buchhaltung/attachement-list/attachement-list.component.spec.ts",
           "hash": "9456731273191065705",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -351,7 +325,8 @@
           "hash": "7255222589421897218",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/dynamicdialog",
             "npm:@angular/common"
           ]
         },
@@ -367,7 +342,7 @@
           "file": "src/app/components/buchhaltung/attachement-show/attachement-show.component.spec.ts",
           "hash": "15860534021127550561",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -375,7 +350,7 @@
           "hash": "15041898163273717428",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng"
+            "npm:primeng/dynamicdialog"
           ]
         },
         {
@@ -390,7 +365,7 @@
           "file": "src/app/components/buchhaltung/attachment-add/attachment-add.component.spec.ts",
           "hash": "822051753816973865",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -398,7 +373,8 @@
           "hash": "11694990294902001062",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs"
           ]
         },
@@ -414,7 +390,7 @@
           "file": "src/app/components/buchhaltung/budget/budget.component.spec.ts",
           "hash": "11917458685268346690",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -422,7 +398,7 @@
           "hash": "7475709223420016590",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
             "npm:rxjs"
           ]
         },
@@ -438,7 +414,7 @@
           "file": "src/app/components/buchhaltung/geschaeftsjahr/geschaeftsjahr.component.spec.ts",
           "hash": "5807579071558741119",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -446,13 +422,14 @@
           "hash": "2705547091192391329",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs"
           ]
         },
         {
           "file": "src/app/components/buchhaltung/journal/journal.component.html",
-          "hash": "17034522311470296536"
+          "hash": "11407927290271390931"
         },
         {
           "file": "src/app/components/buchhaltung/journal/journal.component.scss",
@@ -462,15 +439,16 @@
           "file": "src/app/components/buchhaltung/journal/journal.component.spec.ts",
           "hash": "13968986943151862081",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
           "file": "src/app/components/buchhaltung/journal/journal.component.ts",
-          "hash": "2312125426754428814",
+          "hash": "10391886867328025838",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs",
             "npm:@angular/common"
           ]
@@ -487,7 +465,7 @@
           "file": "src/app/components/buchhaltung/kegelkasse/kegelkasse.component.spec.ts",
           "hash": "10677607453800655516",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -496,7 +474,7 @@
           "deps": [
             "npm:@angular/core",
             "npm:@angular/forms",
-            "npm:primeng",
+            "npm:primeng/api",
             "npm:rxjs",
             "npm:@angular/common"
           ]
@@ -513,7 +491,7 @@
           "file": "src/app/components/buchhaltung/konten/konten.component.spec.ts",
           "hash": "4866580100723363152",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -521,7 +499,8 @@
           "hash": "222172404854575236",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs",
             "npm:@angular/common"
           ]
@@ -538,7 +517,7 @@
           "file": "src/app/components/buchhaltung/konto-bewegungen/konto-bewegungen.component.spec.ts",
           "hash": "15960037004183681069",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -547,7 +526,8 @@
           "deps": [
             "npm:@angular/common",
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs"
           ]
         },
@@ -563,7 +543,7 @@
           "file": "src/app/components/buchhaltung/kto-auswertung/kto-auswertung.component.spec.ts",
           "hash": "1060582475436216269",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -571,8 +551,8 @@
           "hash": "14951376188899330751",
           "deps": [
             "npm:@angular/core",
-            "npm:chart.js",
-            "npm:primeng"
+            "npm:chart.js/dist/helpers/helpers.core",
+            "npm:primeng/api"
           ]
         },
         {
@@ -603,7 +583,7 @@
           "file": "src/app/components/shared/alert/alert.component.spec.ts",
           "hash": "1622953511775269385",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -627,7 +607,7 @@
           "file": "src/app/components/shared/baseedit/baseedit.component.spec.ts",
           "hash": "7807291431651710866",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -635,7 +615,7 @@
           "hash": "16123346454210689135",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng"
+            "npm:primeng/dynamicdialog"
           ]
         },
         {
@@ -652,7 +632,7 @@
           "deps": [
             "npm:@angular/common",
             "npm:@angular/core",
-            "npm:primeng"
+            "npm:primeng/table"
           ]
         },
         {
@@ -674,7 +654,7 @@
           "file": "src/app/components/shared/email-dialog/email-dialog.component.spec.ts",
           "hash": "7689367215149745140",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -682,7 +662,8 @@
           "hash": "2457565644947794592",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/dynamicdialog",
+            "npm:primeng/api",
             "npm:rxjs",
             "npm:ngx-editor"
           ]
@@ -723,7 +704,7 @@
           "file": "src/app/components/users/add-edit/add-edit.component.spec.ts",
           "hash": "2661150962003623909",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -732,7 +713,8 @@
           "deps": [
             "npm:@angular/core",
             "npm:@angular/forms",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs"
           ]
         },
@@ -748,7 +730,7 @@
           "file": "src/app/components/users/list/list.component.spec.ts",
           "hash": "9147943380645964591",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -756,8 +738,9 @@
           "hash": "13552615579668600810",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs",
+            "npm:primeng/api",
             "npm:@angular/common"
           ]
         },
@@ -773,7 +756,7 @@
           "file": "src/app/components/verwaltung/adresse-edit/adresse-edit.component.spec.ts",
           "hash": "15878688687287459818",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -782,7 +765,8 @@
           "deps": [
             "npm:@angular/core",
             "npm:@angular/forms",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs"
           ]
         },
@@ -798,7 +782,7 @@
           "file": "src/app/components/verwaltung/adresse-show/adresse-show.component.spec.ts",
           "hash": "5644064909601366091",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -807,7 +791,8 @@
           "deps": [
             "npm:@angular/common",
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs"
           ]
         },
@@ -821,7 +806,8 @@
           "deps": [
             "npm:@angular/core",
             "npm:rxjs",
-            "npm:primeng",
+            "npm:primeng/dynamicdialog",
+            "npm:primeng/api",
             "npm:@angular/common"
           ]
         },
@@ -834,8 +820,9 @@
           "hash": "12793926269147572105",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
             "npm:rxjs",
+            "npm:primeng/dynamicdialog",
             "npm:@angular/common"
           ]
         },
@@ -851,7 +838,7 @@
           "file": "src/app/components/verwaltung/anlaesse-edit/anlaesse-edit.component.spec.ts",
           "hash": "15593711679697598462",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
@@ -860,13 +847,14 @@
           "deps": [
             "npm:@angular/core",
             "npm:@angular/forms",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs"
           ]
         },
         {
           "file": "src/app/components/verwaltung/anlass-book/anlass-book.component.html",
-          "hash": "13150248581996196523"
+          "hash": "10588845001076295194"
         },
         {
           "file": "src/app/components/verwaltung/anlass-book/anlass-book.component.scss",
@@ -876,16 +864,18 @@
           "file": "src/app/components/verwaltung/anlass-book/anlass-book.component.spec.ts",
           "hash": "12623722276325574444",
           "deps": [
-            "npm:@angular/core"
+            "npm:@angular/core/testing"
           ]
         },
         {
           "file": "src/app/components/verwaltung/anlass-book/anlass-book.component.ts",
-          "hash": "3208304352861139984",
+          "hash": "15603611789270648042",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/forms",
-            "npm:primeng",
+            "npm:primeng/api",
+            "npm:primeng/autocomplete",
+            "npm:primeng/dynamicdialog",
             "npm:rxjs"
           ]
         },
@@ -898,7 +888,7 @@
           "hash": "651651321389743713",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng"
+            "npm:primeng/api"
           ]
         },
         {
@@ -949,7 +939,7 @@
             "npm:@angular/core",
             "npm:@angular/router",
             "npm:rxjs",
-            "npm:primeng"
+            "npm:primeng/api"
           ]
         },
         {
@@ -961,7 +951,7 @@
           "hash": "16950577340368328789",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
             "npm:rxjs"
           ]
         },
@@ -980,7 +970,8 @@
             "npm:@angular/core",
             "npm:@angular/router",
             "npm:@angular/animations",
-            "npm:rxjs"
+            "npm:rxjs",
+            "npm:rxjs/operators"
           ]
         },
         {
@@ -1003,7 +994,7 @@
           "hash": "7442998090217715597",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng",
+            "npm:primeng/api",
             "npm:@angular/router"
           ]
         },
@@ -1040,8 +1031,9 @@
           "deps": [
             "npm:@angular/core",
             "npm:@angular/router",
-            "npm:@angular/common",
-            "npm:rxjs"
+            "npm:@angular/common/http",
+            "npm:rxjs",
+            "npm:rxjs/operators"
           ]
         },
         {
@@ -1049,7 +1041,8 @@
           "hash": "6661727001643178351",
           "deps": [
             "npm:@angular/core",
-            "npm:rxjs"
+            "npm:rxjs",
+            "npm:rxjs/operators"
           ]
         },
         {
@@ -1073,7 +1066,7 @@
           "hash": "11673480399101676763",
           "deps": [
             "npm:@angular/core",
-            "npm:@angular/common",
+            "npm:@angular/common/http",
             "npm:rxjs"
           ]
         },
@@ -1082,8 +1075,9 @@
           "hash": "14179441319838407889",
           "deps": [
             "npm:@angular/core",
-            "npm:@angular/common",
-            "npm:rxjs"
+            "npm:@angular/common/http",
+            "npm:rxjs",
+            "npm:rxjs/operators"
           ]
         },
         {
@@ -1091,7 +1085,7 @@
           "hash": "16549423873659859474",
           "deps": [
             "npm:@angular/core",
-            "npm:@angular/common"
+            "npm:@angular/common/http"
           ]
         },
         {
@@ -1099,7 +1093,7 @@
           "hash": "17685531017676036959",
           "deps": [
             "npm:@angular/core",
-            "npm:@angular/common"
+            "npm:@angular/common/http"
           ]
         },
         {
@@ -1111,7 +1105,7 @@
           "hash": "15427491619778136141",
           "deps": [
             "npm:@angular/core",
-            "npm:@angular/common",
+            "npm:@angular/common/http",
             "npm:rxjs"
           ]
         },
@@ -1127,7 +1121,7 @@
           "hash": "6133162441809581494",
           "deps": [
             "npm:@angular/core",
-            "npm:primeng"
+            "npm:primeng/api"
           ]
         },
         {
@@ -1714,7 +1708,7 @@
           "file": "src/environments/environment.ts",
           "hash": "5134413135339978458",
           "deps": [
-            "npm:zone.js"
+            "npm:zone.js/plugins/zone-error"
           ]
         },
         {
@@ -1742,14 +1736,13 @@
         },
         {
           "file": "tsconfig.json",
-          "hash": "7935888875541145404"
+          "hash": "10177554445571532797"
         },
         {
           "file": "tsconfig.spec.json",
           "hash": "15575553540147145788"
         }
       ]
-    },
-    "nonProjectFiles": []
+    }
   }
 }
