@@ -10,17 +10,17 @@ import { map, zip } from 'rxjs';
   selector: 'app-budget',
   templateUrl: './budget.component.html',
   styleUrls: ['./budget.component.scss'],
-  providers: [ConfirmationService]
+  providers: [ConfirmationService],
 })
 export class BudgetComponent {
-  selJahre = [{}]
+  selJahre = [{}];
   selJahr = 0;
   parameter: ParamData[];
   jahr: number;
   lstBudget: Budget[] = [];
   clonedlstBudget: Budget[] = [];
   selBudget: Budget = {};
-  lstAccounts: Account[] = []
+  lstAccounts: Account[] = [];
   loading = true;
   addRow = false;
   selFiscalyear: Fiscalyear = {};
@@ -28,37 +28,44 @@ export class BudgetComponent {
   getScreenWidth = 0;
   getScreenHeight = 0;
 
-
   constructor(
-    private backendService: BackendService, 
+    private backendService: BackendService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private alertService: AlertService) {
+    private alertService: AlertService
+  ) {
     const str = localStorage.getItem('parameter');
     this.parameter = str ? JSON.parse(str) : [];
     const paramJahr = this.parameter.find((param) => param.key === 'CLUBJAHR');
-    this.jahr = Number(paramJahr?.value)
+    this.jahr = Number(paramJahr?.value);
     this.selJahr = this.jahr;
     this.selJahre.pop();
-    this.selJahre.push({label: (this.jahr - 1).toString(), value: this.jahr - 1});
-    this.selJahre.push({label: this.jahr.toString(), value: this.jahr});
-    this.selJahre.push({label: (this.jahr + 1).toString(), value: this.jahr + 1});
+    this.selJahre.push({
+      label: (this.jahr - 1).toString(),
+      value: this.jahr - 1,
+    });
+    this.selJahre.push({ label: this.jahr.toString(), value: this.jahr });
+    this.selJahre.push({
+      label: (this.jahr + 1).toString(),
+      value: this.jahr + 1,
+    });
 
     this.backendService.getAccount().subscribe({
       next: (list) => {
         const lAcc = list.data as Account[];
-        lAcc.forEach(rec => {
+        lAcc.forEach((rec) => {
           if (rec.level && rec.level >= 4) {
             rec.disabled = rec.status == 0;
-            this.lstAccounts.push(rec)
+            this.lstAccounts.push(rec);
           }
-        })
-    }})
+        });
+      },
+    });
 
-    this.readBudget()
+    this.readBudget();
     this.getScreenWidth = window.innerWidth;
     this.getScreenHeight = window.innerHeight;
-    this.getHeight()
+    this.getHeight();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -68,150 +75,190 @@ export class BudgetComponent {
     this.getHeight();
   }
 
-
-  private getHeight() { 
+  private getHeight() {
     this.objHeight$ = (this.getScreenHeight - 300).toFixed(0) + 'px';
   }
 
   readBudget() {
     this.loading = true;
-    zip(this.backendService.getBudget(this.selJahr),
-    this.backendService.getOneFiscalyear(this.selJahr.toFixed(0))
-    ).pipe(map(([list, result]) => {
-      this.lstBudget = list.data as Budget[];
-      this.lstBudget.forEach( rec => {
-        rec.acc_id = rec.accountAccount?.id
-        rec.acc_name = rec.accountAccount?.name
-        rec.acc_order = rec.accountAccount?.order
-        if (rec.accountAccount?.status == 0)
-          rec.classRow = 'inactive';
-      })
-      this.selFiscalyear = result.data as Fiscalyear;
-      this.loading = false;
-
-    })).subscribe();
+    zip(
+      this.backendService.getBudget(this.selJahr),
+      this.backendService.getOneFiscalyear(this.selJahr.toFixed(0))
+    )
+      .pipe(
+        map(([list, result]) => {
+          this.lstBudget = list.data as Budget[];
+          this.lstBudget.forEach((rec) => {
+            rec.acc_id = rec.account_budget_accountToaccount?.id;
+            rec.acc_name = rec.account_budget_accountToaccount?.name;
+            rec.acc_order = rec.account_budget_accountToaccount?.order;
+            if (rec.account_budget_accountToaccount?.status == 0)
+              rec.classRow = 'inactive';
+          });
+          this.selFiscalyear = result.data as Fiscalyear;
+          this.loading = false;
+        })
+      )
+      .subscribe();
   }
 
   chgJahr() {
-    this.readBudget()
+    this.readBudget();
   }
 
   isEditable() {
-    if (this.selFiscalyear)
-      return this.selFiscalyear.state < 3
-    else return false
+    if (this.selFiscalyear) return this.selFiscalyear.state < 3;
+    else return false;
   }
 
   copyYear() {
-    const nextYear = this.selJahr + 1
+    const nextYear = this.selJahr + 1;
 
     this.backendService.getOneFiscalyear(nextYear.toFixed(0)).subscribe({
       next: (retData) => {
         if (retData.type == 'info') {
           if (retData.data != null && retData.data instanceof Fiscalyear) {
             this.confirmationService.confirm({
-              message: 'Die Daten werden vom Jahr ' + this.selJahr + ' zum Jahr ' + nextYear + ' kopiert. Alle vorhandenen Einträge werden vorgängig gelöscht. Bitte bestätige diesen Vorgang',
+              message:
+                'Die Daten werden vom Jahr ' +
+                this.selJahr +
+                ' zum Jahr ' +
+                nextYear +
+                ' kopiert. Alle vorhandenen Einträge werden vorgängig gelöscht. Bitte bestätige diesen Vorgang',
               accept: () => {
-                this.backendService.copyBudget(this.selJahr, nextYear).subscribe(
-                  { complete: () => {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Kopiervorgang abgeschlossen' })
-                  },
-                  error: (err) => {
-                    this.messageService.add({ severity: 'error', summary: 'Fehler', detail: err.message });
-                  }}
-                )
-                }
-            });              
+                this.backendService
+                  .copyBudget(this.selJahr, nextYear)
+                  .subscribe({
+                    complete: () => {
+                      this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Kopiervorgang abgeschlossen',
+                      });
+                    },
+                    error: (err) => {
+                      this.messageService.add({
+                        severity: 'error',
+                        summary: 'Fehler',
+                        detail: err.message,
+                      });
+                    },
+                  });
+              },
+            });
           } else {
-            this.alertService.alert({ autoClose: false, fade: false, type: AlertType.Error, message: `Das Geschäftsjahr ${nextYear} muess zuerst eröffnet werden.`, keepAfterRouteChange: false });
+            this.alertService.alert({
+              autoClose: false,
+              fade: false,
+              type: AlertType.Error,
+              message: `Das Geschäftsjahr ${nextYear} muess zuerst eröffnet werden.`,
+              keepAfterRouteChange: false,
+            });
           }
         }
-      }
-    }
-
-    )
-
-
-
+      },
+    });
   }
 
-  rowIsEditing(data:Budget) : boolean {
-    if (this.clonedlstBudget[data.id])
-      return true;
-    else
-      return false;
+  rowIsEditing(data: Budget): boolean {
+    if (this.clonedlstBudget[data.id]) return true;
+    else return false;
   }
 
   chgAcc(budget: Budget) {
-    const acc = this.lstAccounts.find(rec => rec.id == budget.acc_id)
+    const acc = this.lstAccounts.find((rec) => rec.id == budget.acc_id);
     if (acc) {
-      budget.acc_name = acc.name
-      budget.acc_order = acc.order
+      budget.acc_name = acc.name;
+      budget.acc_order = acc.order;
     }
   }
 
   onRowEditInit(budget: Budget) {
     this.clonedlstBudget[budget.id] = { ...budget };
-    this.addRow = false
+    this.addRow = false;
   }
 
   onRowEditSave(budget: Budget) {
-    budget.account = budget.acc_id
-    let sub
-    if (budget.id === 0)
-      sub = this.backendService.addBudget(budget)
-    else 
-      sub = this.backendService.updBudget(budget)
+    budget.account = budget.acc_id;
+    let sub;
+    if (budget.id === 0) sub = this.backendService.addBudget(budget);
+    else sub = this.backendService.updBudget(budget);
 
     sub.subscribe({
-        next: (rec: Budget) => {
-          this.addRow = false
-          delete this.clonedlstBudget[budget.id];
-          const ind: Budget | undefined = this.lstBudget.find(rec => rec.id == budget.id)
-          if (ind) {
-            Object.assign(ind, rec)
-            ind.acc_id = ind.account
-            const acc = this.lstAccounts.find(rec => rec.id == ind.acc_id)
-            if (acc) {
-              ind.acc_name = acc.name
-              ind.acc_order = acc.order
-            }
+      next: (rec: Budget) => {
+        this.addRow = false;
+        delete this.clonedlstBudget[budget.id];
+        const ind: Budget | undefined = this.lstBudget.find(
+          (rec) => rec.id == budget.id
+        );
+        if (ind) {
+          Object.assign(ind, rec);
+          ind.acc_id = ind.account;
+          const acc = this.lstAccounts.find((rec) => rec.id == ind.acc_id);
+          if (acc) {
+            ind.acc_name = acc.name;
+            ind.acc_order = acc.order;
           }
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'budget is updated' });
-        },
-        error: (err) => {
-          this.messageService.add({ severity: 'error', summary: 'Fehler', detail: err.message });
         }
-      })
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'budget is updated',
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Fehler',
+          detail: err.message,
+        });
+      },
+    });
   }
 
   onRowEditDelete(budget: Budget) {
     this.backendService.delBudget(budget).subscribe({
       next: () => {
         delete this.clonedlstBudget[budget.id];
-        const ind = this.lstBudget.findIndex(rec => rec.id == budget.id)
-        this.lstBudget.splice(ind, 1)
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'budget is deleted' });
+        const ind = this.lstBudget.findIndex((rec) => rec.id == budget.id);
+        this.lstBudget.splice(ind, 1);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'budget is deleted',
+        });
       },
       error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Fehler', detail: err.message });
-    }
-    })
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Fehler',
+          detail: err.message,
+        });
+      },
+    });
   }
 
   onRowEditCancel(budget: Budget, index: number) {
     if (budget.id === 0) {
-      this.lstBudget.splice(index, 1)
+      this.lstBudget.splice(index, 1);
     } else {
       this.lstBudget[index] = this.clonedlstBudget[budget.id];
     }
     delete this.clonedlstBudget[budget.id];
-    this.addRow = false
+    this.addRow = false;
   }
 
-  onAddNewRow(){
-    this.lstBudget.unshift({id: 0, acc_id: null, acc_name: null, acc_order: null, amount: 0, memo: '', year: this.selJahr});
-    this.clonedlstBudget[0] = { ...this.lstBudget[this.lstBudget.length-1] };
-    this.addRow = true
+  onAddNewRow() {
+    this.lstBudget.unshift({
+      id: 0,
+      acc_id: null,
+      acc_name: null,
+      acc_order: null,
+      amount: 0,
+      memo: '',
+      year: this.selJahr,
+    });
+    this.clonedlstBudget[0] = { ...this.lstBudget[this.lstBudget.length - 1] };
+    this.addRow = true;
   }
 }

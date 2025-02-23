@@ -1,25 +1,17 @@
-FROM node:20 AS build
+FROM node:20-alpine AS builder
+
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-
-RUN corepack enable
 WORKDIR /app
-
-COPY *.json pnpm-lock.yaml ./
-RUN apt-get update
-RUN apt-get --assume-yes install python3
-RUN pnpm fetch --lockfile
-RUN pnpm install --lockfile
+COPY package*.json ./
+RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
+RUN npm install -g pnpm
+RUN pnpm install
 COPY . .
-RUN pnpm add -g nx
-
-RUN pnpm run build
- 
-# Stage 1, for copying the compiled app from the previous step and making it ready for production with Nginx
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html/
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-ENV NODE_ENV=production
-
-EXPOSE 8080
-
+RUN pnpm run build --prod
+FROM nginx:stable-alpine
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+COPY --from=builder /app/dist/ ./
+RUN sed -i '10i \\ttry_files $uri $uri/ /index.html;' /etc/nginx/conf.d/default.conf
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

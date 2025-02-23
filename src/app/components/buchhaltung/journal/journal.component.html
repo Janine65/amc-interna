@@ -45,7 +45,7 @@
             <div class="col-12 md:col-10">
               <p-autoComplete
                 name="fromAcc"
-                [(ngModel)]="selJournal.fromAccountAccount"
+                [(ngModel)]="selJournal.account_journal_from_accountToaccount"
                 [disabled]="!editMode && !addMode"
                 [suggestions]="lstFromAccounts"
                 (completeMethod)="fromAccountSearch($event)"
@@ -64,7 +64,7 @@
             <div class="col-12 md:col-10">
               <p-autoComplete
                 name="toAcc"
-                [(ngModel)]="selJournal.toAccountAccount"
+                [(ngModel)]="selJournal.account_journal_to_accountToaccount"
                 [disabled]="!editMode && !addMode"
                 [suggestions]="lstToAccounts"
                 (completeMethod)="toAccountSearch($event)"

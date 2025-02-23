@@ -3,8 +3,8 @@ services:
     container_name: amcbackend
     image: amcbackend:test
     build:
-      context: ../amc-backend/
-      dockerfile: ../amc-backend/Dockerfile
+      context: ../amc-backend-new/
+      dockerfile: ../amc-backend-new/Dockerfile
     environment:
       - COMPOSE_PROJECT_NAME
       - NODE_ENV=development
