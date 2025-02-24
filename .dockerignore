@@ -1,15 +1,10 @@
-**/.classpath
 **/.dockerignore
-**/.env
+**/.env*
 **/.git
 **/.gitignore
 **/.project
 **/.settings
 **/.toolstarget
-**/.vscode
-**/*.*proj.user
-**/*.dbmdl
-**/*.jfm
 **/charts
 **/docker-compose*
 **/compose*
@@ -17,6 +12,7 @@
 **/node_modules
 **/.angular
 **/.vscode
+**/dist
 **/npm-debug.log
 **/obj
 **/secrets.dev.yaml
