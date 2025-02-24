@@ -20,27 +20,15 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { AdresseShowComponent } from '../adresse-show/adresse-show.component';
 
 export class AdresseFilter {
-  public name: string;
-  public vorname: string;
-  public adresse: string;
-  public plz: string;
-  public ort: string;
-  public sam_mitglied: string;
-  public vorstand: string;
-  public revisor: string;
-  public ehrenmitglied: string;
-
-  constructor() {
-    this.name = '';
-    this.vorname = '';
-    this.adresse = '';
-    this.plz = '';
-    this.ort = '';
-    this.sam_mitglied = '';
-    this.vorstand = '';
-    this.revisor = '';
-    this.ehrenmitglied = '';
-  }
+  public name: string | null;
+  public vorname: string | null;
+  public adresse: string | null;
+  public plz: number | null;
+  public ort: string | null;
+  public sam_mitglied: boolean | null;
+  public vorstand: boolean | null;
+  public revisor: boolean | null;
+  public ehrenmitglied: boolean | null;
 
   //  {adresse: '', name: '', vorname: '', ort: '', plz: '', sam_mitglied: '', vorstand: '', revisor: '', ehrenmitglied: ''};
 }
@@ -478,51 +466,12 @@ export class AdressenComponent implements OnInit {
     }
   };
 
-  exportAdressen = () => {
+  exportAdressen = (selRec?: Adresse, lstData?: Adresse[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef = this;
-    const filter: AdresseFilter = new AdresseFilter();
-
-    const locStore = localStorage.getItem('adressen');
-
-    if (locStore) {
-      const filters = JSON.parse(locStore).filters;
-      if (filters != undefined) {
-        if (filters.name) {
-          if (filters.name[0].value) filter.name = filters.name[0].value;
-        }
-        if (filters.vorname) {
-          if (filters.vorname[0].value)
-            filter.vorname = filters.vorname[0].value;
-        }
-        if (filters.adresse) {
-          if (filters.adresse[0].value)
-            filter.adresse = filters.adresse[0].value;
-        }
-        if (filters.plz) {
-          if (filters.plz[0].value) filter.plz = filters.plz[0].value;
-        }
-        if (filters.ort) {
-          if (filters.ort[0].value) filter.ort = filters.ort[0].value;
-        }
-        if (filters.sam_mitglied) {
-          if (filters.sam_mitglied[0].value != undefined)
-            filter.sam_mitglied = filters.sam_mitglied[0].value;
-        }
-        if (filters.vorstand) {
-          if (filters.vorstand[0].value != undefined)
-            filter.vorstand = filters.vorstand[0].value;
-        }
-        if (filters.revisor) {
-          if (filters.revisor[0].value != undefined)
-            filter.revisor = filters.revisor[0].value;
-        }
-        console.log(filter);
-      }
-    }
     console.log('Expoert Adressen');
 
-    thisRef.backendService.exportAdressData(filter).subscribe({
+    thisRef.backendService.exportAdressData(lstData).subscribe({
       next: (result) => {
         if (result.data && result.type == 'info') {
           const filename = result.data.filename;

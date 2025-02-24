@@ -152,9 +152,9 @@ export class BackendService {
     });
   }
 
-  exportAdressData(filter = {}): Observable<RetDataFile> {
+  exportAdressData(adressen: Adresse[]): Observable<RetDataFile> {
     const apiURL = environment.apiUrl + '/adressen/export';
-    const body = JSON.stringify(filter);
+    const body = JSON.stringify(adressen);
     return this.http.post<RetDataFile>(apiURL, body, { headers: this.header });
   }
 

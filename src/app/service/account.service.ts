@@ -114,7 +114,7 @@ export class AccountService {
 
   register(user: User) {
     const body = JSON.stringify(user);
-    return this.http.post<RetData>(`${this.apiUrl}/auth/register`, body, {
+    return this.http.post<RetData>(`${this.apiUrl}/user`, body, {
       headers: this.header,
     });
   }
