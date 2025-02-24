@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5455',
+  apiUrl: 'http://localhost:3001',
   apiUrlSelf: 'http://localhost:4200',
   defaultSignature: 'JanineFranken',
   defaultEmail: 'janine@automoto-sr.info',
