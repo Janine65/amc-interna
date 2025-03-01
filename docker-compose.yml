@@ -1,21 +1,19 @@
 services:
   amcbackend:
-    container_name: amcbackend
+    build:
+      context: ../amc-backend/
+      dockerfile: ../amc-backend/Dockerfile
     image: janine65/amcbackend:latest
     platform: linux/amd64
+    ports:
+      - "3001:3001"
     stdin_open: true
-    build:
-      context: ../amc-backend-new/
-      dockerfile: ../amc-backend-new/Dockerfile
+    container_name: amcbackend
     tty: true # Keeps the container running for debugging
+    volumes:
+      - documents:/usr/src/app/dist/src/documents:rw
     env_file:
       - .env.prod
-    environment:
-      - COMPOSE_PROJECT_NAME
-      - NODE_ENV=production
-    ports:
-      - 5455:5455
-    hostname: amcbackend
     networks:
       - back-tier
       - front-tier
@@ -39,6 +37,20 @@ services:
     hostname: amcinternal
     networks:
       - front-tier
+
+volumes:
+  backup:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "bind"
+      device: "/volume1/dev/backups/postgres"
+  documents:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "bind"
+      device: "/volume1/server/amcinterna/documents"
 
 networks:
   # The presence of these objects is sufficient to define them

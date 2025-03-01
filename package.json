@@ -11,7 +11,7 @@
     "watch": "nx build --watch --configuration development",
     "test": "nx test",
     "lint": "nx lint",
-    "postversion": "git push && git push --tags",
+    "postversion": "git push && git push --tags && pnpm docker",
     "docker": "docker-compose build && docker-compose push"
   },
   "author": "Janine Franken",
