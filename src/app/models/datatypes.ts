@@ -51,6 +51,7 @@ export class Adresse extends TableData {
   public austritt_date?: DateEmpty;
   public austritt_mail?: BooleanEmpty;
   public adressenid?: NumberEmpty;
+  public adressen?: Adresse;
   public allianz?: BooleanEmpty;
   public notes?: StringEmpty;
 }
@@ -70,6 +71,7 @@ export class Anlass extends TableData {
   public status?: NumberEmpty;
   public vorjahr?: StringEmpty;
   public anlaesse?: Anlass;
+  public _count?: { meisterschaft: number };
 }
 
 export class Meisterschaft extends TableData {
@@ -85,7 +87,7 @@ export class Meisterschaft extends TableData {
   public zusatz?: NumberEmpty;
   public streichresultat?: NumberEmpty;
   public total_kegel?: NumberEmpty;
-  public mitglied?: { id?: NumberEmpty; fullname?: StringEmpty };
+  public adressen?: { id?: NumberEmpty; fullname?: StringEmpty };
   public jahr?: NumberEmpty;
   public datum?: StringEmpty;
   public event_datum_date?: DateEmpty;
@@ -104,6 +106,7 @@ export class Clubmeister extends TableData {
   werbungen?: NumberEmpty;
   mitglieddauer?: NumberEmpty;
   status?: NumberEmpty;
+  adressen?: Adresse;
 }
 
 export class Kegelmeister extends TableData {
@@ -116,6 +119,7 @@ export class Kegelmeister extends TableData {
   anlaesse?: NumberEmpty;
   babeli?: NumberEmpty;
   status?: NumberEmpty;
+  adressen?: Adresse;
 }
 
 export class MeisterAdresse extends TableData {
@@ -156,12 +160,19 @@ export class Receipt extends TableData {
   bezeichnung?: StringEmpty;
   jahr?: StringEmpty;
   cntjournal?: NumberEmpty;
+  journal_receipt?: JournalReceipt[];
 }
-export class JournalReceipt extends TableData {}
+export class JournalReceipt extends TableData {
+  journalid?: NumberEmpty;
+  receiptid?: NumberEmpty;
+  journal?: Journal;
+  receipt?: Receipt;
+}
 
 export class Journal extends TableData {
   date?: StringEmpty;
   date_date?: DateEmpty;
+  year?: NumberEmpty;
   memo?: StringEmpty;
   journalno?: NumberEmpty;
   amount?: NumberEmpty;
@@ -174,7 +185,7 @@ export class Journal extends TableData {
   account_journal_to_accountToaccount?: Account;
   haben?: NumberEmpty;
   soll?: NumberEmpty;
-  journal_receipt?: JournalReceipt;
+  journal_receipt?: JournalReceipt[];
 }
 
 export class Kegelkasse extends TableData {
@@ -203,16 +214,6 @@ export class Kegelkasse extends TableData {
   cntUsers?: NumberEmpty;
 }
 
-/**
-   * date: '2023-01-01'
-    fromAcc: '1001 Postkonto'
-    haben: 0
-    id: 548
-    journalno: 2
-    memo: 'Kontoeröffnung (Saldovortrag)'
-    soll: '7087.69'
-    toAcc: '2100 Vermögen Vorjahr'
-   */
 export class Budget extends TableData {
   account?: NumberEmpty;
   year?: NumberEmpty;
@@ -227,7 +228,7 @@ export class MeisterschaftAuswertung {
   public datum?: StringEmpty;
   public name?: StringEmpty;
   public gaeste?: NumberEmpty;
-  public meisterschafts?: { teilnehmer?: NumberEmpty };
+  public _count?: { meisterschaft?: NumberEmpty };
 }
 
 export class AccountAuswertung {

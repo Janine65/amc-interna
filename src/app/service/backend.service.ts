@@ -166,9 +166,8 @@ export class BackendService {
 
   // TODO
   qrBillAdresse(adresse: Adresse): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/adressen/qrbill';
-    const body = JSON.stringify(adresse);
-    return this.http.post<RetData>(apiURL, body, { headers: this.header });
+    const apiURL = environment.apiUrl + '/adressen/qrbill?id=' + adresse.id;
+    return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
   // TODO: Filter muss noch eingebaut werden
