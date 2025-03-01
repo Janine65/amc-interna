@@ -131,7 +131,10 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     this.getScreenHeight = window.innerHeight;
-    console.log(this.getScreenWidth, this.getScreenHeight);
+    console.log(
+      'getScreenWidth: ' + this.getScreenWidth,
+      'getScreenHeight' + this.getScreenHeight
+    );
     this.getHeight();
   }
 
@@ -168,6 +171,10 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.getScreenWidth = window.innerWidth;
     this.getScreenHeight = window.innerHeight;
+    console.log(
+      'getScreenWidth: ' + this.getScreenWidth,
+      'getScreenHeight' + this.getScreenHeight
+    );
     this.getHeight();
   }
 
@@ -205,6 +212,7 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
 
   private getHeight() {
     this.objHeight$ = (this.getScreenHeight - 550).toFixed(0) + 'px';
+    console.log('objHeight$: ' + this.objHeight$);
     this.objHeightE$ = (this.getScreenHeight - 400).toFixed(0) + 'px';
   }
 
