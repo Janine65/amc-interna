@@ -52,7 +52,7 @@ export class BackendService {
   }
 
   uploadFiles(file: File): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/upload';
+    const apiURL = environment.apiUrl + '/files/upload';
     const data = new FormData();
     data.append('file', file);
     const headers: HttpHeaders = new HttpHeaders({
@@ -66,7 +66,7 @@ export class BackendService {
   }
 
   downloadFile(filename: string): Observable<any> {
-    const apiURL = environment.apiUrl + '/download?filename=' + filename;
+    const apiURL = environment.apiUrl + '/files/download?filename=' + filename;
     const req = new HttpRequest('GET', apiURL, {
       headers: this.header,
       responseType: 'blob' as 'json',
@@ -75,24 +75,24 @@ export class BackendService {
   }
 
   getParameterData(): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/parameter/list';
+    const apiURL = environment.apiUrl + '/parameter';
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
   updParameterData(parameter: ParamData): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/parameter/parameter/' + parameter.id;
+    const apiURL = environment.apiUrl + '/parameter/' + parameter.id;
     const body = JSON.stringify(parameter);
-    return this.http.put<RetData>(apiURL, body, { headers: this.header });
+    return this.http.patch<RetData>(apiURL, body, { headers: this.header });
   }
 
   addParameterData(parameter: ParamData): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/parameter/parameter';
+    const apiURL = environment.apiUrl + '/parameter';
     const body = JSON.stringify(parameter);
     return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
 
   delParameterData(parameter: ParamData): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/parameter/parameter/' + parameter.id;
+    const apiURL = environment.apiUrl + '/parameter/' + parameter.id;
     return this.http.delete<RetData>(apiURL, { headers: this.header });
   }
 
@@ -102,11 +102,11 @@ export class BackendService {
   }
 
   getDashboardAdressData(): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/adresse/overview';
+    const apiURL = environment.apiUrl + '/adressen/overview';
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
   getDashboardAnlaesseData(): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/anlass/overview';
+    const apiURL = environment.apiUrl + '/anlaesse/overview';
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
   getDashboardClubmeisterData(): Observable<RetData> {
@@ -118,33 +118,33 @@ export class BackendService {
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
   getAdressenData(): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/adresse/list';
+    const apiURL = environment.apiUrl + '/adressen';
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
   getAdressenFK(): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/adresse/getFkData';
+    const apiURL = environment.apiUrl + '/adressen/getFkData';
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
   getOneAdress(id: number): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/adresse/adresse/' + id;
+    const apiURL = environment.apiUrl + '/adressen/' + id;
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
   updateAdresse(adresse: Adresse): Observable<RetData> {
-    let apiURL = environment.apiUrl + '/adresse/adresse/';
+    let apiURL = environment.apiUrl + '/adressen';
     const body = JSON.stringify(adresse);
     if (adresse.id == undefined || adresse.id == 0) {
       return this.http.post<RetData>(apiURL, body, { headers: this.header });
     } else {
-      apiURL += adresse.id;
-      return this.http.put<RetData>(apiURL, body, { headers: this.header });
+      apiURL += '/' + adresse.id;
+      return this.http.patch<RetData>(apiURL, body, { headers: this.header });
     }
   }
 
   removeAdresse(adresse: Adresse): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/adresse/adresse/' + adresse.id;
+    const apiURL = environment.apiUrl + '/adressen/' + adresse.id;
     const body = JSON.stringify(adresse);
     return this.http.delete<RetData>(apiURL, {
       headers: this.header,
@@ -152,23 +152,22 @@ export class BackendService {
     });
   }
 
-  exportAdressData(filter = {}): Observable<RetDataFile> {
-    const apiURL = environment.apiUrl + '/adresse/export';
-    const body = JSON.stringify(filter);
+  exportAdressData(adressen: Adresse[]): Observable<RetDataFile> {
+    const apiURL = environment.apiUrl + '/adressen/export';
+    const body = JSON.stringify(adressen);
     return this.http.post<RetDataFile>(apiURL, body, { headers: this.header });
   }
 
   sendEmail(emailbody: any): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/adresse/sendmail';
+    const apiURL = environment.apiUrl + '/adressen/sendmail';
     const body = JSON.stringify(emailbody);
     return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
 
   // TODO
   qrBillAdresse(adresse: Adresse): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/adresse/qrbill';
-    const body = JSON.stringify(adresse);
-    return this.http.post<RetData>(apiURL, body, { headers: this.header });
+    const apiURL = environment.apiUrl + '/adressen/qrbill?id=' + adresse.id;
+    return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
   // TODO: Filter muss noch eingebaut werden
@@ -178,7 +177,7 @@ export class BackendService {
     istkegeln: boolean | undefined
   ): Observable<RetData> {
     let apiURL =
-      environment.apiUrl + `/anlass/list?from=${fromJahr}&to=${toJahr}`;
+      environment.apiUrl + `/anlaesse?fromJahr=${fromJahr}&toJahr=${toJahr}`;
     if (istkegeln) {
       apiURL += '&istkegeln=' + istkegeln;
     }
@@ -186,25 +185,25 @@ export class BackendService {
   }
 
   getAnlaesseFKData(jahr: string | undefined): Observable<RetData> {
-    let apiURL = environment.apiUrl + '/anlass/getFkData';
+    let apiURL = environment.apiUrl + '/anlaesse/getFkData';
     if (jahr) apiURL += '?jahr=' + jahr;
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
   addAnlaesseData(anlass: Anlass): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/anlass/anlass';
+    const apiURL = environment.apiUrl + '/anlaesse';
     const body = JSON.stringify(anlass);
     return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
 
   updAnlaesseData(anlass: Anlass): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/anlass/anlass/' + anlass.id;
+    const apiURL = environment.apiUrl + '/anlaesse/' + anlass.id;
     const body = JSON.stringify(anlass);
-    return this.http.put<RetData>(apiURL, body, { headers: this.header });
+    return this.http.patch<RetData>(apiURL, body, { headers: this.header });
   }
 
   delAnlaesseData(anlass: Anlass): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/anlass/anlass/' + anlass.id;
+    const apiURL = environment.apiUrl + '/anlaesse/' + anlass.id;
     const body = JSON.stringify(anlass);
     return this.http.delete<RetData>(apiURL, {
       headers: this.header,
@@ -213,7 +212,7 @@ export class BackendService {
   }
 
   getSheet(params: any): Observable<RetDataFile> {
-    let apiURL = environment.apiUrl + '/anlass/writestammblatt?';
+    let apiURL = environment.apiUrl + '/anlaesse/writestammblatt?';
     apiURL += 'jahr=' + params.jahr;
     apiURL += '&type=' + params.type;
     if (params.id && params.id > 0) apiURL += '&adresseId=' + params.id;
@@ -221,19 +220,23 @@ export class BackendService {
   }
 
   getOneAnlass(id: number): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/anlass/anlass/' + id;
+    const apiURL = environment.apiUrl + '/anlaesse/' + id;
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
   getAdresseMeisterschaft(adresseid: number): Observable<RetData> {
     const apiURL =
-      environment.apiUrl + '/meisterschaft/listmitglied?id=' + adresseid;
+      environment.apiUrl +
+      '/meisterschaft/listmitglied?mitgliedid=' +
+      adresseid;
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
   getAdresseMeister(adresseid: number): Observable<RetData> {
     const apiURL =
-      environment.apiUrl + '/meisterschaft/listmitgliedmeister?id=' + adresseid;
+      environment.apiUrl +
+      '/meisterschaft/listmitgliedmeister?mitgliedid=' +
+      adresseid;
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
@@ -244,21 +247,19 @@ export class BackendService {
   }
 
   addMeisterschaft(meisterschaft: Meisterschaft): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/meisterschaft/meisterschaft/';
+    const apiURL = environment.apiUrl + '/meisterschaft';
     const body = JSON.stringify(meisterschaft);
     return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
 
   updMeisterschaft(meisterschaft: Meisterschaft): Observable<RetData> {
-    const apiURL =
-      environment.apiUrl + '/meisterschaft/meisterschaft/' + meisterschaft.id;
+    const apiURL = environment.apiUrl + '/meisterschaft/' + meisterschaft.id;
     const body = JSON.stringify(meisterschaft);
-    return this.http.put<RetData>(apiURL, body, { headers: this.header });
+    return this.http.patch<RetData>(apiURL, body, { headers: this.header });
   }
 
   delMeisterschaft(meisterschaft: Meisterschaft): Observable<RetData> {
-    const apiURL =
-      environment.apiUrl + '/meisterschaft/meisterschaft/' + meisterschaft.id;
+    const apiURL = environment.apiUrl + '/meisterschaft/' + meisterschaft.id;
     return this.http.delete<RetData>(apiURL, {
       headers: this.header,
       body: JSON.stringify(meisterschaft),
@@ -266,7 +267,7 @@ export class BackendService {
   }
 
   getClubmeister(jahr: number): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/clubmeister/list?jahr=' + jahr;
+    const apiURL = environment.apiUrl + '/clubmeister/byjahr?jahr=' + jahr;
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
@@ -276,7 +277,7 @@ export class BackendService {
   }
 
   getKegelmeister(jahr: number): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/kegelmeister/list?jahr=' + jahr;
+    const apiURL = environment.apiUrl + '/kegelmeister/byjahr?jahr=' + jahr;
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
@@ -293,23 +294,23 @@ export class BackendService {
   }
 
   getFiscalyear(): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/fiscalyear/list';
+    const apiURL = environment.apiUrl + '/fiscalyear';
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
   addFiscalyear(data: Fiscalyear): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/fiscalyear/fiscalyear';
+    const apiURL = environment.apiUrl + '/fiscalyear';
     const body = JSON.stringify(data);
     return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
 
   updFiscalyear(data: Fiscalyear): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/fiscalyear/fiscalyear/' + data.id;
+    const apiURL = environment.apiUrl + '/fiscalyear/' + data.id;
     const body = JSON.stringify(data);
-    return this.http.put<RetData>(apiURL, body, { headers: this.header });
+    return this.http.patch<RetData>(apiURL, body, { headers: this.header });
   }
   delFiscalyear(data: Fiscalyear): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/fiscalyear/fiscalyear/' + data.id;
+    const apiURL = environment.apiUrl + '/fiscalyear/' + data.id;
     const body = JSON.stringify(data);
     return this.http.delete<RetData>(apiURL, {
       headers: this.header,
@@ -340,21 +341,21 @@ export class BackendService {
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
   getAccount(): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/account/list';
+    const apiURL = environment.apiUrl + '/account';
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
   addAccount(data: Account): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/account/account';
+    const apiURL = environment.apiUrl + '/account';
     const body = JSON.stringify(data);
     return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
   updAccount(data: Account): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/account/account/' + data.id;
+    const apiURL = environment.apiUrl + '/account/' + data.id;
     const body = JSON.stringify(data);
-    return this.http.put<RetData>(apiURL, body, { headers: this.header });
+    return this.http.patch<RetData>(apiURL, body, { headers: this.header });
   }
   delAccount(data: Account): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/account/account/' + data.id;
+    const apiURL = environment.apiUrl + '/account/' + data.id;
     const body = JSON.stringify(data);
     return this.http.delete<RetData>(apiURL, {
       headers: this.header,
@@ -380,17 +381,17 @@ export class BackendService {
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
   addJournal(data: Journal): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/journal/journal';
+    const apiURL = environment.apiUrl + '/journal';
     const body = JSON.stringify(data);
     return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
   updJournal(data: Journal): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/journal/journal/' + data.id;
+    const apiURL = environment.apiUrl + '/journal/' + data.id;
     const body = JSON.stringify(data);
-    return this.http.put<RetData>(apiURL, body, { headers: this.header });
+    return this.http.patch<RetData>(apiURL, body, { headers: this.header });
   }
   delJournal(data: Journal): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/journal/journal/' + data.id;
+    const apiURL = environment.apiUrl + '/journal/' + data.id;
     const body = JSON.stringify(data);
     return this.http.delete<RetData>(apiURL, {
       headers: this.header,
@@ -411,14 +412,14 @@ export class BackendService {
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
   addKegelkasse(data: Kegelkasse): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/kegelkasse/kegelkasse';
+    const apiURL = environment.apiUrl + '/kegelkasse';
     const body = JSON.stringify(data);
     return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
   updKegelkasse(data: Kegelkasse): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/kegelkasse/kegelkasse/' + data.id;
+    const apiURL = environment.apiUrl + '/kegelkasse/' + data.id;
     const body = JSON.stringify(data);
-    return this.http.put<RetData>(apiURL, body, { headers: this.header });
+    return this.http.patch<RetData>(apiURL, body, { headers: this.header });
   }
 
   createReceipt(id: number): Observable<RetDataFile> {
@@ -428,7 +429,7 @@ export class BackendService {
   }
 
   getOneJournal(id: number): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/journal/journal/' + id;
+    const apiURL = environment.apiUrl + '/journal/' + id;
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
   exportJournal(jahr: number, receipt: number): Observable<RetDataFile> {
@@ -451,19 +452,20 @@ export class BackendService {
   }
 
   uploadAtt(reciept: string): Observable<any> {
-    const apiURL = environment.apiUrl + '/receipt/uploadatt?receipt=' + reciept;
+    const apiURL =
+      environment.apiUrl + '/receipt/uploadatt?filename=' + reciept;
     return this.http.get(apiURL, {
       headers: this.header,
       responseType: 'blob',
     });
   }
   delAtt(journalid: number, receipt: Receipt): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/receipt/receipt/' + receipt.id;
+    const apiURL = environment.apiUrl + '/receipt/' + receipt.id;
     return this.http.delete<RetData>(apiURL, { headers: this.header });
   }
 
   addReceipt(jahr: string, files: string): Observable<RetDataFiles> {
-    const apiURL = environment.apiUrl + '/receipt/receipt';
+    const apiURL = environment.apiUrl + '/receipt';
     const body = { jahr: jahr, uploadFiles: files };
     return this.http.post<RetDataFiles>(apiURL, JSON.stringify(body), {
       headers: this.header,
@@ -471,15 +473,15 @@ export class BackendService {
   }
 
   updReceipt(receipt: Receipt): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/receipt/receipt/' + receipt.id;
+    const apiURL = environment.apiUrl + '/receipt/' + receipt.id;
     const body = receipt;
-    return this.http.put<RetData>(apiURL, JSON.stringify(body), {
+    return this.http.patch<RetData>(apiURL, JSON.stringify(body), {
       headers: this.header,
     });
   }
 
   delReceipt(receipt: Receipt): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/receipt/receipt/' + receipt.id;
+    const apiURL = environment.apiUrl + '/receipt/' + receipt.id;
     return this.http.delete<RetData>(apiURL, { headers: this.header });
   }
 
@@ -497,27 +499,29 @@ export class BackendService {
 
   addAtt(journalid: number, receipt: Receipt[]): Observable<RetData> {
     const apiURL =
-      environment.apiUrl + '/journalreceipt/add2journal?journalid=' + journalid;
+      environment.apiUrl +
+      '/journal-receipt/add2journal?journalid=' +
+      journalid;
     const body = JSON.stringify(receipt);
-    return this.http.put<RetData>(apiURL, body, { headers: this.header });
+    return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
 
   getBudget(jahr: number): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/budget/list?jahr=' + jahr;
+    const apiURL = environment.apiUrl + '/budget?year=' + jahr;
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
   addBudget(data: Budget): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/budget/budget';
+    const apiURL = environment.apiUrl + '/budget';
     const body = JSON.stringify(data);
     return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
   updBudget(data: Budget): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/budget/budget/' + data.id;
+    const apiURL = environment.apiUrl + '/budget/' + data.id;
     const body = JSON.stringify(data);
-    return this.http.put<RetData>(apiURL, body, { headers: this.header });
+    return this.http.patch<RetData>(apiURL, body, { headers: this.header });
   }
   delBudget(data: Budget): Observable<RetData> {
-    const apiURL = environment.apiUrl + '/budget/budget/' + data.id;
+    const apiURL = environment.apiUrl + '/budget/' + data.id;
     return this.http.delete<RetData>(apiURL, { headers: this.header });
   }
   copyBudget(yearFrom: number, yearTo: number): Observable<RetData> {

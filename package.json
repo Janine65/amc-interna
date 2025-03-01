@@ -1,11 +1,12 @@
 {
   "name": "amc-interna",
-  "version": "3.0.8",
+  "version": "3.0.9",
   "description": "Auto-Moto-Club Administration: Frontend für die interne Applikation des Vereins.",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "nx": "nx",
     "start": "nx serve",
+    "start:dev": "nx serve --watch",
     "build": "nx run-many -t build",
     "watch": "nx build --watch --configuration development",
     "test": "nx test",

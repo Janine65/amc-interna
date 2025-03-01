@@ -4,11 +4,12 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8000',
+  apiUrl: 'http://localhost:3001',
   apiUrlSelf: 'http://localhost:4200',
   defaultSignature: 'JanineFranken',
   defaultEmail: 'janine@automoto-sr.info',
-  samEmail: 'info@s-a-m.ch'};
+  samEmail: 'info@s-a-m.ch',
+};
 
 /*
  * For easier debugging in development mode, you can import the following file
@@ -17,4 +18,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+import 'zone.js/plugins/zone-error'; // Included with Angular CLI.

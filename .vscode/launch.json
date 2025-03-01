@@ -8,19 +8,29 @@
       "request": "launch",
       "type": "node-terminal"
     },
-  {
-    "name": "Launch Chrome",
-    "type": "chrome",
-    "request": "launch",
-    "url": "http://localhost:4200",
-    "webRoot": "${workspaceFolder}"
-  },
-  {
-    "name": "Attach to Chrome",
-    "type": "chrome",
-    "request": "attach",
-    "port": 9222,
-    "webRoot": "${workspaceFolder}"
-  },
-  ],
+    {
+      "name": "Launch Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Attach to Chrome",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "NX Debug",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "start:dev"],
+      "console": "integratedTerminal",
+      "restart": true,
+      "autoAttachChildProcesses": true
+    }
+  ]
 }

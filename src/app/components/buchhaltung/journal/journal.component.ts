@@ -311,15 +311,15 @@ export class JournalComponent implements OnInit {
           this.lstJournal.forEach((x) => {
             x.date_date = new Date(x.date);
             x.fromAcc =
-              x.fromAccountAccount?.order.toFixed(0) +
+              x.account_journal_from_accountToaccount?.order.toFixed(0) +
               ' ' +
-              x.fromAccountAccount.name;
-            x.from_account = x.fromAccountAccount?.id;
+              x.account_journal_from_accountToaccount.name;
+            x.from_account = x.account_journal_from_accountToaccount?.id;
             x.toAcc =
-              x.toAccountAccount?.order.toFixed(0) +
+              x.account_journal_to_accountToaccount?.order.toFixed(0) +
               ' ' +
-              x.toAccountAccount.name;
-            x.to_account = x.toAccountAccount?.id;
+              x.account_journal_to_accountToaccount.name;
+            x.to_account = x.account_journal_to_accountToaccount?.id;
           });
           this.lstAccounts = list2.data as Account[];
           this.selFiscalyear = result.data as Fiscalyear;
@@ -357,13 +357,13 @@ export class JournalComponent implements OnInit {
   fromAccountSel(acc: Account) {
     // document why this method 'fromAccountSel' is empty
     this.lstFromAccounts = [];
-    this.selJournal.fromAccountAccount = acc;
+    this.selJournal.account_journal_from_accountToaccount = acc;
   }
 
   toAccountSel(acc: Account) {
     // document why this method 'fromAccountSel' is empty
     this.lstToAccounts = [];
-    this.selJournal.toAccountAccount = acc;
+    this.selJournal.account_journal_to_accountToaccount = acc;
   }
 
   fromAccountSearch(event: AutoCompleteCompleteEvent) {
@@ -620,8 +620,10 @@ export class JournalComponent implements OnInit {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let sub: Observable<any>;
 
-    this.selJournal.from_account = this.selJournal.fromAccountAccount?.id;
-    this.selJournal.to_account = this.selJournal.toAccountAccount?.id;
+    this.selJournal.from_account =
+      this.selJournal.account_journal_from_accountToaccount?.id;
+    this.selJournal.to_account =
+      this.selJournal.account_journal_to_accountToaccount?.id;
     this.selJournal.date = `${this.selJournal.date_date.getFullYear()}-${this.selJournal.date_date.toLocaleString(
       'default',
       { month: '2-digit' }
@@ -641,10 +643,10 @@ export class JournalComponent implements OnInit {
           next: (result) => {
             const jour = result.data as Journal;
             jour.date_date = new Date(jour.date);
-            jour.fromAcc = jour.fromAccountAccount?.longname;
-            jour.from_account = jour.fromAccountAccount?.id;
-            jour.toAcc = jour.toAccountAccount?.longname;
-            jour.to_account = jour.toAccountAccount?.id;
+            jour.fromAcc = jour.account_journal_from_accountToaccount?.longname;
+            jour.from_account = jour.account_journal_from_accountToaccount?.id;
+            jour.toAcc = jour.account_journal_to_accountToaccount?.longname;
+            jour.to_account = jour.account_journal_to_accountToaccount?.id;
 
             if (this.addMode) {
               this.lstJournal.push(jour);

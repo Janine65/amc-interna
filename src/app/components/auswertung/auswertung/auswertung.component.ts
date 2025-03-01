@@ -8,32 +8,37 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-auswertung',
   templateUrl: './auswertung.component.html',
-  styleUrls: ['./auswertung.component.scss']
+  styleUrls: ['./auswertung.component.scss'],
 })
 export class AuswertungComponent implements OnInit {
-
-  lstGraphData: MeisterschaftAuswertung[] = []
-  parameter: ParamData[] = []
-  selJahre = [{ value: 1, label: '1' }, { value: 2, label: '2' }, { value: 3, label: '3' }]
-  selJahr = 2
+  lstGraphData: MeisterschaftAuswertung[] = [];
+  parameter: ParamData[] = [];
+  selJahre = [
+    { value: 1, label: '1' },
+    { value: 2, label: '2' },
+    { value: 3, label: '3' },
+  ];
+  selJahr = 2;
   jahr: number;
   data: any;
   options: any;
 
-  constructor(private backendService: BackendService, private messageService: MessageService) {
+  constructor(
+    private backendService: BackendService,
+    private messageService: MessageService
+  ) {
     const str = localStorage.getItem('parameter');
     this.parameter = str ? JSON.parse(str) : [];
     const paramJahr = this.parameter.find((param) => param.key === 'CLUBJAHR');
-    this.jahr = Number(paramJahr?.value)
-
+    this.jahr = Number(paramJahr?.value);
   }
 
   ngOnInit(): void {
     if (this.jahr) {
-      this.selJahre[0] = { value: this.jahr - 2, label: String(this.jahr - 2) }
-      this.selJahre[1] = { value: this.jahr - 1, label: String(this.jahr - 1) }
-      this.selJahre[2] = { value: this.jahr, label: String(this.jahr) }
-      this.selJahr = this.jahr
+      this.selJahre[0] = { value: this.jahr - 2, label: String(this.jahr - 2) };
+      this.selJahre[1] = { value: this.jahr - 1, label: String(this.jahr - 1) };
+      this.selJahre[2] = { value: this.jahr, label: String(this.jahr) };
+      this.selJahr = this.jahr;
     }
 
     this.updateGraph();
@@ -44,80 +49,85 @@ export class AuswertungComponent implements OnInit {
       next: (list) => {
         this.lstGraphData = list.data as MeisterschaftAuswertung[];
 
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+        const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--text-color');
+        const textColorSecondary = documentStyle.getPropertyValue(
+          '--text-color-secondary'
+        );
+        const surfaceBorder =
+          documentStyle.getPropertyValue('--surface-border');
 
-    const labels: Array<string>[] = []
-    const dataset1: number[] = []
-    const dataset2: number[] = []
+        const labels: Array<string>[] = [];
+        const dataset1: number[] = [];
+        const dataset2: number[] = [];
 
-    this.lstGraphData.forEach((rec) => {
-      const datum = new Date(rec.datum!);
-      labels.push([rec.name! , datum.toLocaleDateString()]);
-      dataset1.push(rec.meisterschafts!.teilnehmer ? rec.meisterschafts!.teilnehmer : 0)
-      dataset2.push(rec.gaeste ? rec.gaeste : 0)
-    })
+        this.lstGraphData.forEach((rec) => {
+          const datum = new Date(rec.datum!);
+          labels.push([rec.name!, datum.toLocaleDateString()]);
+          dataset1.push(
+            rec._count!.meisterschaft ? rec._count!.meisterschaft : 0
+          );
+          dataset2.push(rec.gaeste ? rec.gaeste : 0);
+        });
 
-    this.data = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Teilnehmer',
-          backgroundColor: documentStyle.getPropertyValue('--blue-500'),
-          borderColor: documentStyle.getPropertyValue('--blue-500'),
-          data: dataset1
-        },
-        {
-          label: 'Gäste',
-          backgroundColor: documentStyle.getPropertyValue('--pink-500'),
-          borderColor: documentStyle.getPropertyValue('--pink-500'),
-          data: dataset2
-        }
-      ]
-    };
+        this.data = {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Teilnehmer',
+              backgroundColor: documentStyle.getPropertyValue('--blue-500'),
+              borderColor: documentStyle.getPropertyValue('--blue-500'),
+              data: dataset1,
+            },
+            {
+              label: 'Gäste',
+              backgroundColor: documentStyle.getPropertyValue('--pink-500'),
+              borderColor: documentStyle.getPropertyValue('--pink-500'),
+              data: dataset2,
+            },
+          ],
+        };
 
-    this.options = {
-      indexAxis: 'y',
-      plugins: {
-        legend: {
-          labels: {
-            color: textColor
-          }
-        }
+        this.options = {
+          indexAxis: 'y',
+          plugins: {
+            legend: {
+              labels: {
+                color: textColor,
+              },
+            },
+          },
+          scales: {
+            x: {
+              stacked: true,
+              ticks: {
+                color: textColorSecondary,
+                stepSize: 1,
+                font: {
+                  weight: 500,
+                },
+              },
+              grid: {
+                color: surfaceBorder,
+                drawBorder: false,
+              },
+            },
+            y: {
+              stacked: true,
+              ticks: {
+                color: textColorSecondary,
+                stepSize: 0,
+                min: 0,
+                autoSkip: false,
+              },
+              grid: {
+                color: surfaceBorder,
+                drawBorder: false,
+              },
+            },
+          },
+        };
       },
-      scales: {
-        x: {
-          stacked: true,
-          ticks: {
-            color: textColorSecondary,
-            stepSize: 1,
-            font: {
-              weight: 500
-            }
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false
-          }
-        },
-        y: {
-          stacked: true,
-          ticks: {
-            color: textColorSecondary,
-            stepSize: 0,
-            min: 0,
-            autoSkip: false,
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false
-          }
-        }
-      }
-    };    
+    });
   }
-})
-}
 }
