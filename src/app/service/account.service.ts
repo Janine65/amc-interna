@@ -70,21 +70,15 @@ export class AccountService {
         (new Date().getTime() - this.layoutService.userActiveSince.getTime()) /
         1000 /
         60;
-      console.debug(
-        `${mins.toFixed(
-          0
-        )} Minuten sind vergangen, seit der Token das letzte Mal aktualisiert wurde.`
-      );
       if (mins > 30 && mins < 60) {
-        console.log('Token wird aktualisiert');
         this.http
-          .post<RetDataUser>(
-            `${this.apiUrl}/auth/refreshToken`,
-            this.userValue,
+          .get<RetDataUser>(
+            `${this.apiUrl}/auth/refreshToken?id=${this.userValue.id}`,
             { headers: this.header }
           )
           .subscribe({
             next: (retData) => {
+              console.log('Token wurde aktualisiert');
               this.saveUser(retData.data as User, retData.cookie);
               return this.userValue;
             },
