@@ -32,8 +32,7 @@ export class AttachmentAddComponent {
       this.backendService.uploadFiles(f).subscribe({
         next: (response) => {
           if (response.type == 'info') {
-            const retfiles = response.data as any;
-            if (retfiles.filename == f.name) this.uploadFiles.push(f);
+            this.uploadFiles.push(f);
           }
         },
         complete: () => {
@@ -59,11 +58,18 @@ export class AttachmentAddComponent {
 
   save() {
     const files = this.uploadFiles.map((value: File) => value.name).join(',');
+    console.log(files);
     if (files.length > 0)
       this.backendService
         .bulkAddReceipt(this.jahr, this.journalid, files)
         .subscribe({
-          complete: () => {
+          next: (resp) => {
+            console.log(resp);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Erfolg',
+              detail: resp.message,
+            });
             this.ref.close();
           },
         });
