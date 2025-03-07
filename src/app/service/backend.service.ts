@@ -491,7 +491,11 @@ export class BackendService {
     files: string
   ): Observable<RetDataFiles> {
     const apiURL = environment.apiUrl + '/receipt/att2journal';
-    const body = { uploadFiles: files, year: jahr, journalid: journalid };
+    const body: { uploadfiles: string; year: string; journalId: number } = {
+      uploadfiles: files,
+      year: jahr,
+      journalId: journalid,
+    };
     return this.http.post<RetDataFiles>(apiURL, JSON.stringify(body), {
       headers: this.header,
     });

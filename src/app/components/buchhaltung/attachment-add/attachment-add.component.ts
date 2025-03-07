@@ -7,12 +7,11 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-attachment-add',
   templateUrl: './attachment-add.component.html',
-  styleUrls: ['./attachment-add.component.scss']
+  styleUrls: ['./attachment-add.component.scss'],
 })
 export class AttachmentAddComponent {
-
   journalid = 0;
-  jahr = '';
+  jahr: string = '';
   uploadFiles: File[] = [];
   uploadProgress: number | null = null;
   uploadSub?: Subscription;
@@ -21,7 +20,7 @@ export class AttachmentAddComponent {
     private backendService: BackendService,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private messageService: MessageService,
+    private messageService: MessageService
   ) {
     this.journalid = config.data.journalid;
     this.jahr = config.data.jahr;
@@ -30,25 +29,22 @@ export class AttachmentAddComponent {
   prepareFiles(files: File[]) {
     this.uploadProgress = 0;
     for (const f of files) {
-        this.backendService.uploadFiles(f)
-        .subscribe({
-          next: (response) => {
-            if (response.type == 'info') {
-                const files = response.data as any;
-                if (files.file[0].originalFilename == f.name)
-                  this.uploadFiles.push(f)
-            }  
-          },
-          complete: () => {
-            this.uploadProgress = 100;
+      this.backendService.uploadFiles(f).subscribe({
+        next: (response) => {
+          if (response.type == 'info') {
+            const retfiles = response.data as any;
+            if (retfiles.filename == f.name) this.uploadFiles.push(f);
           }
-        })
+        },
+        complete: () => {
+          this.uploadProgress = 100;
+        },
+      });
     }
   }
 
   cancelUpload() {
-    if (this.uploadSub)
-      this.uploadSub.unsubscribe();
+    if (this.uploadSub) this.uploadSub.unsubscribe();
     this.reset();
   }
 
@@ -62,13 +58,15 @@ export class AttachmentAddComponent {
   }
 
   save() {
-    const files = this.uploadFiles.map((value: File) => value.name).join(',')
+    const files = this.uploadFiles.map((value: File) => value.name).join(',');
     if (files.length > 0)
-      this.backendService.bulkAddReceipt(this.jahr, this.journalid, files).subscribe({
-        complete: () => {
-          this.ref.close()
-        }
-      })
-      this.ref.close()
+      this.backendService
+        .bulkAddReceipt(this.jahr, this.journalid, files)
+        .subscribe({
+          complete: () => {
+            this.ref.close();
+          },
+        });
+    this.ref.close();
   }
 }

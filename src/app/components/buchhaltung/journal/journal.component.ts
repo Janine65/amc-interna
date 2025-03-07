@@ -480,7 +480,7 @@ export class JournalComponent implements OnInit {
     if (selRec)
       thisRef.dialogRef = thisRef.dialogService.open(AttachmentAddComponent, {
         data: {
-          jahr: thisRef.selJahr,
+          jahr: thisRef.selJahr.toFixed(0),
           journalid: selRec.id,
         },
         header: 'Neuen Anhang zu Journaleintrag ' + selRec.memo + ' hinzufügen',
