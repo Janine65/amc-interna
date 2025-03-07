@@ -356,14 +356,16 @@ export class JournalComponent implements OnInit {
 
   fromAccountSel(acc: Account) {
     // document why this method 'fromAccountSel' is empty
-    this.lstFromAccounts = [];
     this.selJournal.account_journal_from_accountToaccount = acc;
+    this.selJournal.from_account = acc.id;
+    // this.lstFromAccounts = [];
   }
 
   toAccountSel(acc: Account) {
     // document why this method 'fromAccountSel' is empty
-    this.lstToAccounts = [];
+    // this.lstToAccounts = [];
     this.selJournal.account_journal_to_accountToaccount = acc;
+    this.selJournal.to_account = acc.id;
   }
 
   fromAccountSearch(event: AutoCompleteCompleteEvent) {
