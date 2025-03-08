@@ -40,7 +40,7 @@ export class BackendService {
       'Access-Control-Allow-Origin': environment.apiUrlSelf,
       'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
       'Access-Control-Allow-Headers':
-        'Access-Control-Allow-Headers,Access-Control-Allow-Methods,Access-Control-Allow-Origin, Origin, X-Requested-With, Content-Type, Accept, Authorization',
+        'Access-Control-Allow-Headers,Access-Control-Allow-Methods,Access-Control-Allow-Origin, Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Disposition',
       'Content-Type': 'application/json',
     });
     console.log(this.header);
@@ -451,14 +451,18 @@ export class BackendService {
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
-  uploadAtt(reciept: string): Observable<any> {
-    const apiURL =
-      environment.apiUrl + '/receipt/uploadatt?filename=' + reciept;
-    return this.http.get(apiURL, {
+  uploadAtt(reciept: string, year: string): Observable<any> {
+    const params = new URLSearchParams();
+    params.append('filename', reciept);
+    params.append('year', year);
+    const apiURL = new URL(environment.apiUrl + '/receipt/uploadatt');
+    apiURL.search = params.toString();
+    return this.http.get(apiURL.toString(), {
       headers: this.header,
-      responseType: 'blob',
+      responseType: 'blob' as 'json',
     });
   }
+
   delAtt(journalid: number, receipt: Receipt): Observable<RetData> {
     const apiURL = environment.apiUrl + '/receipt/' + receipt.id;
     return this.http.delete<RetData>(apiURL, { headers: this.header });

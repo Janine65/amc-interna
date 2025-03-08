@@ -165,6 +165,7 @@ export class AttachementListComponent {
       thisRef.dialogService.open(AttachementShowComponent, {
         data: {
           receipt: selRec.receipt,
+          year: this.jahr.toFixed(),
         },
         header: 'Attachment anzeigen ' + selRec.receipt,
         width: '90%',

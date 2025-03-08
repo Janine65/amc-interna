@@ -1,6 +1,6 @@
 module.exports = {
-    //...
-    infrastructureLogging: {
-      level: 'error',
-    },
-  };
+  //...
+  infrastructureLogging: {
+    level: "error",
+  },
+};

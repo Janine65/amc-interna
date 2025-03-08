@@ -1,12 +1,19 @@
 import { ErrorHandler, NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy, CommonModule, DecimalPipe, DatePipe, PercentPipe } from '@angular/common';
+import {
+  HashLocationStrategy,
+  LocationStrategy,
+  CommonModule,
+  DecimalPipe,
+  DatePipe,
+  PercentPipe,
+} from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 import { SidebarModule } from 'primeng/sidebar';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -15,24 +22,24 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { BadgeModule } from 'primeng/badge';
 import { RippleModule } from 'primeng/ripple';
-import { PanelModule } from 'primeng/panel'
-import { FieldsetModule} from 'primeng/fieldset';
-import { DataViewModule } from 'primeng/dataview'
-import {TableModule} from 'primeng/table';
-import {DynamicDialogModule} from 'primeng/dynamicdialog';
-import {DialogModule } from 'primeng/dialog'
-import {ScrollPanelModule} from 'primeng/scrollpanel';
-import {CalendarModule} from 'primeng/calendar';
-import {InputNumberModule} from 'primeng/inputnumber';
-import {ToolbarModule} from 'primeng/toolbar';
+import { PanelModule } from 'primeng/panel';
+import { FieldsetModule } from 'primeng/fieldset';
+import { DataViewModule } from 'primeng/dataview';
+import { TableModule } from 'primeng/table';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogModule } from 'primeng/dialog';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { CalendarModule } from 'primeng/calendar';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ToolbarModule } from 'primeng/toolbar';
 import { DropdownModule } from 'primeng/dropdown';
-import {ToastModule} from 'primeng/toast';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
-import {SelectButtonModule} from 'primeng/selectbutton';
+import { ToastModule } from 'primeng/toast';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { PasswordModule } from 'primeng/password';
-import {ContextMenuModule} from 'primeng/contextmenu';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SplitterModule } from 'primeng/splitter';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -125,7 +132,8 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     BudgetComponent,
     AttachementListComponent,
     AttachementShowComponent,
-    SafePipe, DynamicPipe,
+    SafePipe,
+    DynamicPipe,
     AttachmentAddComponent,
     KontoBewegungenComponent,
     KegelkasseComponent,
@@ -163,7 +171,7 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     SelectButtonModule,
     PasswordModule,
     ContextMenuModule,
-    ConfirmDialogModule,    
+    ConfirmDialogModule,
     DialogModule,
     EditorModule,
     FileUploadModule,
@@ -190,8 +198,8 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MessageService, useClass: MessageService },
-],
+  ],
   bootstrap: [AppComponent],
-  exports: [AppLayoutComponent]
+  exports: [AppLayoutComponent],
 })
-export class AppModule { }
+export class AppModule {}

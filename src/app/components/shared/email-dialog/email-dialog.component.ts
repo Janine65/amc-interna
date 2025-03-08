@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-email-dialog',
   templateUrl: './email-dialog.component.html',
-  styleUrls: ['./email-dialog.component.scss']
+  styleUrls: ['./email-dialog.component.scss'],
 })
 export class EmailDialogComponent implements OnInit, OnDestroy {
   emailBody: EmailBody;
@@ -18,28 +18,31 @@ export class EmailDialogComponent implements OnInit, OnDestroy {
   uploadSub?: Subscription;
   loading = false;
 
-  lstSignature = [{
-    label: "Hansjörg Dutler", value: EmailSignature.HansjoergDutler
-  },
-  { label: "Janine Franken", value: EmailSignature.JanineFranken }]
+  lstSignature = [
+    {
+      label: 'Hansjörg Dutler',
+      value: EmailSignature.HansjoergDutler,
+    },
+    { label: 'Janine Franken', value: EmailSignature.JanineFranken },
+  ];
 
   quillFormats = [
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
     ['blockquote', 'code-block'],
     ['link', 'image'],
 
-    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
-    [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-    [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+    [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+    [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
 
-    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
 
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'align': [] }],
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
 
-    ['clean']                                         // remove formatting button
+    ['clean'], // remove formatting button
   ];
 
   modules = {
@@ -47,10 +50,9 @@ export class EmailDialogComponent implements OnInit, OnDestroy {
     history: {
       delay: 2000,
       maxStack: 500,
-      userOnly: true
-    }
-  }
-
+      userOnly: true,
+    },
+  };
 
   constructor(
     private backendService: BackendService,
@@ -63,34 +65,34 @@ export class EmailDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // TODO 
+    // TODO
     return;
   }
 
   // make sure to destory the editor
   ngOnDestroy(): void {
-    // TODO 
+    // TODO
     return;
   }
 
   prepareFiles(files: File[]) {
     this.uploadProgress = 0;
     for (const f of files) {
-      this.backendService.uploadFiles(f)
-        .subscribe(response => {
+      this.backendService.uploadFiles(f).subscribe({
+        next: (response) => {
           if (response.type == 'info') {
-              this.uploadProgress = 100;
-              const files = response.data as any;
-              if (files.file[0].originalFilename == f.name)
-                this.uploadFiles.push(f)
+            this.uploadFiles.push(f);
           }
-        })
+        },
+        complete: () => {
+          this.uploadProgress = 100;
+        },
+      });
     }
   }
 
   cancelUpload() {
-    if (this.uploadSub)
-      this.uploadSub.unsubscribe();
+    if (this.uploadSub) this.uploadSub.unsubscribe();
     this.reset();
   }
 
@@ -104,50 +106,86 @@ export class EmailDialogComponent implements OnInit, OnDestroy {
   }
   submit() {
     // send mail
-    if ((this.emailBody.email_an == undefined || this.emailBody.email_an == '') && (this.emailBody.email_cc == undefined || this.emailBody.email_cc == '') && (this.emailBody.email_bcc == undefined || this.emailBody.email_bcc == '')) {
-      this.messageService.add({ summary: 'Fehler: Email senden: An wen willst Du diese Email senden? Keinen Absender angegeben.', severity: 'error', closable: true })
-      return
+    if (
+      (this.emailBody.email_an == undefined || this.emailBody.email_an == '') &&
+      (this.emailBody.email_cc == undefined || this.emailBody.email_cc == '') &&
+      (this.emailBody.email_bcc == undefined || this.emailBody.email_bcc == '')
+    ) {
+      this.messageService.add({
+        summary:
+          'Fehler: Email senden: An wen willst Du diese Email senden? Keinen Absender angegeben.',
+        severity: 'error',
+        closable: true,
+      });
+      return;
     }
 
-    if (this.emailBody.email_subject == undefined || this.emailBody.email_subject == '') {
-      this.messageService.add({ summary: 'Fehler: Email senden: Kein Betreff angegeben.', severity: 'error', closable: true })
-      return
+    if (
+      this.emailBody.email_subject == undefined ||
+      this.emailBody.email_subject == ''
+    ) {
+      this.messageService.add({
+        summary: 'Fehler: Email senden: Kein Betreff angegeben.',
+        severity: 'error',
+        closable: true,
+      });
+      return;
     }
 
-    if (this.emailBody.email_body == undefined || this.emailBody.email_body == '') {
-      this.messageService.add({ summary: 'Fehler: Email senden: Keinen Text angegeben.', severity: 'error', closable: true })
-      return
+    if (
+      this.emailBody.email_body == undefined ||
+      this.emailBody.email_body == ''
+    ) {
+      this.messageService.add({
+        summary: 'Fehler: Email senden: Keinen Text angegeben.',
+        severity: 'error',
+        closable: true,
+      });
+      return;
     }
 
     this.loading = true;
 
     if (this.uploadFiles.length > 0) {
-      this.emailBody.email_uploadfiles = this.uploadFiles.map((file) => file.name).join(',');
+      this.emailBody.email_uploadfiles = this.uploadFiles
+        .map((file) => file.name)
+        .join(',');
     }
 
     if (this.emailBody.email_signature == undefined) {
-      this.emailBody.email_signature = (Object.keys(EmailSignature)[Object.values(EmailSignature).indexOf(environment.defaultSignature as unknown as EmailSignature)] as unknown as EmailSignature);
+      this.emailBody.email_signature = Object.keys(EmailSignature)[
+        Object.values(EmailSignature).indexOf(
+          environment.defaultSignature as unknown as EmailSignature
+        )
+      ] as unknown as EmailSignature;
     }
 
     console.log(this.emailBody);
 
     // alles bereit zum Senden der Email
-    this.backendService.sendEmail(this.emailBody)
-      .subscribe(
-        {
-          next: (res) => {
-            console.log(res);
-            this.loading = false;
-            if (res.type == "250 Message received")
-              this.messageService.add({ summary: 'OK: Email senden: Email wurde versandt.', severity: 'info', sticky: false, closable: false, life: 2000 })
-            this.ref.close(res);
-          },
-          error: (res) => {
-            this.loading = false;
-            this.messageService.add({ summary: 'Fehler: Email senden: ' + res.message, severity: 'error', sticky: true, closable: true })
-          }
-        }
-      )
+    this.backendService.sendEmail(this.emailBody).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.loading = false;
+        if (res.type == '250 Message received')
+          this.messageService.add({
+            summary: 'OK: Email senden: Email wurde versandt.',
+            severity: 'info',
+            sticky: false,
+            closable: false,
+            life: 2000,
+          });
+        this.ref.close(res);
+      },
+      error: (res) => {
+        this.loading = false;
+        this.messageService.add({
+          summary: 'Fehler: Email senden: ' + res.message,
+          severity: 'error',
+          sticky: true,
+          closable: true,
+        });
+      },
+    });
   }
-
 }
