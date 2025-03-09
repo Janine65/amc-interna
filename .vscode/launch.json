@@ -3,48 +3,26 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "pnpm start",
-      "name": "Run npm start",
-      "request": "launch",
-      "type": "node-terminal"
-    },
-    {
-      "name": "Launch Chrome",
       "type": "chrome",
       "request": "launch",
+      "name": "Launch Chrome Debugger",
       "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}",
+      "presentation": {
+        "hidden": true
+      }
     },
     {
-      "name": "Attach to Chrome",
-      "type": "chrome",
-      "request": "attach",
-      "port": 9222,
-      "webRoot": "${workspaceFolder}"
-    },
-    {
-      "type": "node",
+      "command": "pnpm start:dev",
+      "name": "Debug App One",
+      "cwd": "${workspaceFolder}",
       "request": "launch",
-      "name": "NX Debug",
-      "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["run", "start:dev"],
-      "console": "integratedTerminal",
-      "restart": true,
-      "autoAttachChildProcesses": true
-    },
-    {
-      "name": "ng serve",
-      "type": "chrome",
-      "request": "launch",
-      "preLaunchTask": "npm: start:dev",
-      "url": "http://localhost:4200/"
-    },
-    {
-      "name": "ng test",
-      "type": "chrome",
-      "request": "launch",
-      "preLaunchTask": "npm: test",
-      "url": "http://localhost:9876/debug.html"
+      "type": "node-terminal",
+      "serverReadyAction": {
+        "action": "startDebugging",
+        "name": "Launch Chrome Debugger",
+        "pattern": "listening on localhost:4200"
+      }
     }
   ]
 }

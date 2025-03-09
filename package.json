@@ -6,7 +6,7 @@
     "preinstall": "npx only-allow pnpm",
     "nx": "nx",
     "start": "nx serve",
-    "start:dev": "nx serve --watch",
+    "start:dev": "nx serve --watch --proxy-config proxy.conf.json",
     "build": "nx run-many -t build",
     "watch": "nx build --watch --configuration development",
     "test": "nx test",

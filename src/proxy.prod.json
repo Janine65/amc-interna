@@ -1,0 +1,11 @@
+{
+  "/amcbackend": {
+    "target": "http://olconet:3001",
+    "pathRewrite": {
+      "^/amcbackend": ""
+    },
+    "secure": false,
+    "changeOrigin": false,
+    "logLevel": "debug"
+  }
+}
