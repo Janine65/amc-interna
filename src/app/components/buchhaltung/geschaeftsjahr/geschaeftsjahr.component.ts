@@ -12,10 +12,11 @@ import { Observable, from, timer } from 'rxjs';
 type Severity = 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' | undefined;
 
 @Component({
-  selector: 'app-geschaeftsjahr',
-  templateUrl: './geschaeftsjahr.component.html',
-  styleUrls: ['./geschaeftsjahr.component.scss'],
-  providers: [DialogService]
+    selector: 'app-geschaeftsjahr',
+    templateUrl: './geschaeftsjahr.component.html',
+    styleUrls: ['./geschaeftsjahr.component.scss'],
+    providers: [DialogService],
+    standalone: false
 })
 export class GeschaeftsjahrComponent implements OnInit {
 

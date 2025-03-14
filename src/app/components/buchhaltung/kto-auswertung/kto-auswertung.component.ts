@@ -4,9 +4,10 @@ import { BackendService } from '@app/service';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-kto-auswertung',
-  templateUrl: './kto-auswertung.component.html',
-  styleUrls: ['./kto-auswertung.component.scss']
+    selector: 'app-kto-auswertung',
+    templateUrl: './kto-auswertung.component.html',
+    styleUrls: ['./kto-auswertung.component.scss'],
+    standalone: false
 })
 export class KtoAuswertungComponent {
 

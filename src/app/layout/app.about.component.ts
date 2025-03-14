@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Package } from '@model/user';
 
 @Component({
-  selector: 'app-app.about',
-  templateUrl: './app.about.component.html',
-  styleUrls: ['./app.about.component.scss']
+    selector: 'app-app.about',
+    templateUrl: './app.about.component.html',
+    styleUrls: ['./app.about.component.scss'],
+    standalone: false
 })
 export class AppAboutComponent implements OnInit{
   pkgFrontend: Package = {}

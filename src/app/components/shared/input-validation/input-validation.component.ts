@@ -12,19 +12,20 @@ export class InputValidationErrorDef {
 }
 
 @Component({
-  selector: 'app-input-validation',
-  template: `
+    selector: 'app-input-validation',
+    template: `
     <div *ngIf="hasError()" class="ui-message ui-messages-error">
       {{ errorMessage }}
     </div>
   `,
-  styles: [`
+    styles: [`
     .ui-messages-error {
       margin: 0;
       margin-top: 4px;
       color: red;
     }
-  `]
+  `],
+    standalone: false
 })
 export class InputValidationComponent {
 

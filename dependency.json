@@ -1,0 +1,1048 @@
+[
+  {
+    "name": "amc-interna",
+    "version": "4.0.7",
+    "path": "/Users/janinefranken/Development/JS/amc-interna",
+    "private": true,
+    "dependencies": {
+      "@angular-devkit/build-angular": {
+        "from": "@angular-devkit/build-angular",
+        "version": "19.2.3",
+        "resolved": "https://registry.npmjs.org/@angular-devkit/build-angular/-/build-angular-19.2.3.tgz",
+        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@angular-devkit+build-angular@19.2.3_@angular+compiler-cli@19.2.2_@angular+compiler@19.2.2_@a_jq7bzlyepx35ororsmn2iz7pim/node_modules/@angular-devkit/build-angular",
+        "dependencies": {
+          "@vitejs/plugin-basic-ssl": {
+            "from": "@vitejs/plugin-basic-ssl",
+            "version": "1.2.0",
+            "resolved": "https://registry.npmjs.org/@vitejs/plugin-basic-ssl/-/plugin-basic-ssl-1.2.0.tgz",
+            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@vitejs+plugin-basic-ssl@1.2.0_vite@6.2.0_@types+node@22.13.10_jiti@1.21.7_less@4.2.2_sass-em_yruhz7psn6fgxe246p4ugluk5q/node_modules/@vitejs/plugin-basic-ssl",
+            "dependencies": {
+              "vite": {
+                "from": "vite",
+                "version": "6.2.0",
+                "resolved": "https://registry.npmjs.org/vite/-/vite-6.2.0.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/vite@6.2.0_@types+node@22.13.10_jiti@1.21.7_less@4.2.2_sass-embedded@1.85.1_sass@1.85.0_stylu_22uj2ownq2avn65uw43pgyo5c4/node_modules/vite",
+                "dependencies": {
+                  "stylus": {
+                    "from": "stylus",
+                    "version": "0.64.0",
+                    "resolved": "https://registry.npmjs.org/stylus/-/stylus-0.64.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/stylus@0.64.0/node_modules/stylus",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "10.4.5",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@10.4.5/node_modules/glob"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "@angular/build": {
+            "from": "@angular/build",
+            "version": "19.2.3",
+            "resolved": "https://registry.npmjs.org/@angular/build/-/build-19.2.3.tgz",
+            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@angular+build@19.2.3_@angular+compiler-cli@19.2.2_@angular+compiler@19.2.2_@angular+core@19._zlr6ofe3tejqnhdsz6h4hkxrhu/node_modules/@angular/build",
+            "dependencies": {
+              "vite": {
+                "from": "vite",
+                "version": "6.2.0",
+                "resolved": "https://registry.npmjs.org/vite/-/vite-6.2.0.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/vite@6.2.0_@types+node@22.13.10_jiti@1.21.7_less@4.2.2_sass-embedded@1.85.1_sass@1.85.0_stylu_22uj2ownq2avn65uw43pgyo5c4/node_modules/vite",
+                "dependencies": {
+                  "stylus": {
+                    "from": "stylus",
+                    "version": "0.64.0",
+                    "resolved": "https://registry.npmjs.org/stylus/-/stylus-0.64.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/stylus@0.64.0/node_modules/stylus",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "10.4.5",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@10.4.5/node_modules/glob"
+                      }
+                    }
+                  }
+                }
+              },
+              "karma": {
+                "from": "karma",
+                "version": "6.4.3",
+                "resolved": "https://registry.npmjs.org/karma/-/karma-6.4.3.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/karma@6.4.3/node_modules/karma",
+                "dependencies": {
+                  "glob": {
+                    "from": "glob",
+                    "version": "7.2.3",
+                    "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                  },
+                  "rimraf": {
+                    "from": "rimraf",
+                    "version": "3.0.2",
+                    "resolved": "https://registry.npmjs.org/rimraf/-/rimraf-3.0.2.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/rimraf@3.0.2/node_modules/rimraf",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      }
+                    }
+                  }
+                }
+              },
+              "@vitejs/plugin-basic-ssl": {
+                "from": "@vitejs/plugin-basic-ssl",
+                "version": "1.2.0",
+                "resolved": "https://registry.npmjs.org/@vitejs/plugin-basic-ssl/-/plugin-basic-ssl-1.2.0.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@vitejs+plugin-basic-ssl@1.2.0_vite@6.2.0_@types+node@22.13.10_jiti@1.21.7_less@4.2.2_sass-em_yruhz7psn6fgxe246p4ugluk5q/node_modules/@vitejs/plugin-basic-ssl",
+                "dependencies": {
+                  "vite": {
+                    "from": "vite",
+                    "version": "6.2.0",
+                    "resolved": "https://registry.npmjs.org/vite/-/vite-6.2.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/vite@6.2.0_@types+node@22.13.10_jiti@1.21.7_less@4.2.2_sass-embedded@1.85.1_sass@1.85.0_stylu_22uj2ownq2avn65uw43pgyo5c4/node_modules/vite",
+                    "dependencies": {
+                      "stylus": {
+                        "from": "stylus",
+                        "version": "0.64.0",
+                        "resolved": "https://registry.npmjs.org/stylus/-/stylus-0.64.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/stylus@0.64.0/node_modules/stylus",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "10.4.5",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@10.4.5/node_modules/glob"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "jest": {
+            "from": "jest",
+            "version": "29.7.0",
+            "resolved": "https://registry.npmjs.org/jest/-/jest-29.7.0.tgz",
+            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest",
+            "dependencies": {
+              "@jest/core": {
+                "from": "@jest/core",
+                "version": "29.7.0",
+                "resolved": "https://registry.npmjs.org/@jest/core/-/core-29.7.0.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+core@29.7.0_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/@jest/core",
+                "dependencies": {
+                  "@jest/reporters": {
+                    "from": "@jest/reporters",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/@jest/reporters/-/reporters-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+reporters@29.7.0/node_modules/@jest/reporters",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      }
+                    }
+                  },
+                  "@jest/transform": {
+                    "from": "@jest/transform",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/@jest/transform/-/transform-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+transform@29.7.0/node_modules/@jest/transform",
+                    "dependencies": {
+                      "babel-plugin-istanbul": {
+                        "from": "babel-plugin-istanbul",
+                        "version": "6.1.1",
+                        "resolved": "https://registry.npmjs.org/babel-plugin-istanbul/-/babel-plugin-istanbul-6.1.1.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/babel-plugin-istanbul@6.1.1/node_modules/babel-plugin-istanbul",
+                        "dependencies": {
+                          "test-exclude": {
+                            "from": "test-exclude",
+                            "version": "6.0.0",
+                            "resolved": "https://registry.npmjs.org/test-exclude/-/test-exclude-6.0.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/test-exclude@6.0.0/node_modules/test-exclude",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "jest-config": {
+                    "from": "jest-config",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/jest-config/-/jest-config-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-config@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-config",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      },
+                      "jest-circus": {
+                        "from": "jest-circus",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-circus/-/jest-circus-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-circus@29.7.0_babel-plugin-macros@3.1.0/node_modules/jest-circus",
+                        "dependencies": {
+                          "jest-runtime": {
+                            "from": "jest-runtime",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "jest-runner": {
+                        "from": "jest-runner",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-runner/-/jest-runner-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner",
+                        "dependencies": {
+                          "jest-runtime": {
+                            "from": "jest-runtime",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "devDependencies": {
+      "@nx/angular": {
+        "from": "@nx/angular",
+        "version": "20.5.0",
+        "resolved": "https://registry.npmjs.org/@nx/angular/-/angular-20.5.0.tgz",
+        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@nx+angular@20.5.0_@angular-devkit+build-angular@19.2.3_@angular+compiler-cli@19.2.2_@angular_qcs3yyvq24nzz4sw2o5g6xtxvi/node_modules/@nx/angular",
+        "dependencies": {
+          "@nx/webpack": {
+            "from": "@nx/webpack",
+            "version": "20.5.0",
+            "resolved": "https://registry.npmjs.org/@nx/webpack/-/webpack-20.5.0.tgz",
+            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@nx+webpack@20.5.0_@babel+traverse@7.26.10_@rspack+core@1.2.8_@types+node@22.13.10_nx@20.5.0_typescript@5.8.2/node_modules/@nx/webpack",
+            "dependencies": {
+              "stylus": {
+                "from": "stylus",
+                "version": "0.64.0",
+                "resolved": "https://registry.npmjs.org/stylus/-/stylus-0.64.0.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/stylus@0.64.0/node_modules/stylus",
+                "dependencies": {
+                  "glob": {
+                    "from": "glob",
+                    "version": "10.4.5",
+                    "resolved": "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@10.4.5/node_modules/glob"
+                  }
+                }
+              },
+              "stylus-loader": {
+                "from": "stylus-loader",
+                "version": "7.1.3",
+                "resolved": "https://registry.npmjs.org/stylus-loader/-/stylus-loader-7.1.3.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/stylus-loader@7.1.3_stylus@0.64.0_webpack@5.98.0/node_modules/stylus-loader",
+                "dependencies": {
+                  "stylus": {
+                    "from": "stylus",
+                    "version": "0.64.0",
+                    "resolved": "https://registry.npmjs.org/stylus/-/stylus-0.64.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/stylus@0.64.0/node_modules/stylus",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "10.4.5",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@10.4.5/node_modules/glob"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "@angular-devkit/build-angular": {
+            "from": "@angular-devkit/build-angular",
+            "version": "19.2.3",
+            "resolved": "https://registry.npmjs.org/@angular-devkit/build-angular/-/build-angular-19.2.3.tgz",
+            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@angular-devkit+build-angular@19.2.3_@angular+compiler-cli@19.2.2_@angular+compiler@19.2.2_@a_jq7bzlyepx35ororsmn2iz7pim/node_modules/@angular-devkit/build-angular",
+            "dependencies": {
+              "karma": {
+                "from": "karma",
+                "version": "6.4.3",
+                "resolved": "https://registry.npmjs.org/karma/-/karma-6.4.3.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/karma@6.4.3/node_modules/karma",
+                "dependencies": {
+                  "glob": {
+                    "from": "glob",
+                    "version": "7.2.3",
+                    "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                  },
+                  "rimraf": {
+                    "from": "rimraf",
+                    "version": "3.0.2",
+                    "resolved": "https://registry.npmjs.org/rimraf/-/rimraf-3.0.2.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/rimraf@3.0.2/node_modules/rimraf",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      }
+                    }
+                  }
+                }
+              },
+              "@vitejs/plugin-basic-ssl": {
+                "from": "@vitejs/plugin-basic-ssl",
+                "version": "1.2.0",
+                "resolved": "https://registry.npmjs.org/@vitejs/plugin-basic-ssl/-/plugin-basic-ssl-1.2.0.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@vitejs+plugin-basic-ssl@1.2.0_vite@6.2.0_@types+node@22.13.10_jiti@1.21.7_less@4.2.2_sass-em_yruhz7psn6fgxe246p4ugluk5q/node_modules/@vitejs/plugin-basic-ssl",
+                "dependencies": {
+                  "vite": {
+                    "from": "vite",
+                    "version": "6.2.0",
+                    "resolved": "https://registry.npmjs.org/vite/-/vite-6.2.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/vite@6.2.0_@types+node@22.13.10_jiti@1.21.7_less@4.2.2_sass-embedded@1.85.1_sass@1.85.0_stylu_22uj2ownq2avn65uw43pgyo5c4/node_modules/vite",
+                    "dependencies": {
+                      "stylus": {
+                        "from": "stylus",
+                        "version": "0.64.0",
+                        "resolved": "https://registry.npmjs.org/stylus/-/stylus-0.64.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/stylus@0.64.0/node_modules/stylus",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "10.4.5",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@10.4.5/node_modules/glob"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "@angular/build": {
+                "from": "@angular/build",
+                "version": "19.2.3",
+                "resolved": "https://registry.npmjs.org/@angular/build/-/build-19.2.3.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@angular+build@19.2.3_@angular+compiler-cli@19.2.2_@angular+compiler@19.2.2_@angular+core@19._zlr6ofe3tejqnhdsz6h4hkxrhu/node_modules/@angular/build",
+                "dependencies": {
+                  "vite": {
+                    "from": "vite",
+                    "version": "6.2.0",
+                    "resolved": "https://registry.npmjs.org/vite/-/vite-6.2.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/vite@6.2.0_@types+node@22.13.10_jiti@1.21.7_less@4.2.2_sass-embedded@1.85.1_sass@1.85.0_stylu_22uj2ownq2avn65uw43pgyo5c4/node_modules/vite",
+                    "dependencies": {
+                      "stylus": {
+                        "from": "stylus",
+                        "version": "0.64.0",
+                        "resolved": "https://registry.npmjs.org/stylus/-/stylus-0.64.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/stylus@0.64.0/node_modules/stylus",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "10.4.5",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@10.4.5/node_modules/glob"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "karma": {
+                    "from": "karma",
+                    "version": "6.4.3",
+                    "resolved": "https://registry.npmjs.org/karma/-/karma-6.4.3.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/karma@6.4.3/node_modules/karma",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      },
+                      "rimraf": {
+                        "from": "rimraf",
+                        "version": "3.0.2",
+                        "resolved": "https://registry.npmjs.org/rimraf/-/rimraf-3.0.2.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/rimraf@3.0.2/node_modules/rimraf",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "@vitejs/plugin-basic-ssl": {
+                    "from": "@vitejs/plugin-basic-ssl",
+                    "version": "1.2.0",
+                    "resolved": "https://registry.npmjs.org/@vitejs/plugin-basic-ssl/-/plugin-basic-ssl-1.2.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@vitejs+plugin-basic-ssl@1.2.0_vite@6.2.0_@types+node@22.13.10_jiti@1.21.7_less@4.2.2_sass-em_yruhz7psn6fgxe246p4ugluk5q/node_modules/@vitejs/plugin-basic-ssl",
+                    "dependencies": {
+                      "vite": {
+                        "from": "vite",
+                        "version": "6.2.0",
+                        "resolved": "https://registry.npmjs.org/vite/-/vite-6.2.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/vite@6.2.0_@types+node@22.13.10_jiti@1.21.7_less@4.2.2_sass-embedded@1.85.1_sass@1.85.0_stylu_22uj2ownq2avn65uw43pgyo5c4/node_modules/vite",
+                        "dependencies": {
+                          "stylus": {
+                            "from": "stylus",
+                            "version": "0.64.0",
+                            "resolved": "https://registry.npmjs.org/stylus/-/stylus-0.64.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/stylus@0.64.0/node_modules/stylus",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "10.4.5",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-10.4.5.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@10.4.5/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "jest": {
+                "from": "jest",
+                "version": "29.7.0",
+                "resolved": "https://registry.npmjs.org/jest/-/jest-29.7.0.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest",
+                "dependencies": {
+                  "@jest/core": {
+                    "from": "@jest/core",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/@jest/core/-/core-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+core@29.7.0_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/@jest/core",
+                    "dependencies": {
+                      "@jest/reporters": {
+                        "from": "@jest/reporters",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/@jest/reporters/-/reporters-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+reporters@29.7.0/node_modules/@jest/reporters",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      },
+                      "jest-config": {
+                        "from": "jest-config",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-config/-/jest-config-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-config@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-config",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      },
+                      "jest-runtime": {
+                        "from": "jest-runtime",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      },
+                      "jest-runner": {
+                        "from": "jest-runner",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-runner/-/jest-runner-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner",
+                        "dependencies": {
+                          "jest-runtime": {
+                            "from": "jest-runtime",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "jest-cli": {
+                    "from": "jest-cli",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/jest-cli/-/jest-cli-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-cli@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-cli",
+                    "dependencies": {
+                      "jest-config": {
+                        "from": "jest-config",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-config/-/jest-config-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-config@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-config",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      },
+                      "@jest/core": {
+                        "from": "@jest/core",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/@jest/core/-/core-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+core@29.7.0_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/@jest/core",
+                        "dependencies": {
+                          "@jest/reporters": {
+                            "from": "@jest/reporters",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/@jest/reporters/-/reporters-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+reporters@29.7.0/node_modules/@jest/reporters",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          },
+                          "jest-config": {
+                            "from": "jest-config",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-config/-/jest-config-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-config@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-config",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          },
+                          "jest-runtime": {
+                            "from": "jest-runtime",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "create-jest": {
+                        "from": "create-jest",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/create-jest/-/create-jest-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/create-jest@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/create-jest",
+                        "dependencies": {
+                          "jest-config": {
+                            "from": "jest-config",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-config/-/jest-config-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-config@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-config",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ts-jest": {
+        "from": "ts-jest",
+        "version": "29.2.6",
+        "resolved": "https://registry.npmjs.org/ts-jest/-/ts-jest-29.2.6.tgz",
+        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/ts-jest@29.2.6_@babel+core@7.26.9_@jest+transform@29.7.0_@jest+types@29.6.3_babel-jest@29.7.0_4ecje5v3vrcigm4pggkl5ywidi/node_modules/ts-jest",
+        "dependencies": {
+          "@jest/transform": {
+            "from": "@jest/transform",
+            "version": "29.7.0",
+            "resolved": "https://registry.npmjs.org/@jest/transform/-/transform-29.7.0.tgz",
+            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+transform@29.7.0/node_modules/@jest/transform",
+            "dependencies": {
+              "babel-plugin-istanbul": {
+                "from": "babel-plugin-istanbul",
+                "version": "6.1.1",
+                "resolved": "https://registry.npmjs.org/babel-plugin-istanbul/-/babel-plugin-istanbul-6.1.1.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/babel-plugin-istanbul@6.1.1/node_modules/babel-plugin-istanbul",
+                "dependencies": {
+                  "test-exclude": {
+                    "from": "test-exclude",
+                    "version": "6.0.0",
+                    "resolved": "https://registry.npmjs.org/test-exclude/-/test-exclude-6.0.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/test-exclude@6.0.0/node_modules/test-exclude",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "babel-jest": {
+            "from": "babel-jest",
+            "version": "29.7.0",
+            "resolved": "https://registry.npmjs.org/babel-jest/-/babel-jest-29.7.0.tgz",
+            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/babel-jest@29.7.0_@babel+core@7.26.9/node_modules/babel-jest",
+            "dependencies": {
+              "babel-plugin-istanbul": {
+                "from": "babel-plugin-istanbul",
+                "version": "6.1.1",
+                "resolved": "https://registry.npmjs.org/babel-plugin-istanbul/-/babel-plugin-istanbul-6.1.1.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/babel-plugin-istanbul@6.1.1/node_modules/babel-plugin-istanbul",
+                "dependencies": {
+                  "test-exclude": {
+                    "from": "test-exclude",
+                    "version": "6.0.0",
+                    "resolved": "https://registry.npmjs.org/test-exclude/-/test-exclude-6.0.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/test-exclude@6.0.0/node_modules/test-exclude",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      }
+                    }
+                  }
+                }
+              },
+              "@jest/transform": {
+                "from": "@jest/transform",
+                "version": "29.7.0",
+                "resolved": "https://registry.npmjs.org/@jest/transform/-/transform-29.7.0.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+transform@29.7.0/node_modules/@jest/transform",
+                "dependencies": {
+                  "babel-plugin-istanbul": {
+                    "from": "babel-plugin-istanbul",
+                    "version": "6.1.1",
+                    "resolved": "https://registry.npmjs.org/babel-plugin-istanbul/-/babel-plugin-istanbul-6.1.1.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/babel-plugin-istanbul@6.1.1/node_modules/babel-plugin-istanbul",
+                    "dependencies": {
+                      "test-exclude": {
+                        "from": "test-exclude",
+                        "version": "6.0.0",
+                        "resolved": "https://registry.npmjs.org/test-exclude/-/test-exclude-6.0.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/test-exclude@6.0.0/node_modules/test-exclude",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "jest": {
+            "from": "jest",
+            "version": "29.7.0",
+            "resolved": "https://registry.npmjs.org/jest/-/jest-29.7.0.tgz",
+            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest",
+            "dependencies": {
+              "@jest/core": {
+                "from": "@jest/core",
+                "version": "29.7.0",
+                "resolved": "https://registry.npmjs.org/@jest/core/-/core-29.7.0.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+core@29.7.0_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/@jest/core",
+                "dependencies": {
+                  "@jest/reporters": {
+                    "from": "@jest/reporters",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/@jest/reporters/-/reporters-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+reporters@29.7.0/node_modules/@jest/reporters",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      }
+                    }
+                  },
+                  "jest-runtime": {
+                    "from": "jest-runtime",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      }
+                    }
+                  },
+                  "jest-runner": {
+                    "from": "jest-runner",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/jest-runner/-/jest-runner-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner",
+                    "dependencies": {
+                      "jest-runtime": {
+                        "from": "jest-runtime",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "@jest/transform": {
+                    "from": "@jest/transform",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/@jest/transform/-/transform-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+transform@29.7.0/node_modules/@jest/transform",
+                    "dependencies": {
+                      "babel-plugin-istanbul": {
+                        "from": "babel-plugin-istanbul",
+                        "version": "6.1.1",
+                        "resolved": "https://registry.npmjs.org/babel-plugin-istanbul/-/babel-plugin-istanbul-6.1.1.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/babel-plugin-istanbul@6.1.1/node_modules/babel-plugin-istanbul",
+                        "dependencies": {
+                          "test-exclude": {
+                            "from": "test-exclude",
+                            "version": "6.0.0",
+                            "resolved": "https://registry.npmjs.org/test-exclude/-/test-exclude-6.0.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/test-exclude@6.0.0/node_modules/test-exclude",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "jest-config": {
+                    "from": "jest-config",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/jest-config/-/jest-config-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-config@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-config",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      },
+                      "jest-circus": {
+                        "from": "jest-circus",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-circus/-/jest-circus-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-circus@29.7.0_babel-plugin-macros@3.1.0/node_modules/jest-circus",
+                        "dependencies": {
+                          "jest-runtime": {
+                            "from": "jest-runtime",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "jest-runner": {
+                        "from": "jest-runner",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-runner/-/jest-runner-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner",
+                        "dependencies": {
+                          "jest-runtime": {
+                            "from": "jest-runtime",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "jest-cli": {
+                "from": "jest-cli",
+                "version": "29.7.0",
+                "resolved": "https://registry.npmjs.org/jest-cli/-/jest-cli-29.7.0.tgz",
+                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-cli@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-cli",
+                "dependencies": {
+                  "create-jest": {
+                    "from": "create-jest",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/create-jest/-/create-jest-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/create-jest@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/create-jest",
+                    "dependencies": {
+                      "jest-config": {
+                        "from": "jest-config",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-config/-/jest-config-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-config@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-config",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "@jest/core": {
+                    "from": "@jest/core",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/@jest/core/-/core-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+core@29.7.0_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/@jest/core",
+                    "dependencies": {
+                      "@jest/reporters": {
+                        "from": "@jest/reporters",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/@jest/reporters/-/reporters-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/@jest+reporters@29.7.0/node_modules/@jest/reporters",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      },
+                      "jest-config": {
+                        "from": "jest-config",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-config/-/jest-config-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-config@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-config",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      },
+                      "jest-runtime": {
+                        "from": "jest-runtime",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                        "dependencies": {
+                          "glob": {
+                            "from": "glob",
+                            "version": "7.2.3",
+                            "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                          }
+                        }
+                      },
+                      "jest-runner": {
+                        "from": "jest-runner",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-runner/-/jest-runner-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner",
+                        "dependencies": {
+                          "jest-runtime": {
+                            "from": "jest-runtime",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "jest-config": {
+                    "from": "jest-config",
+                    "version": "29.7.0",
+                    "resolved": "https://registry.npmjs.org/jest-config/-/jest-config-29.7.0.tgz",
+                    "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-config@29.7.0_@types+node@22.13.10_babel-plugin-macros@3.1.0_ts-node@10.9.2_@types+node@22.13.10_typescript@5.8.2_/node_modules/jest-config",
+                    "dependencies": {
+                      "glob": {
+                        "from": "glob",
+                        "version": "7.2.3",
+                        "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                      },
+                      "jest-circus": {
+                        "from": "jest-circus",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-circus/-/jest-circus-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-circus@29.7.0_babel-plugin-macros@3.1.0/node_modules/jest-circus",
+                        "dependencies": {
+                          "jest-runtime": {
+                            "from": "jest-runtime",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "jest-runner": {
+                        "from": "jest-runner",
+                        "version": "29.7.0",
+                        "resolved": "https://registry.npmjs.org/jest-runner/-/jest-runner-29.7.0.tgz",
+                        "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner",
+                        "dependencies": {
+                          "jest-runtime": {
+                            "from": "jest-runtime",
+                            "version": "29.7.0",
+                            "resolved": "https://registry.npmjs.org/jest-runtime/-/jest-runtime-29.7.0.tgz",
+                            "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/jest-runtime@29.7.0/node_modules/jest-runtime",
+                            "dependencies": {
+                              "glob": {
+                                "from": "glob",
+                                "version": "7.2.3",
+                                "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+                                "path": "/Users/janinefranken/Development/JS/amc-interna/node_modules/.pnpm/glob@7.2.3/node_modules/glob"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

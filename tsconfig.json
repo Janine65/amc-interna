@@ -21,14 +21,30 @@
     "useDefineForClassFields": false,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "lib": ["ES2022", "dom"],
-    "types": ["node", "jest"],
+    "lib": [
+      "ES2022",
+      "dom"
+    ],
+    "types": [
+      "node",
+      "jest"
+    ],
     "paths": {
-      "@model/*": ["src/app/models/*"],
-      "@service/*": ["src/app/service/*"],
-      "@shared/*": ["src/app/components/shared/*"],
-      "@app/*": ["src/app/*"],
-      "@environments/*": ["src/environments/*"]
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@environments/*": [
+        "src/environments/*"
+      ],
+      "@model/*": [
+        "src/app/models/*"
+      ],
+      "@service/*": [
+        "src/app/service/*"
+      ],
+      "@shared/*": [
+        "src/app/components/shared/*"
+      ]
     }
   },
   "angularCompilerOptions": {
@@ -38,12 +54,13 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  // ...
   "ts-node": {
-    "require": ["tsconfig-paths/register"],
+    "require": [
+      "tsconfig-paths/register"
+    ],
     "compilerOptions": {
       "module": "NodeNext"
     },
-    "ignore": [] // required, otherwise TS-Node will ignore .ts files in node_modules
+    "ignore": []
   }
 }

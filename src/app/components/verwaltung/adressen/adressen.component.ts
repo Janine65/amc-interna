@@ -34,10 +34,11 @@ export class AdresseFilter {
 }
 
 @Component({
-  selector: 'app-adressen',
-  templateUrl: './adressen.component.html',
-  styles: [],
-  providers: [DialogService],
+    selector: 'app-adressen',
+    templateUrl: './adressen.component.html',
+    styles: [],
+    providers: [DialogService],
+    standalone: false
 })
 export class AdressenComponent implements OnInit {
   adressList: Adresse[] = [];

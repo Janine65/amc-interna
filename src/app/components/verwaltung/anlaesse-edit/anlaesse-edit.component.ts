@@ -11,10 +11,11 @@ import {
 import { Subscription, from } from 'rxjs';
 
 @Component({
-  selector: 'app-anlaesse-edit',
-  templateUrl: './anlaesse-edit.component.html',
-  styleUrls: ['./anlaesse-edit.component.scss'],
-  providers: [DialogService],
+    selector: 'app-anlaesse-edit',
+    templateUrl: './anlaesse-edit.component.html',
+    styleUrls: ['./anlaesse-edit.component.scss'],
+    providers: [DialogService],
+    standalone: false
 })
 export class AnlaesseEditComponent implements OnInit {
   anlass: Anlass = {};

@@ -9,10 +9,11 @@ import { Observable, from } from 'rxjs';
 import { KontoBewegungenComponent } from '../konto-bewegungen/konto-bewegungen.component';
 
 @Component({
-  selector: 'app-konten',
-  templateUrl: './konten.component.html',
-  styleUrls: ['./konten.component.scss'],
-  providers: [DialogService]
+    selector: 'app-konten',
+    templateUrl: './konten.component.html',
+    styleUrls: ['./konten.component.scss'],
+    providers: [DialogService],
+    standalone: false
 })
 export class KontenComponent implements OnInit {
 

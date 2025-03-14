@@ -11,9 +11,10 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { map, zip } from 'rxjs';
 
 @Component({
-  selector: 'app-adresse-show',
-  templateUrl: './adresse-show.component.html',
-  styleUrls: ['./adresse-show.component.scss'],
+    selector: 'app-adresse-show',
+    templateUrl: './adresse-show.component.html',
+    styleUrls: ['./adresse-show.component.scss'],
+    standalone: false
 })
 export class AdresseShowComponent {
   dialogRef?: DynamicDialogRef;

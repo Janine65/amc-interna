@@ -30,9 +30,10 @@ export class EditToolbar {
 }
 
 @Component({
-  selector: 'app-baseedit',
-  templateUrl: './baseedit.component.html',
-  styleUrls: ['./baseedit.component.scss']
+    selector: 'app-baseedit',
+    templateUrl: './baseedit.component.html',
+    styleUrls: ['./baseedit.component.scss'],
+    standalone: false
 })
 
 export class BaseeditComponent {

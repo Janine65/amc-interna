@@ -245,23 +245,23 @@
         </div>
         <div class="field col-12 md:col-6">
           <label for="eintritt">Eintritt</label>
-          <p-calendar
+          <p-datepicker
             dateFormat="dd.mm.yy"
             id="eintritt"
             name="eintritt"
             class="surface-overlay p-2 appearance-none outline-none w-full"
             [(ngModel)]="adresse.eintritt_date"
-          ></p-calendar>
+          ></p-datepicker>
         </div>
         <div class="field col-12 md:col-6">
           <label for="austritt">Austritt</label>
-          <p-calendar
+          <p-datepicker
             dateFormat="dd.mm.yy"
             id="austritt"
             name="austritt"
             class="surface-overlay p-2 appearance-none outline-none w-full"
             [(ngModel)]="adresse.austritt_date"
-          ></p-calendar>
+          ></p-datepicker>
         </div>
         <div class="field col-12">
           <label for="notes">Notizen</label>
@@ -275,7 +275,7 @@
         </div>
         <div class="field col-12">
           <label for="geworben">Geworben von</label>
-          <p-dropdown
+          <p-select
             id="geworben"
             [options]="dlstFKAdressen"
             optionLabel="value"
@@ -288,7 +288,7 @@
             class="text-base text-color surface-overlay p-2 appearance-none outline-none"
             [style]="{ width: '80%' }"
             [(ngModel)]="adresse.adressenid"
-          ></p-dropdown>
+          ></p-select>
         </div>
       </div>
     </div>

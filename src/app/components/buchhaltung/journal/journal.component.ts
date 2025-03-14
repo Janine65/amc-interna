@@ -19,10 +19,11 @@ interface AutoCompleteCompleteEvent {
 }
 
 @Component({
-  selector: 'app-journal',
-  templateUrl: './journal.component.html',
-  styleUrls: ['./journal.component.scss'],
-  providers: [DialogService],
+    selector: 'app-journal',
+    templateUrl: './journal.component.html',
+    styleUrls: ['./journal.component.scss'],
+    providers: [DialogService],
+    standalone: false
 })
 export class JournalComponent implements OnInit {
   dialogRef?: DynamicDialogRef;

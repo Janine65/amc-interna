@@ -15,10 +15,11 @@ import { AnlassBookComponent } from '../anlass-book/anlass-book.component';
 import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-anlaesse',
-  templateUrl: './anlaesse.component.html',
-  styles: [],
-  providers: [DialogService],
+    selector: 'app-anlaesse',
+    templateUrl: './anlaesse.component.html',
+    styles: [],
+    providers: [DialogService],
+    standalone: false
 })
 export class AnlaesseComponent implements OnInit {
   anlaesseList: Anlass[] = [];

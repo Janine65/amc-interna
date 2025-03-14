@@ -7,10 +7,11 @@ import { AlertType } from '@app/models';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  providers: [MessageService]
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    providers: [MessageService],
+    standalone: false
 })
 export class LoginComponent implements OnInit {
   loading = false;

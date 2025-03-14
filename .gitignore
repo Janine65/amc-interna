@@ -44,4 +44,5 @@ Thumbs.db
 package-lock.json
 .nx/*
 .nx/cache
+.nx/workspace-data
 .env*

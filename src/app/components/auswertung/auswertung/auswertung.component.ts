@@ -6,9 +6,10 @@ import { BackendService } from '@app/service';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-auswertung',
-  templateUrl: './auswertung.component.html',
-  styleUrls: ['./auswertung.component.scss'],
+    selector: 'app-auswertung',
+    templateUrl: './auswertung.component.html',
+    styleUrls: ['./auswertung.component.scss'],
+    standalone: false
 })
 export class AuswertungComponent implements OnInit {
   lstGraphData: MeisterschaftAuswertung[] = [];

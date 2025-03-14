@@ -5,9 +5,10 @@ import { MessageService } from 'primeng/api';
 import { map, zip } from 'rxjs';
 
 @Component({
-  selector: 'app-meisterschaft',
-  templateUrl: './meisterschaft.component.html',
-  styleUrls: ['./meisterschaft.component.scss']
+    selector: 'app-meisterschaft',
+    templateUrl: './meisterschaft.component.html',
+    styleUrls: ['./meisterschaft.component.scss'],
+    standalone: false
 })
 export class MeisterschaftComponent implements OnInit {
 

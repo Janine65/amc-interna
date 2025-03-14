@@ -16,10 +16,11 @@ import { AttachementShowComponent } from '../attachement-show/attachement-show.c
 import { DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-attachement-list',
-  templateUrl: './attachement-list.component.html',
-  styleUrls: ['./attachement-list.component.scss'],
-  providers: [DialogService, ConfirmationService],
+    selector: 'app-attachement-list',
+    templateUrl: './attachement-list.component.html',
+    styleUrls: ['./attachement-list.component.scss'],
+    providers: [DialogService, ConfirmationService],
+    standalone: false
 })
 export class AttachementListComponent {
   journalid: number;

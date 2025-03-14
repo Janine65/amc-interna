@@ -17,25 +17,25 @@
     <div class="card" style="width: 100%">
       <div class="mb-2">
         <label for="jahre" class="mr-3">Jahr wählen</label>
-        <p-dropdown
+        <p-select
           id="jahre"
           [options]="selJahre"
           [(ngModel)]="selJahr"
           (onChange)="chgJahr()"
-        ></p-dropdown>
+        ></p-select>
       </div>
       <div>
         <form autocomplete="off" (ngSubmit)="save()" (reset)="reset()">
           <div class="field grid">
             <label for="date" class="col-12 mb-2 md:col-2 md:mb-0">Datum</label>
             <div class="col-12 md:col-10">
-              <p-calendar
+              <p-datepicker
                 dateFormat="dd.mm.yy"
                 name="date"
                 [required]="true"
                 [(ngModel)]="selJournal.date_date"
                 [disabled]="!editMode && !addMode"
-              ></p-calendar>
+              ></p-datepicker>
             </div>
           </div>
           <div class="field grid">
@@ -50,7 +50,7 @@
                 [suggestions]="lstFromAccounts"
                 (completeMethod)="fromAccountSearch($event)"
                 field="longname"
-                [dropdown]="false"
+                [select]="false"
                 (onSelect)="fromAccountSel($event.value)"
                 [forceSelection]="false"
               >

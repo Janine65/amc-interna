@@ -5,9 +5,10 @@ import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-parameter',
-  templateUrl: './parameter.component.html',
-  styles: [],
+    selector: 'app-parameter',
+    templateUrl: './parameter.component.html',
+    styles: [],
+    standalone: false
 })
 export class ParameterComponent implements OnInit {
   parameters: ParamData[] = [];

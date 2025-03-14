@@ -10,15 +10,19 @@ import {
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 
-import { SidebarModule } from 'primeng/sidebar';
+import { DrawerModule } from 'primeng/drawer';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
-import { InputSwitchModule } from 'primeng/inputswitch';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { BadgeModule } from 'primeng/badge';
 import { RippleModule } from 'primeng/ripple';
@@ -29,10 +33,10 @@ import { TableModule } from 'primeng/table';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ToolbarModule } from 'primeng/toolbar';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
@@ -140,6 +144,8 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     AppAboutComponent,
     AdresseShowComponent,
   ],
+  bootstrap: [AppComponent],
+  exports: [AppLayoutComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -147,11 +153,10 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     RouterModule,
     CommonModule,
     FormsModule,
-    SidebarModule,
+    DrawerModule,
     RadioButtonModule,
     ButtonModule,
-    InputSwitchModule,
-    HttpClientModule,
+    ToggleSwitchModule,
     InputTextModule,
     BadgeModule,
     RippleModule,
@@ -161,10 +166,10 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     TableModule,
     DynamicDialogModule,
     ScrollPanelModule,
-    CalendarModule,
+    DatePickerModule,
     InputNumberModule,
     ToolbarModule,
-    DropdownModule,
+    SelectModule,
     ToastModule,
     MessagesModule,
     MessageModule,
@@ -198,8 +203,7 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MessageService, useClass: MessageService },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent],
-  exports: [AppLayoutComponent],
 })
 export class AppModule {}

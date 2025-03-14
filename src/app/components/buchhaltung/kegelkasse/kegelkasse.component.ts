@@ -13,9 +13,10 @@ import {
 import { User } from '@model/user';
 
 @Component({
-  selector: 'app-kegelkasse',
-  templateUrl: './kegelkasse.component.html',
-  styleUrls: ['./kegelkasse.component.scss'],
+    selector: 'app-kegelkasse',
+    templateUrl: './kegelkasse.component.html',
+    styleUrls: ['./kegelkasse.component.scss'],
+    standalone: false
 })
 export class KegelkasseComponent implements OnInit {
   fgKasse = new FormGroup({

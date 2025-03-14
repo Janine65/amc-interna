@@ -7,10 +7,11 @@ import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-add-edit',
-  templateUrl: './add-edit.component.html',
-  styleUrls: ['./add-edit.component.scss'],
-  providers: [ConfirmationService]
+    selector: 'app-add-edit',
+    templateUrl: './add-edit.component.html',
+    styleUrls: ['./add-edit.component.scss'],
+    providers: [ConfirmationService],
+    standalone: false
 })
 export class AddEditComponent {
   user! : User

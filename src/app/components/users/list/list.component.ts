@@ -10,10 +10,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss'],
-  providers: [DialogService, ConfirmationService]
+    selector: 'app-list',
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.scss'],
+    providers: [DialogService, ConfirmationService],
+    standalone: false
 })
 export class ListComponent implements OnInit {
   userList: User[] = [];

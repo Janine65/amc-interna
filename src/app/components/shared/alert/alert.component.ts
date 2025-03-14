@@ -6,9 +6,10 @@ import { Alert, AlertType } from '@app/models';
 import { AlertService } from '@app/service';
 
 @Component({
-  selector: 'app-alert',
-  templateUrl: './alert.component.html',
-  styleUrls: ['./alert.component.scss']
+    selector: 'app-alert',
+    templateUrl: './alert.component.html',
+    styleUrls: ['./alert.component.scss'],
+    standalone: false
 })
 export class AlertComponent implements OnInit, OnDestroy {
   @Input() id = 'default-alert';

@@ -67,9 +67,10 @@ export class TableToolbar {
 }
 
 @Component({
-  selector: 'app-basetable',
-  templateUrl: './basetable.component.html',
-  styleUrls: ['./basetable.component.scss'],
+    selector: 'app-basetable',
+    templateUrl: './basetable.component.html',
+    styleUrls: ['./basetable.component.scss'],
+    standalone: false
 })
 export class BaseTableComponent implements OnInit, OnDestroy {
   @Input() tableOptions: TableOptions[] = [];
