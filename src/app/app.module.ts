@@ -46,7 +46,7 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SplitterModule } from 'primeng/splitter';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { TextareaModule } from 'primeng/textarea';
 import { ChartModule } from 'primeng/chart';
 import { EditorModule } from 'primeng/editor';
 import { TabViewModule } from 'primeng/tabview';
@@ -182,7 +182,7 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     FileUploadModule,
     SplitterModule,
     ReactiveFormsModule,
-    InputTextareaModule,
+    TextareaModule,
     ChartModule,
     AutoCompleteModule,
     TabViewModule,

@@ -1,11 +1,16 @@
 <p-toast position="top-center"></p-toast>
 <div class="layout-topbar">
-    <a class="layout-topbar-logo" routerLink="">
-        <img src="assets/layout/images/AMCfarbigKlein.gif" alt="logo">
-        <span id="header">Auto-Moto-Club Swissair</span>
-    </a>
+  <a class="layout-topbar-logo" routerLink="">
+    <img src="assets/layout/images/AMCfarbigKlein.gif" alt="logo" />
+    <span id="header">Auto-Moto-Club Swissair</span>
+  </a>
 
-    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
-        <i class="pi pi-bars"></i>
-    </button>
+  <button
+    #menubutton
+    class="p-link layout-menu-button layout-topbar-button"
+    (click)="layoutService.onMenuToggle()"
+  >
+    <i class="pi pi-bars"></i>
+  </button>
+  <p-button icon="pi pi-sun" (onClick)="toggleDarkMode()" />
 </div>

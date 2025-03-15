@@ -32,6 +32,7 @@
     "@angular/platform-browser": "19.2.2",
     "@angular/platform-browser-dynamic": "19.2.2",
     "@angular/router": "19.2.2",
+    "@primeng/themes": "^19.0.9",
     "chart.js": "4.4.8",
     "primeflex": "4.0.0",
     "primeicons": "7.0.0",

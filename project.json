@@ -55,7 +55,7 @@
         },
         "development": {
           "buildTarget": "amc-interna:build:development",
-          "proxyConfig": "src/proxy.local.json"
+          "proxyConfig": "src/proxy.prod.json"
         }
       },
       "defaultConfiguration": "development"
