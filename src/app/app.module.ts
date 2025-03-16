@@ -100,6 +100,9 @@ import { KontoBewegungenComponent } from './components/buchhaltung/konto-bewegun
 import { KegelkasseComponent } from './components/buchhaltung/kegelkasse/kegelkasse.component';
 import { AppAboutComponent } from './layout/app.about.component';
 import { AdresseShowComponent } from './components/verwaltung/adresse-show/adresse-show.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import { MyPreset } from './mytheme';
 
 @NgModule({
   declarations: [
@@ -204,6 +207,17 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MessageService, useClass: MessageService },
     provideHttpClient(withInterceptorsFromDi()),
+    provideAnimationsAsync(),
+    providePrimeNG({
+      ripple: true,
+      theme: {
+        preset: MyPreset,
+        options: {
+          colorScheme: 'light',
+          darkModeSelector: '.my-app-dark',
+        },
+      },
+    }),
   ],
 })
 export class AppModule {}

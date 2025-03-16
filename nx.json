@@ -1,39 +1,25 @@
 {
   "targetDefaults": {
     "build": {
-      "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
+      "cache": false,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
     "serve": {
       "cache": false
     },
     "test": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "^production"
-      ]
+      "cache": false,
+      "inputs": ["default", "^production"]
     },
     "lint": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json"
-      ]
+      "cache": false,
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     }
   },
   "namedInputs": {
     "sharedGlobals": [],
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/tsconfig.spec.json",
