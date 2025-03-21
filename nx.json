@@ -1,19 +1,14 @@
 {
   "targetDefaults": {
     "build": {
-      "cache": false,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
-    "serve": {
-      "cache": false
-    },
+    "serve": {},
     "test": {
-      "cache": false,
       "inputs": ["default", "^production"]
     },
     "lint": {
-      "cache": false,
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     }
   },
@@ -29,6 +24,5 @@
     ]
   },
   "nxCloudAccessToken": "MDFhZmJlMDItODg5MC00ODExLWE0NDgtMGExNTk0Zjc3OGM2fHJlYWQtd3JpdGU=",
-  "useInferencePlugins": false,
-  "useLegacyCache": true
+  "useInferencePlugins": false
 }

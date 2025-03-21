@@ -1,7 +1,5 @@
 import Nora from '@primeng/themes/nora';
 import { definePreset } from '@primeng/themes';
-import { c } from 'node_modules/@angular/core/navigation_types.d-u4EOrrdZ';
-import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 
 export const MyPreset = definePreset(Nora, {
   semantic: {

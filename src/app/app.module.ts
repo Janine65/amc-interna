@@ -103,6 +103,7 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { MyPreset } from './mytheme';
+import { MyTheme2 } from './mytheme-2';
 
 @NgModule({
   declarations: [
@@ -211,7 +212,7 @@ import { MyPreset } from './mytheme';
     providePrimeNG({
       ripple: true,
       theme: {
-        preset: MyPreset,
+        preset: MyTheme2,
         options: {
           colorScheme: 'light',
           darkModeSelector: '.my-app-dark',
