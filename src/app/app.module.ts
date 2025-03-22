@@ -49,7 +49,7 @@ import { SplitterModule } from 'primeng/splitter';
 import { TextareaModule } from 'primeng/textarea';
 import { ChartModule } from 'primeng/chart';
 import { EditorModule } from 'primeng/editor';
-import { TabViewModule } from 'primeng/tabview';
+import { TabsModule } from 'primeng/tabs';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -189,7 +189,7 @@ import { MyTheme2 } from './mytheme-2';
     TextareaModule,
     ChartModule,
     AutoCompleteModule,
-    TabViewModule,
+    TabsModule,
     DataViewModule,
     StyleClassModule,
     AutoFocusModule,
@@ -216,6 +216,10 @@ import { MyTheme2 } from './mytheme-2';
         options: {
           colorScheme: 'light',
           darkModeSelector: '.my-app-dark',
+          cssLayer: {
+            name: 'primeng',
+            order: 'theme, base, primeng',
+          },
         },
       },
     }),

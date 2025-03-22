@@ -5,7 +5,7 @@
   flex-direction: column;
   height: 100vh;
   justify-content: space-between;
-  padding: 7rem 2rem 2rem 4rem;
+  padding: 7rem 1rem 4rem 1rem;
   transition: margin-left variables.$transitionDuration;
 }
 
@@ -13,6 +13,7 @@
   flex: 1 1 auto;
   height: calc(100vh - 20px);
   overflow: auto;
+  z-index: 900;
 }
 
 // dashboard
@@ -42,12 +43,12 @@
   background-color: transparent !important;
 }
 
-.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+.p-tabs .p-tabs-nav li.p-highlight .p-tabs-nav-link {
   background-color: #007ad9;
   color: white;
 }
 
-.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+.p-tabs .p-tabs-nav li .p-tabs-nav-link {
   background-color: transparent;
   color: black;
 }

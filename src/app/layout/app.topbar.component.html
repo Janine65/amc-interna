@@ -9,8 +9,10 @@
     #menubutton
     class="p-link layout-menu-button layout-topbar-button"
     (click)="layoutService.onMenuToggle()"
+    p-button
+    type="icon"
   >
     <i class="pi pi-bars"></i>
   </button>
-  <p-button icon="pi pi-sun" (onClick)="toggleDarkMode()" />
+  <p-button [outlined]="true" [icon]="iconMode" (onClick)="toggleDarkMode()" />
 </div>
