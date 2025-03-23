@@ -10,7 +10,13 @@
   >
     Neuen Eintrag hinzufügen
   </button>
-  <p-table [value]="parameters" dataKey="id" editMode="row" *ngIf="!loading">
+  <p-table
+    [value]="parameters"
+    dataKey="id"
+    editMode="row"
+    *ngIf="!loading"
+    showGridlines
+  >
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 20%">Key</th>

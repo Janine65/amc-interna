@@ -1,0 +1,187 @@
+.cr-field {
+  position: relative;
+  display: block;
+  margin-block-end: var(--sh-doublespace, 3.2rem);
+  margin-block-start: var(--sh-halfspace, 0.8rem);
+
+  .cr-input {
+    border: 1px solid var(--sh-grey, #999999);
+    border-radius: var(--sh-radius, 3px);
+    outline: none;
+    padding: var(--sh-halfspace, 0.8rem);
+    box-shadow: 0 2px 5px 0 var(--sh-grey-light, #f3f3f3cc);
+
+    background-color: var(--sh-white, #ffffff);
+    caret-color: var(--sh-linkcolor, #0c00b4);
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--sh-linkcolor, #0c00b4);
+      box-shadow: 0 0 0 1px var(--sh-linkcolor, #0c00b4);
+    }
+
+    /* nice to have, hide asterisk when input is focused */
+    &:focus-visible ~ .cr-required {
+      display: none !important;
+    }
+
+    &::placeholder {
+      color: transparent !important;
+    }
+  }
+
+  .cr-input ~ .cr-required {
+    display: none;
+    position: absolute;
+    inset-inline-end: var(--sh-halfspace, 0.8rem);
+    inset-block-start: 0;
+    z-index: 2;
+
+    &:after {
+      display: block;
+      content: '*';
+      font-size: 1.6rem;
+      font-weight: var(--sh-font-weight-bold, 700);
+      line-height: 1.5;
+      color: var(--sh-red, #f31109);
+    }
+  }
+
+  .cr-input[required] ~ .cr-required {
+    display: inline-block;
+  }
+
+  .cr-feedback {
+    background-color: var(--sh-red, #f31109);
+    color: var(--sh-white, #ffffff);
+    /* inset-block-end: calc(-1 * var(--sh-space, 1.6rem)); */
+    margin-inline-start: 1rem;
+    margin-block-start: calc(-1 * var(--sh-halfspace, 1.6rem));
+    float: inline-start;
+    z-index: 100;
+    position: relative;
+    border-radius: var(--sh-radius, 3px);
+    padding-inline: var(--sh-halfspace, 0.8rem);
+    padding-block: calc(var(--sh-halfspace, 0.8rem) / 2);
+    white-space: nowrap;
+    display: none;
+    width: fit-content;
+    font-size: 85%;
+  }
+
+  /* floating label */
+  .cr-label {
+    position: absolute;
+    inset-block-start: var(--sh-halfspace, 0.8rem);
+    inset-inline-start: 9px;
+    padding: 0 3px;
+    color: var(--sh-text-light, #959595);
+    cursor: auto;
+    transform-origin: left;
+    transition: transform 0.3s;
+    transform: translateY(-100%) scale(0.8);
+    /* a touch to hide the border behind the floating label */
+    background-color: var(--sh-white, #ffffff);
+  }
+
+  /* when input is empty */
+  .cr-label:has(~ .cr-input:placeholder-shown) {
+    transform: none;
+  }
+
+  /* when input is focused */
+  .cr-label:has(~ .cr-input:focus-visible) {
+    transform: translateY(-100%) scale(0.8);
+  }
+
+  .cr-help {
+    color: var(--sh-text-light, #959595);
+    font-size: 90%;
+    display: block;
+    margin-block-start: var(--sh-halfspace, 0.8rem);
+    text-align: end;
+  }
+
+  .cr-help:empty {
+    display: none;
+  }
+}
+
+/* when sourunded by ng-submitted */
+
+.ng-submitted {
+  .cr-field {
+    .cr-input.ng-invalid,
+    &.cr-invalid-form .cr-input {
+      box-shadow: inset 0 0 0 1px var(--sh-red, #f31109);
+      border-color: var(--sh-red, #f31109);
+    }
+
+    .cr-input.ng-invalid ~ .cr-feedback {
+      display: block;
+    }
+
+    .cr-label:has(~ .cr-input.ng-invalid),
+    &.cr-invalid-form .cr-label {
+      color: var(--sh-red, #f31109);
+    }
+  }
+}
+
+.cr-form {
+  .cr-form-feedback {
+    display: none;
+  }
+
+  &.ng-submitted .cr-form-feedback {
+    display: block;
+  }
+}
+
+/* checkboxes and radios */
+/* too smart: */
+.cr-field.cr-checkbox {
+  .cr-label {
+    /* important to remove transform in all cases */
+    transform: none !important;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    padding-inline-start: 1.8rem;
+    position: relative;
+    display: inline-block;
+    background: none;
+    cursor: pointer;
+  }
+  .cr-input {
+    position: absolute;
+    inset-inline-start: 0;
+  }
+  .cr-feedback {
+    float: none;
+    margin-block-start: 0;
+  }
+  .cr-required {
+    position: static;
+  }
+}
+
+.cr-field.cr-hidden {
+  .cr-label {
+    display: none;
+  }
+  .cr-input[required] ~ .cr-required {
+    display: none;
+  }
+  .cr-feedback {
+    float: none;
+    margin-block-start: 0;
+    margin-inline-start: 0;
+  }
+}
+
+.cr-field.cr-static {
+  /* force floating label even if empty */
+  .cr-label:has(~ .cr-input:placeholder-shown) {
+    transform: translateY(-100%) scale(0.8);
+  }
+}

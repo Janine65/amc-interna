@@ -6,10 +6,10 @@ import { BackendService } from '@app/service';
 import { MessageService } from 'primeng/api';
 
 @Component({
-    selector: 'app-auswertung',
-    templateUrl: './auswertung.component.html',
-    styleUrls: ['./auswertung.component.scss'],
-    standalone: false
+  selector: 'app-auswertung',
+  templateUrl: './auswertung.component.html',
+  styleUrls: ['./auswertung.component.scss'],
+  standalone: false,
 })
 export class AuswertungComponent implements OnInit {
   lstGraphData: MeisterschaftAuswertung[] = [];
@@ -51,12 +51,10 @@ export class AuswertungComponent implements OnInit {
         this.lstGraphData = list.data as MeisterschaftAuswertung[];
 
         const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue(
-          '--text-color-secondary'
-        );
-        const surfaceBorder =
-          documentStyle.getPropertyValue('--surface-border');
+        const textColor = documentStyle.getPropertyValue('--p-text-color');
+        const textColorSecondary =
+          documentStyle.getPropertyValue('--p-text-color');
+        const surfaceBorder = documentStyle.getPropertyValue('--p-gray-300');
 
         const labels: Array<string>[] = [];
         const dataset1: number[] = [];
@@ -76,14 +74,14 @@ export class AuswertungComponent implements OnInit {
           datasets: [
             {
               label: 'Teilnehmer',
-              backgroundColor: documentStyle.getPropertyValue('--blue-500'),
-              borderColor: documentStyle.getPropertyValue('--blue-500'),
+              backgroundColor: documentStyle.getPropertyValue('--p-blue-500'),
+              borderColor: documentStyle.getPropertyValue('--p-blue-500'),
               data: dataset1,
             },
             {
               label: 'Gäste',
-              backgroundColor: documentStyle.getPropertyValue('--pink-500'),
-              borderColor: documentStyle.getPropertyValue('--pink-500'),
+              backgroundColor: documentStyle.getPropertyValue('--p-pink-500'),
+              borderColor: documentStyle.getPropertyValue('--p-pink-500'),
               data: dataset2,
             },
           ],

@@ -1,4 +1,4 @@
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, forwardRef, NgModule } from '@angular/core';
 import {
   HashLocationStrategy,
   LocationStrategy,
@@ -8,7 +8,11 @@ import {
   PercentPipe,
 } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
   HTTP_INTERCEPTORS,
@@ -64,7 +68,6 @@ import { AppMenuitemComponent } from './layout/app.menuitem.component';
 import { AppSidebarComponent } from './layout/app.sidebar.component';
 import { AppTopBarComponent } from './layout/app.topbar.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
-import { AppConfigComponent } from './layout/config/app.config.component';
 import { AppFooterComponent } from './layout/app.footer.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdressenComponent } from './components/verwaltung/adressen/adressen.component';
@@ -73,7 +76,6 @@ import { ParameterComponent } from './components/verwaltung/parameter/parameter.
 import { BaseTableComponent } from './components/shared/basetable/basetable.component';
 import { BaseeditComponent } from './components/shared/baseedit/baseedit.component';
 import { AdresseEditComponent } from './components/verwaltung/adresse-edit/adresse-edit.component';
-import { InputValidationComponent } from './components/shared/input-validation/input-validation.component';
 import { JwtInterceptor, ErrorInterceptor } from './service';
 import { LoginComponent } from './components/account/login/login.component';
 import { ListComponent } from './components/users/list/list.component';
@@ -104,6 +106,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import { MyPreset } from './mytheme';
 import { MyTheme2 } from './mytheme-2';
+import { CrInputPartial } from './components/shared/input-validation/input.partial';
+import { InputComponent } from './components/shared/input-validation/input.const';
 
 @NgModule({
   declarations: [
@@ -113,7 +117,6 @@ import { MyTheme2 } from './mytheme-2';
     AppMenuitemComponent,
     AppSidebarComponent,
     AppTopBarComponent,
-    AppConfigComponent,
     AppFooterComponent,
     DashboardComponent,
     AdressenComponent,
@@ -122,7 +125,6 @@ import { MyTheme2 } from './mytheme-2';
     BaseTableComponent,
     BaseeditComponent,
     AdresseEditComponent,
-    InputValidationComponent,
     LoginComponent,
     ListComponent,
     AddEditComponent,
@@ -200,6 +202,8 @@ import { MyTheme2 } from './mytheme-2';
     PercentPipe,
     MatIconModule,
     ProgressSpinnerModule,
+    CrInputPartial,
+    InputComponent,
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -207,6 +211,11 @@ import { MyTheme2 } from './mytheme-2';
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MessageService, useClass: MessageService },
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CrInputPartial),
+      multi: true,
+    },
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimationsAsync(),
     providePrimeNG({

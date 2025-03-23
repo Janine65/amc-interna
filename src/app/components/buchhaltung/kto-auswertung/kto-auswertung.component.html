@@ -1,21 +1,21 @@
+<p-toolbar>
+  <div>
+    <label for="seljahr" class="mr-1">Jahr wählen</label>
+    <p-select
+      id="seljahr"
+      [options]="selJahre"
+      [(ngModel)]="selJahr"
+      (onChange)="chgJahr()"
+    ></p-select>
+  </div>
+  <p-button
+    icon="pi pi-export"
+    [outlined]="true"
+    (click)="export()"
+    label="Exportieren"
+  ></p-button>
+</p-toolbar>
 <div class="card">
-  <p-toolbar>
-    <div>
-      <label for="seljahr" class="mr-1">Jahr wählen</label>
-      <p-select
-        id="seljahr"
-        [options]="selJahre"
-        [(ngModel)]="selJahr"
-        (onChange)="chgJahr()"
-      ></p-select>
-    </div>
-    <p-button
-      icon="pi pi-export"
-      [outlined]="true"
-      (click)="export()"
-      label="Exportieren"
-    ></p-button>
-  </p-toolbar>
   <p-tabs value="0">
     <p-tablist>
       <p-tab value="0">Bilanz</p-tab>
@@ -38,7 +38,7 @@
                   class="border-none"
                   layout="list"
                 >
-                  <ng-template let-data pTemplate="list">
+                  <ng-template let-data #list>
                     <div class="grid grid-nogutter border-none">
                       <div
                         *ngFor="let item of data; let ind = index"
@@ -83,7 +83,7 @@
                   class="border-none"
                   layout="list"
                 >
-                  <ng-template let-data pTemplate="list">
+                  <ng-template let-data #list>
                     <div class="grid grid-nogutter border-none">
                       <div
                         *ngFor="let item of data; let ind = index"
@@ -137,8 +137,9 @@
                   [value]="lstAufwandNodes"
                   class="border-none"
                   layout="list"
+                  class="mr-4"
                 >
-                  <ng-template let-data pTemplate="list">
+                  <ng-template let-data #list>
                     <div class="grid grid-nogutter border-none">
                       <div
                         *ngFor="let item of data; let ind = index"
@@ -199,7 +200,7 @@
                   class="border-none"
                   layout="list"
                 >
-                  <ng-template let-data pTemplate="list">
+                  <ng-template let-data #list>
                     <div class="grid grid-nogutter border-none">
                       <div
                         *ngFor="let item of data; let ind = index"

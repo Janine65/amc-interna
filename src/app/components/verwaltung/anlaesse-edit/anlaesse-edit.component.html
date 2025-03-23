@@ -28,11 +28,6 @@
             required
             class="p-2 appearance-none outline-none w-full"
           ></p-selectButton>
-          <app-input-validation
-            [control]="status"
-            [errDef]="{ required: 'Status muss ausgewählt sein' }"
-          >
-          </app-input-validation>
         </div>
         <div class="field col-12">
           <label for="bezeichnung">Bezeichnung</label>
@@ -47,14 +42,6 @@
             class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
             [(ngModel)]="anlass.name"
           />
-          <app-input-validation
-            [control]="bezeichnung"
-            [errDef]="{
-              required: 'Bezeichnung muss gesetzt sein',
-              minlength: 'Die Bezeichnung soll mind. 3 Zeichen betragen'
-            }"
-          >
-          </app-input-validation>
         </div>
         <div class="field col-12">
           <label for="beschreibung">Beschreibung</label>

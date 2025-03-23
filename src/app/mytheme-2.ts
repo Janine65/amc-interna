@@ -118,21 +118,21 @@ export const MyTheme2 = definePreset(Lara, {
     colorScheme: {
       light: {
         surface: {
-          0: '{gray.0}',
-          50: '{gray.50}',
-          100: '{gray.100}',
-          200: '{gray.200}',
-          300: '{gray.300}',
-          400: '{gray.400}',
-          500: '{gray.500}',
-          600: '{gray.600}',
-          700: '{gray.700}',
-          800: '{gray.800}',
-          900: '{gray.900}',
-          950: '{gray.950}',
+          0: '#ffffff',
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
         },
         primary: {
-          color: '{primary.500}',
+          color: '{primary.300}',
           contrastColor: '{surface.900}',
           hoverColor: '{primary.700}',
           activeColor: '{primary.950}',
@@ -238,6 +238,14 @@ export const MyTheme2 = definePreset(Lara, {
             color: '{surface.400}',
             focusColor: '{surface.500}',
             activeColor: '{surface.500}',
+          },
+        },
+        fieldset: {
+          legend: {
+            background: '{primary.600}',
+          },
+          border: {
+            color: '{primary.600}',
           },
         },
       },
@@ -376,16 +384,6 @@ export const MyTheme2 = definePreset(Lara, {
             activeColor: '{surface.400}',
           },
         },
-      },
-    },
-  },
-  components: {
-    fieldset: {
-      legend: {
-        background: '{primary.600}',
-      },
-      border: {
-        color: '{primary.600}',
       },
     },
   },
