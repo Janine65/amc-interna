@@ -242,10 +242,10 @@ export const MyTheme2 = definePreset(Lara, {
         },
         fieldset: {
           legend: {
-            background: '{primary.600}',
+            background: '{primary.800}',
           },
           border: {
-            color: '{primary.600}',
+            color: '{primary.800}',
           },
         },
       },
@@ -262,10 +262,10 @@ export const MyTheme2 = definePreset(Lara, {
           200: '#002f76',
           100: '#002256',
           50: '#001636',
-          color: '{primary.500}',
+          color: '{primary.800}',
           contrastColor: '{surface.900}',
-          hoverColor: '{primary.300}',
-          activeColor: '{primary.200}',
+          hoverColor: '{primary.900}',
+          activeColor: '{primary.700}',
         },
         surface: {
           0: '#ffffff',
@@ -282,8 +282,8 @@ export const MyTheme2 = definePreset(Lara, {
           950: '{zinc.950}',
         },
         highlight: {
-          background: 'color-mix(in srgb, {primary.400}, transparent 84%)',
-          focusBackground: 'color-mix(in srgb, {primary.400}, transparent 76%)',
+          background: 'color-mix(in srgb, {primary.800}, transparent 84%)',
+          focusBackground: 'color-mix(in srgb, {primary.800}, transparent 76%)',
           color: 'rgba(255,255,255,.87)',
           focusColor: 'rgba(255,255,255,.87)',
         },
