@@ -27,10 +27,11 @@ interface AutoCompleteCompleteEvent {
 }
 
 @Component({
-  selector: 'app-anlass-book',
-  templateUrl: './anlass-book.component.html',
-  styleUrls: ['./anlass-book.component.scss'],
-  providers: [DialogService],
+    selector: 'app-anlass-book',
+    templateUrl: './anlass-book.component.html',
+    styleUrls: ['./anlass-book.component.scss'],
+    providers: [DialogService],
+    standalone: false
 })
 export class AnlassBookComponent implements OnInit, AfterViewInit {
   anlass: Anlass = {

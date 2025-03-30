@@ -1,13 +1,18 @@
-<div class="card" style="width: 100%;">
-    <div class="mb-1">
-        <label class="mr-3">Jahr wählen</label>
-        <p-dropdown [options]="selJahre" [(ngModel)]="selJahr" (onChange)="chgJahr()"></p-dropdown>
-    </div>
-<app-basetable
+<div class="card" style="width: 100%">
+  <div class="mb-1">
+    <label class="mr-3">Jahr wählen</label>
+    <p-select
+      [options]="selJahre"
+      [(ngModel)]="selJahr"
+      (onChange)="chgJahr()"
+    ></p-select>
+  </div>
+  <app-basetable
     [tableOptions]="cols"
     [tableData]="lstJournal"
     [tableToolbar]="toolbar"
     [editable]="false"
-    [diffCalcHight]="350">
-</app-basetable>
+    [diffCalcHight]="350"
+  >
+  </app-basetable>
 </div>

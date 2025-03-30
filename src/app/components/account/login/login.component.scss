@@ -1,0 +1,29 @@
+.cr-input {
+  appearance: none;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  transition: all 0.4s;
+}
+.cr-input::before {
+  width: 16px;
+  height: 16px;
+  border-radius: 9px;
+  background-color: var(--sh-black, #000);
+  content: "";
+  position: absolute;
+  inset-block-start: 3px;
+  inset-inline-start: 4px;
+  transition: all 0.4s;
+}
+.cr-input:checked {
+  background-color: var(--sh-yellow, #ffaa00);
+  transition: all 0.4s;
+}
+.cr-input:checked::before {
+  inset-inline-start: 22px;
+  transition: all 0.4s;
+}
+.cr-label {
+  padding-inline-start: 4.8rem;
+}

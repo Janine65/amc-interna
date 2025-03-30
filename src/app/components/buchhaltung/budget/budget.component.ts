@@ -7,10 +7,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { map, zip } from 'rxjs';
 
 @Component({
-  selector: 'app-budget',
-  templateUrl: './budget.component.html',
-  styleUrls: ['./budget.component.scss'],
-  providers: [ConfirmationService],
+    selector: 'app-budget',
+    templateUrl: './budget.component.html',
+    styleUrls: ['./budget.component.scss'],
+    providers: [ConfirmationService],
+    standalone: false
 })
 export class BudgetComponent {
   selJahre = [{}];

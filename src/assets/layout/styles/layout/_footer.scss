@@ -1,8 +1,11 @@
+@use "variables";
+
 .layout-footer {
-    transition: margin-left $transitionDuration;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 1rem;
-    border-top: 1px solid var(--surface-border);
+  transition: margin-left variables.$transitionDuration;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--p-surface-700);
+  z-index: 999;
 }

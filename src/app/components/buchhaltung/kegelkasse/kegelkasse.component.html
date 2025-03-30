@@ -1,452 +1,458 @@
 <p-toast key="local"></p-toast>
-<p-tabView (onChange)="tabChanged($event.index)">
-  <p-tabPanel header="Kegelkasse berechnen">
-    <div class="pb-2">
-      <p-toolbar>
-        <button
-          pButton
-          label="Zwischenspeichern"
-          class="p-button-secondary p-button-outlined"
-          (click)="saveJournal(false)"
-          [disabled]="isButtonAllowed('user') || kegelkasse.journal"
-        ></button>
-        <button
-          pButton
-          label="Leeren"
-          class="p-button-secondary p-button-outlined"
-          (click)="clearTotal()"
-          [disabled]="isButtonAllowed('user') || kegelkasse.journal"
-        ></button>
-        <button
-          pButton
-          [label]="
-            kegelkasse.journal
-              ? 'Journaleintrag ändern'
-              : 'Journaleintrag erstellen'
-          "
-          class="p-button-primary p-button-outlined"
-          (click)="saveJournal(true)"
-          [disabled]="isButtonAllowed('admin')"
-        ></button>
-        <button
-          pButton
-          label="Beleg erstellen"
-          class="p-button-secondary p-button-outlined"
-          (click)="createReceipt()"
-          [disabled]="isButtonAllowed('admin') || !kegelkasse.journal"
-        ></button>
-      </p-toolbar>
-    </div>
-    <form [formGroup]="fgKasse" autocomplete="off">
-      <div class="field grid pb-0">
-        <label for="date" class="pr-2 col-fixed" style="width: 210px"
-          >Anlass</label
-        >
-        <p-dropdown
-          name="date"
-          appendTo="body"
-          [autofocus]="true"
-          [options]="lKegelDatum"
-          optionLabel="longname"
-          optionValue="datum"
-          formControlName="date"
-        ></p-dropdown>
+<p-tabs value="0" (valueChange)="tabChanged($event.valueOf())">
+  <p-tablist>
+    <p-tab value="0">Kegelkasse berechnen</p-tab>
+    <p-tab value="1">Kegelkasse auswerten</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel value="0">
+      <div class="pb-2">
+        <p-toolbar>
+          <button
+            pButton
+            label="Zwischenspeichern"
+            class="p-button-secondary p-button-outlined"
+            (click)="saveJournal(false)"
+            [disabled]="isButtonAllowed('user') || kegelkasse.journal"
+          ></button>
+          <button
+            pButton
+            label="Leeren"
+            class="p-button-secondary p-button-outlined"
+            (click)="clearTotal()"
+            [disabled]="isButtonAllowed('user') || kegelkasse.journal"
+          ></button>
+          <button
+            pButton
+            [label]="
+              kegelkasse.journal
+                ? 'Journaleintrag ändern'
+                : 'Journaleintrag erstellen'
+            "
+            class="p-button-primary p-button-outlined"
+            (click)="saveJournal(true)"
+            [disabled]="isButtonAllowed('admin')"
+          ></button>
+          <button
+            pButton
+            label="Beleg erstellen"
+            class="p-button-secondary p-button-outlined"
+            (click)="createReceipt()"
+            [disabled]="isButtonAllowed('admin') || !kegelkasse.journal"
+          ></button>
+        </p-toolbar>
       </div>
+      <form [formGroup]="fgKasse" autocomplete="off">
+        <div class="field grid pb-0">
+          <label for="date" class="pr-2 col-fixed" style="width: 210px"
+            >Anlass</label
+          >
+          <p-select
+            name="date"
+            appendTo="body"
+            [autofocus]="true"
+            [options]="lKegelDatum"
+            optionLabel="longname"
+            optionValue="datum"
+            formControlName="date"
+          ></p-select>
+        </div>
+        <div class="grid">
+          <div class="col-6">
+            <div class="field grid pb-0">
+              <label
+                for="kasse"
+                class="text-right pr-2 col-fixed"
+                style="width: 210px"
+                >Kasse</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="total"
+                size="small"
+                formControlName="kasse"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label for="rappen5" class="pr-2 col-fixed" style="width: 80px"
+                >0.05 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="rappen5"
+                size="small"
+                formControlName="rappen5"
+                class="text-right"
+              ></p-inputNumber>
+              <label
+                for="rappen5_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="rappen5_sum"
+                size="small"
+                formControlName="rappen5_sum"
+                class="text-right"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label
+                for="rappen10"
+                class="text-right pr-2 col-fixed"
+                style="width: 80px"
+                >0.10 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="rappen10"
+                size="small"
+                formControlName="rappen10"
+                class="text-right"
+              ></p-inputNumber>
+              <label
+                for="rappen10_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="rappen10_sum"
+                size="small"
+                formControlName="rappen10_sum"
+                class="text-right"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label
+                for="rappen20"
+                class="text-right pr-2 col-fixed"
+                style="width: 80px"
+                >0.20 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="rappen20"
+                size="small"
+                formControlName="rappen20"
+                class="text-right"
+              ></p-inputNumber>
+              <label
+                for="rappen20_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="rappen20_sum"
+                size="small"
+                formControlName="rappen20_sum"
+                class="text-right"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label
+                for="rappen50"
+                class="text-right pr-2 col-fixed"
+                style="width: 80px"
+                >0.50 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="rappen50"
+                size="small"
+                formControlName="rappen50"
+                class="text-right"
+              ></p-inputNumber>
+              <label
+                for="rappen50_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="rappen50_sum"
+                size="small"
+                formControlName="rappen50_sum"
+                class="text-right"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label
+                for="franken1"
+                class="text-right pr-2 col-fixed"
+                style="width: 80px"
+                >1.00 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="franken1"
+                size="small"
+                formControlName="franken1"
+                class="text-right"
+              ></p-inputNumber>
+              <label
+                for="franken1_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="franken1_sum"
+                size="small"
+                formControlName="franken1_sum"
+                class="text-right"
+              ></p-inputNumber>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="field grid pb-0">
+              <label
+                for="franken2"
+                class="text-right pr-2 col-fixed"
+                style="width: 80px"
+                >2.00 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="franken2"
+                size="small"
+                formControlName="franken2"
+                class="text-right"
+              ></p-inputNumber>
+              <label
+                for="franken2_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="franken2_sum"
+                size="small"
+                formControlName="franken2_sum"
+                class="text-right"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label
+                for="franken5"
+                class="text-right pr-2 col-fixed"
+                style="width: 80px"
+                >5.00 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="franken5"
+                size="small"
+                formControlName="franken5"
+                class="text-right"
+              ></p-inputNumber>
+              <label
+                for="franken5_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="franken5_sum"
+                size="small"
+                formControlName="franken5_sum"
+                class="text-right"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label
+                for="franken10"
+                class="text-right pr-2 col-fixed"
+                style="width: 80px"
+                >10.00 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="franken10"
+                size="small"
+                formControlName="franken10"
+                class="text-right"
+              ></p-inputNumber>
+              <label
+                for="franken10_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="franken10_sum"
+                size="small"
+                formControlName="franken10_sum"
+                class="text-right"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label for="franken20" class="pr-2 col-fixed" style="width: 80px"
+                >20.00 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="franken20"
+                size="small"
+                formControlName="franken20"
+                class="text-right"
+              ></p-inputNumber>
+              <label
+                for="franken20_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="franken20_sum"
+                size="small"
+                formControlName="franken20_sum"
+                class="text-right"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label
+                for="franken50"
+                class="text-right pr-2 col-fixed"
+                style="width: 80px"
+                >50.00 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="franken50"
+                size="small"
+                formControlName="franken50"
+                class="text-right"
+              ></p-inputNumber>
+              <label
+                for="franken50_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="franken50_sum"
+                size="small"
+                formControlName="franken50_sum"
+                class="text-right"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label
+                for="franken100"
+                class="text-right pr-2 col-fixed"
+                style="width: 80px"
+                >100.00 x</label
+              >
+              <p-inputNumber
+                inputId="integeronly"
+                id="franken100"
+                size="small"
+                formControlName="franken100"
+              ></p-inputNumber>
+              <label
+                for="franken100_sum"
+                class="text-right pr-2 pl-2 col-fixed"
+                style="width: 40px"
+                >=</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="franken100_sum"
+                size="small"
+                formControlName="franken100_sum"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0">
+              <label for="total" class="pr-2 col-fixed" style="width: 210px"
+                >Total</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="total"
+                size="small"
+                formControlName="total"
+              ></p-inputNumber>
+            </div>
+            <div class="field grid pb-0 text-lg text-xl">
+              <label for="differenz" class="pr-2 col-fixed" style="width: 210px"
+                >Differenz</label
+              >
+              <p-inputNumber
+                inputId="decimal"
+                locale="de-CH"
+                [minFractionDigits]="2"
+                id="total"
+                size="small"
+                formControlName="differenz"
+              ></p-inputNumber>
+            </div>
+          </div>
+        </div>
+      </form>
+      <hr />
       <div class="grid">
-        <div class="col-6">
-          <div class="field grid pb-0">
-            <label
-              for="kasse"
-              class="text-right pr-2 col-fixed"
-              style="width: 210px"
-              >Kasse</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="total"
-              [size]="10"
-              formControlName="kasse"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label for="rappen5" class="pr-2 col-fixed" style="width: 80px"
-              >0.05 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="rappen5"
-              [size]="10"
-              formControlName="rappen5"
-              class="text-right"
-            ></p-inputNumber>
-            <label
-              for="rappen5_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="rappen5_sum"
-              [size]="10"
-              formControlName="rappen5_sum"
-              class="text-right"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label
-              for="rappen10"
-              class="text-right pr-2 col-fixed"
-              style="width: 80px"
-              >0.10 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="rappen10"
-              [size]="10"
-              formControlName="rappen10"
-              class="text-right"
-            ></p-inputNumber>
-            <label
-              for="rappen10_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="rappen10_sum"
-              [size]="10"
-              formControlName="rappen10_sum"
-              class="text-right"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label
-              for="rappen20"
-              class="text-right pr-2 col-fixed"
-              style="width: 80px"
-              >0.20 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="rappen20"
-              [size]="10"
-              formControlName="rappen20"
-              class="text-right"
-            ></p-inputNumber>
-            <label
-              for="rappen20_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="rappen20_sum"
-              [size]="10"
-              formControlName="rappen20_sum"
-              class="text-right"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label
-              for="rappen50"
-              class="text-right pr-2 col-fixed"
-              style="width: 80px"
-              >0.50 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="rappen50"
-              [size]="10"
-              formControlName="rappen50"
-              class="text-right"
-            ></p-inputNumber>
-            <label
-              for="rappen50_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="rappen50_sum"
-              [size]="10"
-              formControlName="rappen50_sum"
-              class="text-right"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label
-              for="franken1"
-              class="text-right pr-2 col-fixed"
-              style="width: 80px"
-              >1.00 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="franken1"
-              [size]="10"
-              formControlName="franken1"
-              class="text-right"
-            ></p-inputNumber>
-            <label
-              for="franken1_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="franken1_sum"
-              [size]="10"
-              formControlName="franken1_sum"
-              class="text-right"
-            ></p-inputNumber>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="field grid pb-0">
-            <label
-              for="franken2"
-              class="text-right pr-2 col-fixed"
-              style="width: 80px"
-              >2.00 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="franken2"
-              [size]="10"
-              formControlName="franken2"
-              class="text-right"
-            ></p-inputNumber>
-            <label
-              for="franken2_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="franken2_sum"
-              [size]="10"
-              formControlName="franken2_sum"
-              class="text-right"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label
-              for="franken5"
-              class="text-right pr-2 col-fixed"
-              style="width: 80px"
-              >5.00 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="franken5"
-              [size]="10"
-              formControlName="franken5"
-              class="text-right"
-            ></p-inputNumber>
-            <label
-              for="franken5_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="franken5_sum"
-              [size]="10"
-              formControlName="franken5_sum"
-              class="text-right"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label
-              for="franken10"
-              class="text-right pr-2 col-fixed"
-              style="width: 80px"
-              >10.00 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="franken10"
-              [size]="10"
-              formControlName="franken10"
-              class="text-right"
-            ></p-inputNumber>
-            <label
-              for="franken10_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="franken10_sum"
-              [size]="10"
-              formControlName="franken10_sum"
-              class="text-right"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label for="franken20" class="pr-2 col-fixed" style="width: 80px"
-              >20.00 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="franken20"
-              [size]="10"
-              formControlName="franken20"
-              class="text-right"
-            ></p-inputNumber>
-            <label
-              for="franken20_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="franken20_sum"
-              [size]="10"
-              formControlName="franken20_sum"
-              class="text-right"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label
-              for="franken50"
-              class="text-right pr-2 col-fixed"
-              style="width: 80px"
-              >50.00 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="franken50"
-              [size]="10"
-              formControlName="franken50"
-              class="text-right"
-            ></p-inputNumber>
-            <label
-              for="franken50_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="franken50_sum"
-              [size]="10"
-              formControlName="franken50_sum"
-              class="text-right"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label
-              for="franken100"
-              class="text-right pr-2 col-fixed"
-              style="width: 80px"
-              >100.00 x</label
-            >
-            <p-inputNumber
-              inputId="integeronly"
-              id="franken100"
-              [size]="10"
-              formControlName="franken100"
-            ></p-inputNumber>
-            <label
-              for="franken100_sum"
-              class="text-right pr-2 pl-2 col-fixed"
-              style="width: 40px"
-              >=</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="franken100_sum"
-              [size]="10"
-              formControlName="franken100_sum"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0">
-            <label for="total" class="pr-2 col-fixed" style="width: 210px"
-              >Total</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="total"
-              [size]="10"
-              formControlName="total"
-            ></p-inputNumber>
-          </div>
-          <div class="field grid pb-0 text-lg text-xl">
-            <label for="differenz" class="pr-2 col-fixed" style="width: 210px"
-              >Differenz</label
-            >
-            <p-inputNumber
-              inputId="decimal"
-              locale="de-CH"
-              [minFractionDigits]="2"
-              id="total"
-              [size]="10"
-              formControlName="differenz"
-            ></p-inputNumber>
-          </div>
-        </div>
+        <span class="col-12 font-bold">Journaleintrag:</span>
+        <span class="col-1">{{ kegelkasse.journal?.journalno }}</span>
+        <span class="col-3">{{
+          kegelkasse.journal?.account_journal_from_accountToaccount?.longname
+        }}</span>
+        <span class="col-3">{{
+          kegelkasse.journal?.account_journal_to_accountToaccount?.longname
+        }}</span>
+        <span class="col-2">{{ kegelkasse.journal?.memo }}</span>
+        <span class="col-2">{{
+          kegelkasse.journal?.amount | dynamicPipe : decimalPipe : "1.2-2"
+        }}</span>
       </div>
-    </form>
-    <hr />
-    <div class="grid">
-      <span class="col-12 font-bold">Journaleintrag:</span>
-      <span class="col-1">{{ kegelkasse.journal?.journalno }}</span>
-      <span class="col-3">{{
-        kegelkasse.journal?.account_journal_from_accountToaccount?.longname
-      }}</span>
-      <span class="col-3">{{
-        kegelkasse.journal?.account_journal_to_accountToaccount?.longname
-      }}</span>
-      <span class="col-2">{{ kegelkasse.journal?.memo }}</span>
-      <span class="col-2">{{
-        kegelkasse.journal?.amount | dynamicPipe : decimalPipe : "1.2-2"
-      }}</span>
-    </div>
-  </p-tabPanel>
-  <p-tabPanel header="Kegelkasse auswerten">
-    <app-basetable
-      [tableOptions]="cols"
-      [tableData]="lstKegelkasse"
-      [tableToolbar]="toolbar"
-      localStorage="kegelkasse"
-      [editable]="false"
-    >
-    </app-basetable>
-  </p-tabPanel>
-</p-tabView>
+    </p-tabpanel>
+    <p-tabpanel value="1">
+      <app-basetable
+        [tableOptions]="cols"
+        [tableData]="lstKegelkasse"
+        [tableToolbar]="toolbar"
+        localStorage="kegelkasse"
+        [editable]="false"
+      >
+      </app-basetable>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>

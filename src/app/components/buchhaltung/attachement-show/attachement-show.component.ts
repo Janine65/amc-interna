@@ -4,9 +4,10 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-attachement-show',
-  templateUrl: './attachement-show.component.html',
-  styleUrls: ['./attachement-show.component.scss'],
+    selector: 'app-attachement-show',
+    templateUrl: './attachement-show.component.html',
+    styleUrls: ['./attachement-show.component.scss'],
+    standalone: false
 })
 export class AttachementShowComponent implements AfterViewInit, OnDestroy {
   receipt = '';

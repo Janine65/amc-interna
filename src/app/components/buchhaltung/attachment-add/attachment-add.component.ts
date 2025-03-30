@@ -5,9 +5,10 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-attachment-add',
-  templateUrl: './attachment-add.component.html',
-  styleUrls: ['./attachment-add.component.scss'],
+    selector: 'app-attachment-add',
+    templateUrl: './attachment-add.component.html',
+    styleUrls: ['./attachment-add.component.scss'],
+    standalone: false
 })
 export class AttachmentAddComponent {
   journalid = 0;

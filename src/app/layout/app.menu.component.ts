@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-menu',
-    templateUrl: './app.menu.component.html'
+    templateUrl: './app.menu.component.html',
+    standalone: false
 })
 
 export class AppMenuComponent implements OnInit, OnDestroy, OnChanges {

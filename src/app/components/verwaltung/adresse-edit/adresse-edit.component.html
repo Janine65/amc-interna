@@ -14,11 +14,6 @@
             #geschlect="ngModel"
             required
           ></p-selectButton>
-          <app-input-validation
-            [control]="geschlect"
-            [errDef]="{ required: 'Geschlecht muss ausgewählt sein' }"
-          >
-          </app-input-validation>
         </div>
         <div class="field col-12 md:col-6">
           <label for="mnr">MNR</label>
@@ -44,14 +39,6 @@
             class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
             [(ngModel)]="adresse.vorname"
           />
-          <app-input-validation
-            [control]="vorname"
-            [errDef]="{
-              required: 'A vorname is required',
-              minlength: 'The vorname should be at least 3 characteres'
-            }"
-          >
-          </app-input-validation>
         </div>
         <div class="field col-12 md:col-6">
           <label for="name">Nachname</label>
@@ -66,14 +53,6 @@
             required
             [(ngModel)]="adresse.name"
           />
-          <app-input-validation
-            [control]="name"
-            [errDef]="{
-              required: 'A name is required',
-              minlength: 'The name should be at least 3 characteres'
-            }"
-          >
-          </app-input-validation>
         </div>
         <div class="field col-12">
           <label for="strasse">Strasse</label>
@@ -88,14 +67,6 @@
             class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
             [(ngModel)]="adresse.adresse"
           />
-          <app-input-validation
-            [control]="strasse"
-            [errDef]="{
-              required: 'A strasse is required',
-              minlength: 'The strasse should be at least 3 characteres'
-            }"
-          >
-          </app-input-validation>
         </div>
         <div class="field col-12 md:col-4">
           <label for="plz" class="p-2">PLZ</label>
@@ -110,14 +81,6 @@
             required
             [(ngModel)]="adresse.plz"
           />
-          <app-input-validation
-            [control]="plz"
-            [errDef]="{
-              required: 'A plz is required',
-              minlength: 'The plz should be at least 4 characteres'
-            }"
-          >
-          </app-input-validation>
         </div>
         <div class="field col-12 md:col-8">
           <label for="ort" class="p-2">Ort</label>
@@ -132,14 +95,6 @@
             required
             [(ngModel)]="adresse.ort"
           />
-          <app-input-validation
-            [control]="ort"
-            [errDef]="{
-              required: 'A ort is required',
-              minlength: 'The ort should be at least 3 characteres'
-            }"
-          >
-          </app-input-validation>
         </div>
         <div class="field col-12 md:col-3">
           <label for="email" class="p-2">Email</label>
@@ -166,14 +121,6 @@
             name="email"
             pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$"
           />
-          <app-input-validation
-            [control]="email"
-            [errDef]="{
-              required: 'A email is required',
-              pattern: 'Enter a valid email address',
-              minlength: 'The email should be at least 5 characteres'
-            }"
-          ></app-input-validation>
         </div>
         <div class="field col-12 md:col-3">
           <label for="phone">Telefon</label>
@@ -245,23 +192,23 @@
         </div>
         <div class="field col-12 md:col-6">
           <label for="eintritt">Eintritt</label>
-          <p-calendar
+          <p-datepicker
             dateFormat="dd.mm.yy"
             id="eintritt"
             name="eintritt"
             class="surface-overlay p-2 appearance-none outline-none w-full"
             [(ngModel)]="adresse.eintritt_date"
-          ></p-calendar>
+          ></p-datepicker>
         </div>
         <div class="field col-12 md:col-6">
           <label for="austritt">Austritt</label>
-          <p-calendar
+          <p-datepicker
             dateFormat="dd.mm.yy"
             id="austritt"
             name="austritt"
             class="surface-overlay p-2 appearance-none outline-none w-full"
             [(ngModel)]="adresse.austritt_date"
-          ></p-calendar>
+          ></p-datepicker>
         </div>
         <div class="field col-12">
           <label for="notes">Notizen</label>
@@ -275,7 +222,7 @@
         </div>
         <div class="field col-12">
           <label for="geworben">Geworben von</label>
-          <p-dropdown
+          <p-select
             id="geworben"
             [options]="dlstFKAdressen"
             optionLabel="value"
@@ -288,7 +235,7 @@
             class="text-base text-color surface-overlay p-2 appearance-none outline-none"
             [style]="{ width: '80%' }"
             [(ngModel)]="adresse.adressenid"
-          ></p-dropdown>
+          ></p-select>
         </div>
       </div>
     </div>

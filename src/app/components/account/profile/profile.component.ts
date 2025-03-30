@@ -5,10 +5,11 @@ import { AddEditComponent } from '../../users/add-edit/add-edit.component';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
-  providers: [DialogService]
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss'],
+    providers: [DialogService],
+    standalone: false
 })
 export class ProfileComponent implements OnInit {
   constructor(

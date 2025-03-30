@@ -1,4 +1,4 @@
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, forwardRef, NgModule } from '@angular/core';
 import {
   HashLocationStrategy,
   LocationStrategy,
@@ -8,17 +8,25 @@ import {
   PercentPipe,
 } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 
-import { SidebarModule } from 'primeng/sidebar';
+import { DrawerModule } from 'primeng/drawer';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ButtonModule } from 'primeng/button';
-import { InputSwitchModule } from 'primeng/inputswitch';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { BadgeModule } from 'primeng/badge';
 import { RippleModule } from 'primeng/ripple';
@@ -29,10 +37,10 @@ import { TableModule } from 'primeng/table';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogModule } from 'primeng/dialog';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ToolbarModule } from 'primeng/toolbar';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
@@ -42,10 +50,10 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SplitterModule } from 'primeng/splitter';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { TextareaModule } from 'primeng/textarea';
 import { ChartModule } from 'primeng/chart';
 import { EditorModule } from 'primeng/editor';
-import { TabViewModule } from 'primeng/tabview';
+import { TabsModule } from 'primeng/tabs';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -60,7 +68,6 @@ import { AppMenuitemComponent } from './layout/app.menuitem.component';
 import { AppSidebarComponent } from './layout/app.sidebar.component';
 import { AppTopBarComponent } from './layout/app.topbar.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
-import { AppConfigComponent } from './layout/config/app.config.component';
 import { AppFooterComponent } from './layout/app.footer.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdressenComponent } from './components/verwaltung/adressen/adressen.component';
@@ -69,7 +76,6 @@ import { ParameterComponent } from './components/verwaltung/parameter/parameter.
 import { BaseTableComponent } from './components/shared/basetable/basetable.component';
 import { BaseeditComponent } from './components/shared/baseedit/baseedit.component';
 import { AdresseEditComponent } from './components/verwaltung/adresse-edit/adresse-edit.component';
-import { InputValidationComponent } from './components/shared/input-validation/input-validation.component';
 import { JwtInterceptor, ErrorInterceptor } from './service';
 import { LoginComponent } from './components/account/login/login.component';
 import { ListComponent } from './components/users/list/list.component';
@@ -96,6 +102,12 @@ import { KontoBewegungenComponent } from './components/buchhaltung/konto-bewegun
 import { KegelkasseComponent } from './components/buchhaltung/kegelkasse/kegelkasse.component';
 import { AppAboutComponent } from './layout/app.about.component';
 import { AdresseShowComponent } from './components/verwaltung/adresse-show/adresse-show.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import { MyPreset } from './mytheme';
+import { MyTheme2 } from './mytheme-2';
+import { CrInputPartial } from './components/shared/input-validation/input.partial';
+import { InputComponent } from './components/shared/input-validation/input.const';
 
 @NgModule({
   declarations: [
@@ -105,7 +117,6 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     AppMenuitemComponent,
     AppSidebarComponent,
     AppTopBarComponent,
-    AppConfigComponent,
     AppFooterComponent,
     DashboardComponent,
     AdressenComponent,
@@ -114,7 +125,6 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     BaseTableComponent,
     BaseeditComponent,
     AdresseEditComponent,
-    InputValidationComponent,
     LoginComponent,
     ListComponent,
     AddEditComponent,
@@ -140,6 +150,8 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     AppAboutComponent,
     AdresseShowComponent,
   ],
+  bootstrap: [AppComponent],
+  exports: [AppLayoutComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -147,11 +159,10 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     RouterModule,
     CommonModule,
     FormsModule,
-    SidebarModule,
+    DrawerModule,
     RadioButtonModule,
     ButtonModule,
-    InputSwitchModule,
-    HttpClientModule,
+    ToggleSwitchModule,
     InputTextModule,
     BadgeModule,
     RippleModule,
@@ -161,10 +172,10 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     TableModule,
     DynamicDialogModule,
     ScrollPanelModule,
-    CalendarModule,
+    DatePickerModule,
     InputNumberModule,
     ToolbarModule,
-    DropdownModule,
+    SelectModule,
     ToastModule,
     MessagesModule,
     MessageModule,
@@ -177,10 +188,10 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     FileUploadModule,
     SplitterModule,
     ReactiveFormsModule,
-    InputTextareaModule,
+    TextareaModule,
     ChartModule,
     AutoCompleteModule,
-    TabViewModule,
+    TabsModule,
     DataViewModule,
     StyleClassModule,
     AutoFocusModule,
@@ -191,6 +202,8 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     PercentPipe,
     MatIconModule,
     ProgressSpinnerModule,
+    CrInputPartial,
+    InputComponent,
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -198,8 +211,27 @@ import { AdresseShowComponent } from './components/verwaltung/adresse-show/adres
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MessageService, useClass: MessageService },
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CrInputPartial),
+      multi: true,
+    },
+    provideHttpClient(withInterceptorsFromDi()),
+    provideAnimationsAsync(),
+    providePrimeNG({
+      ripple: true,
+      theme: {
+        preset: MyTheme2,
+        options: {
+          colorScheme: 'light',
+          darkModeSelector: '.my-app-dark',
+          cssLayer: {
+            name: 'primeng',
+            order: 'theme, base, primeng',
+          },
+        },
+      },
+    }),
   ],
-  bootstrap: [AppComponent],
-  exports: [AppLayoutComponent],
 })
 export class AppModule {}

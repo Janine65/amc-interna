@@ -1,6 +1,6 @@
 <h2>
   Auswertung für
-  <p-dropdown
+  <p-select
     id="jahr"
     [options]="selJahre"
     optionLabel="label"
@@ -8,7 +8,7 @@
     [(ngModel)]="selJahr"
     class="mr-2 mb-1"
     (onChange)="updateGraph()"
-  ></p-dropdown>
+  ></p-select>
 </h2>
 <div class="card" style="height: 80%; overflow-y: auto">
   <p-chart type="bar" [data]="data" [options]="options"></p-chart>

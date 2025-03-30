@@ -7,9 +7,10 @@ import { Fiscalyear, OverviewData, ParamData } from 'src/app/models/datatypes';
 import pkg from './../../../../package.json';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    standalone: false
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   dashboarData : OverviewData[] = []

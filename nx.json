@@ -1,39 +1,20 @@
 {
   "targetDefaults": {
     "build": {
-      "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
-    "serve": {
-      "cache": false
-    },
+    "serve": {},
     "test": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "^production"
-      ]
+      "inputs": ["default", "^production"]
     },
     "lint": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json"
-      ]
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     }
   },
   "namedInputs": {
     "sharedGlobals": [],
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/tsconfig.spec.json",
@@ -42,5 +23,6 @@
       "!{projectRoot}/eslint.config.js"
     ]
   },
-  "nxCloudAccessToken": "MDFhZmJlMDItODg5MC00ODExLWE0NDgtMGExNTk0Zjc3OGM2fHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "MDFhZmJlMDItODg5MC00ODExLWE0NDgtMGExNTk0Zjc3OGM2fHJlYWQtd3JpdGU=",
+  "useInferencePlugins": false
 }

@@ -10,10 +10,11 @@ import { EmailBody, EmailSignature } from '@app/components/shared/email-dialog/e
 import { environment } from '@environments/environment';
 
 @Component({
-  selector: 'app-adresse-edit',
-  templateUrl: './adresse-edit.component.html',
-  styleUrls: ['./adresse-edit.component.scss'],
-  providers: [DialogService]
+    selector: 'app-adresse-edit',
+    templateUrl: './adresse-edit.component.html',
+    styleUrls: ['./adresse-edit.component.scss'],
+    providers: [DialogService],
+    standalone: false
 })
 export class AdresseEditComponent {
   adresse : Adresse = {}

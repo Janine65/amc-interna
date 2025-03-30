@@ -16,6 +16,7 @@ import { User } from '@model/user';
   selector: 'app-kegelkasse',
   templateUrl: './kegelkasse.component.html',
   styleUrls: ['./kegelkasse.component.scss'],
+  standalone: false,
 })
 export class KegelkasseComponent implements OnInit {
   fgKasse = new FormGroup({
@@ -601,8 +602,8 @@ export class KegelkasseComponent implements OnInit {
       });
     }
   }
-  tabChanged(tabIndex: number) {
-    if (tabIndex == 1) {
+  tabChanged(tabIndex: string | number) {
+    if (tabIndex == '1') {
       this.backendService
         .getAllKegelkasse(new Date(this.date.value).getFullYear())
         .subscribe({

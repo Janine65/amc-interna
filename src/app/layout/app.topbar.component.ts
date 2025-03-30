@@ -1,17 +1,26 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { LayoutService } from "../service/app.layout.service";
+import { LayoutService } from '../service/app.layout.service';
 
 @Component({
-    selector: 'app-topbar',
-    templateUrl: './app.topbar.component.html'
+  selector: 'app-topbar',
+  templateUrl: './app.topbar.component.html',
+  standalone: false,
 })
 export class AppTopBarComponent {
+  @ViewChild('menubutton') menuButton!: ElementRef;
+  @ViewChild('topbarmenu') menu!: ElementRef;
 
-    @ViewChild('menubutton') menuButton!: ElementRef;
+  iconDarkmode = 'pi pi-moon';
+  iconLightmode = 'pi pi-sun';
+  iconMode = this.iconLightmode;
 
-    @ViewChild('topbarmenu') menu!: ElementRef;
+  constructor(public layoutService: LayoutService) {}
 
-    constructor(public layoutService: LayoutService,
-    ) { }
-
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    element.classList.toggle('my-app-dark');
+    this.iconMode = element.classList.contains('my-app-dark')
+      ? this.iconDarkmode
+      : this.iconLightmode;
+  }
 }

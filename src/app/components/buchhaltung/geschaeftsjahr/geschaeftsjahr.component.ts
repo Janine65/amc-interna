@@ -3,23 +3,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Fiscalyear } from '@model/datatypes';
 import { BackendService } from '@app/service';
-import { TableOptions, TableToolbar } from '@shared/basetable/basetable.component';
+import {
+  TableOptions,
+  TableToolbar,
+} from '@shared/basetable/basetable.component';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Observable, from, timer } from 'rxjs';
 
-
-type Severity = 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' | undefined;
+type Severity =
+  | 'success'
+  | 'secondary'
+  | 'info'
+  | 'warn'
+  | 'danger'
+  | 'contrast'
+  | undefined;
 
 @Component({
   selector: 'app-geschaeftsjahr',
   templateUrl: './geschaeftsjahr.component.html',
   styleUrls: ['./geschaeftsjahr.component.scss'],
-  providers: [DialogService]
+  providers: [DialogService],
+  standalone: false,
 })
 export class GeschaeftsjahrComponent implements OnInit {
-
-  lstFiscalyear: Fiscalyear[] = []
+  lstFiscalyear: Fiscalyear[] = [];
   selFiscalyear: Fiscalyear = {};
   loading = true;
   cols: TableOptions[] = [];
@@ -27,92 +36,168 @@ export class GeschaeftsjahrComponent implements OnInit {
   editMode = false;
   addMode = false;
   progressVisible = false;
-  fTag: {value: string, severity: string} = {value : 'gestartet', severity: 'info'}
-  kTag: {value: string, severity: string} = {value : 'gestartet', severity: 'info'}
-  jTag: {value: string, severity: string} = {value : 'gestartet', severity: 'info'}
-  fSev: Severity = 'info'
-  fValue = 'gestartet'
-  kSev: Severity = 'info'
-  kValue = 'gestartet'
-  jSev: Severity = 'info'
-  jValue = 'gestartet'
+  fTag: { value: string; severity: string } = {
+    value: 'gestartet',
+    severity: 'info',
+  };
+  kTag: { value: string; severity: string } = {
+    value: 'gestartet',
+    severity: 'info',
+  };
+  jTag: { value: string; severity: string } = {
+    value: 'gestartet',
+    severity: 'info',
+  };
+  fSev: Severity = 'info';
+  fValue = 'gestartet';
+  kSev: Severity = 'info';
+  kValue = 'gestartet';
+  jSev: Severity = 'info';
+  jValue = 'gestartet';
 
   lstStates = [
     { label: 'Offen', value: 1 },
     { label: 'provisorisch Abgeschlossen', value: 2 },
     { label: 'Abgeschlossen', value: 3 },
-  ]
-  selState = 1
+  ];
+  selState = 1;
 
-  constructor(private backendService: BackendService,
+  constructor(
+    private backendService: BackendService,
     private dialogService: DialogService,
-    private messageService: MessageService) { }
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.cols = [
-      { field: 'year', header: 'Jahr', format: false, sortable: false, filtering: false, filter: undefined },
-      { field: 'name', header: 'Bezeichnung', format: false, sortable: false, filtering: false, filter: undefined },
-      { field: 'state', header: 'Status', format: true, sortable: false, filtering: false, filter: undefined },
+      {
+        field: 'year',
+        header: 'Jahr',
+        format: false,
+        sortable: false,
+        filtering: false,
+        filter: undefined,
+      },
+      {
+        field: 'name',
+        header: 'Bezeichnung',
+        format: false,
+        sortable: false,
+        filtering: false,
+        filter: undefined,
+      },
+      {
+        field: 'state',
+        header: 'Status',
+        format: true,
+        sortable: false,
+        filtering: false,
+        filter: undefined,
+      },
     ];
 
     this.toolbar = [
       {
-        label: "Edit", btnClass: "p-button-primary p-button-outlined", icon: "pi pi-file-edit",
-        isDefault: true, disabledWhenEmpty: true, disabledNoSelection: true, clickfnc: this.editFiscalyear, roleNeeded: '', isEditFunc: true
+        label: 'Edit',
+        btnClass: 'p-button-primary p-button-outlined',
+        icon: 'pi pi-file-edit',
+        isDefault: true,
+        disabledWhenEmpty: true,
+        disabledNoSelection: true,
+        clickfnc: this.editFiscalyear,
+        roleNeeded: '',
+        isEditFunc: true,
       },
       {
-        label: "Delete", btnClass: "p-button-secondary p-button-outlined", icon: "pi pi-minus",
-        isDefault: false, disabledWhenEmpty: true, disabledNoSelection: true, clickfnc: this.delFiscalyear, roleNeeded: '', isEditFunc: false
+        label: 'Delete',
+        btnClass: 'p-button-secondary p-button-outlined',
+        icon: 'pi pi-minus',
+        isDefault: false,
+        disabledWhenEmpty: true,
+        disabledNoSelection: true,
+        clickfnc: this.delFiscalyear,
+        roleNeeded: '',
+        isEditFunc: false,
       },
       {
-        label: "New", btnClass: "p-button-secondary p-button-outlined", icon: "pi pi-plus",
-        isDefault: false, disabledWhenEmpty: false, disabledNoSelection: false, clickfnc: this.addFiscalyear, roleNeeded: '', isEditFunc: false
+        label: 'New',
+        btnClass: 'p-button-secondary p-button-outlined',
+        icon: 'pi pi-plus',
+        isDefault: false,
+        disabledWhenEmpty: false,
+        disabledNoSelection: false,
+        clickfnc: this.addFiscalyear,
+        roleNeeded: '',
+        isEditFunc: false,
       },
       {
-        label: "Export", btnClass: "p-button-secondary p-button-outlined", icon: "pi pi-file-excel",
-        isDefault: false, disabledWhenEmpty: true, disabledNoSelection: true, clickfnc: this.exportFiscalyear, roleNeeded: '', isEditFunc: false
+        label: 'Export',
+        btnClass: 'p-button-secondary p-button-outlined',
+        icon: 'pi pi-file-excel',
+        isDefault: false,
+        disabledWhenEmpty: true,
+        disabledNoSelection: true,
+        clickfnc: this.exportFiscalyear,
+        roleNeeded: '',
+        isEditFunc: false,
       },
       {
-        label: "prov. Abschliessen", btnClass: "p-button-secondary p-button-outlined", icon: "pi pi-file-excel",
-        isDefault: false, disabledWhenEmpty: true, disabledNoSelection: true, clickfnc: this.closeTempFiscalyear, roleNeeded: '', isEditFunc: false
+        label: 'prov. Abschliessen',
+        btnClass: 'p-button-secondary p-button-outlined',
+        icon: 'pi pi-file-excel',
+        isDefault: false,
+        disabledWhenEmpty: true,
+        disabledNoSelection: true,
+        clickfnc: this.closeTempFiscalyear,
+        roleNeeded: '',
+        isEditFunc: false,
       },
       {
-        label: "Abschliessen", btnClass: "p-button-secondary p-button-outlined", icon: "pi pi-file-excel",
-        isDefault: false, disabledWhenEmpty: true, disabledNoSelection: true, clickfnc: this.closeFiscalyear, roleNeeded: '', isEditFunc: false
+        label: 'Abschliessen',
+        btnClass: 'p-button-secondary p-button-outlined',
+        icon: 'pi pi-file-excel',
+        isDefault: false,
+        disabledWhenEmpty: true,
+        disabledNoSelection: true,
+        clickfnc: this.closeFiscalyear,
+        roleNeeded: '',
+        isEditFunc: false,
       },
     ];
 
-    from(this.backendService.getFiscalyear())
-      .subscribe(list => {
-        this.lstFiscalyear = list.data as Fiscalyear[];
-        this.lstFiscalyear.forEach(rec => {
-          switch(rec.state) {
-            case 1:
-              rec.classRow = 'offen';
-              break;
-            case 2:
-              rec.classRow = 'provisorisch';
-              break;
-            case 3:
-              rec.classRow = 'abgeschlossen';
-              break;
-            }
-        })
-        this.loading = false;
+    from(this.backendService.getFiscalyear()).subscribe((list) => {
+      this.lstFiscalyear = list.data as Fiscalyear[];
+      this.lstFiscalyear.forEach((rec) => {
+        switch (rec.state) {
+          case 1:
+            rec.classRow = 'offen';
+            break;
+          case 2:
+            rec.classRow = 'provisorisch';
+            break;
+          case 3:
+            rec.classRow = 'abgeschlossen';
+            break;
+        }
       });
+      this.loading = false;
+    });
   }
 
-  formatField(field: string, value: string | number | boolean | null): string | number | boolean | null {
+  formatField(
+    field: string,
+    value: string | number | boolean | null
+  ): string | number | boolean | null {
     if (field == 'state') {
       switch (value as number) {
         case 1:
-          return 'Offen'
+          return 'Offen';
 
         case 2:
-          return 'Provisorisch abgeschlossen'
+          return 'Provisorisch abgeschlossen';
 
         case 3:
-          return 'Abgeschlossen'
+          return 'Abgeschlossen';
       }
     }
     return value;
@@ -121,254 +206,261 @@ export class GeschaeftsjahrComponent implements OnInit {
   closeTempFiscalyear = (selRec?: Fiscalyear) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log("Close temporary Fiscalyear");
+    console.log('Close temporary Fiscalyear');
     thisRef.messageService.clear();
     this.clearFields();
 
     if (selRec)
-      this.backendService.closeFiscalyear(selRec.year, 2).subscribe(
-        {
-          complete: () => {
-            this.loading = true;
-            from(this.backendService.getFiscalyear())
-            .subscribe(list => {
-              this.lstFiscalyear = list.data as Fiscalyear[];
-              this.lstFiscalyear.forEach(rec => {
-                switch(rec.state) {
-                  case 1:
-                    rec.classRow = 'offen';
-                    break;
-                  case 2:
-                    rec.classRow = 'provisorisch';
-                    break;
-                  case 3:
-                    rec.classRow = 'abgeschlossen';
-                    break;
-                  }
-              })
-              this.loading = false;
-              thisRef.messageService.add({ detail: 'Das Geschäftsjahr wurde provisorisch abgeschlossen', closable: true, severity: 'info', sticky: false, summary: 'Geschäftsjahr abschliessen' });
-            });            
-
-          }
-        }
-      )
-
-  }
+      this.backendService.closeFiscalyear(selRec.year, 2).subscribe({
+        complete: () => {
+          this.loading = true;
+          from(this.backendService.getFiscalyear()).subscribe((list) => {
+            this.lstFiscalyear = list.data as Fiscalyear[];
+            this.lstFiscalyear.forEach((rec) => {
+              switch (rec.state) {
+                case 1:
+                  rec.classRow = 'offen';
+                  break;
+                case 2:
+                  rec.classRow = 'provisorisch';
+                  break;
+                case 3:
+                  rec.classRow = 'abgeschlossen';
+                  break;
+              }
+            });
+            this.loading = false;
+            thisRef.messageService.add({
+              detail: 'Das Geschäftsjahr wurde provisorisch abgeschlossen',
+              closable: true,
+              severity: 'info',
+              sticky: false,
+              summary: 'Geschäftsjahr abschliessen',
+            });
+          });
+        },
+      });
+  };
 
   closeFiscalyear = (selRec?: Fiscalyear) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log("Close temporary Fiscalyear");
+    console.log('Close temporary Fiscalyear');
     thisRef.messageService.clear();
     this.clearFields();
 
     if (selRec)
-      this.backendService.closeFiscalyear(selRec.year, 3).subscribe(
-        {
-          complete: () => {
-            this.loading = true;
-            from(this.backendService.getFiscalyear())
-            .subscribe(list => {
-              this.lstFiscalyear = list.data as Fiscalyear[];
-              this.lstFiscalyear.forEach(rec => {
-                switch(rec.state) {
-                  case 1:
-                    rec.classRow = 'offen';
-                    break;
-                  case 2:
-                    rec.classRow = 'provisorisch';
-                    break;
-                  case 3:
-                    rec.classRow = 'abgeschlossen';
-                    break;
-                  }
-              })
-              this.loading = false;
-              thisRef.messageService.add({ detail: 'Das Geschäftsjahr wurde abgeschlossen', closable: true, severity: 'info', sticky: false, summary: 'Geschäftsjahr abschliessen' });
-            });            
-
-          }
-        }
-      )
-
-  }
+      this.backendService.closeFiscalyear(selRec.year, 3).subscribe({
+        complete: () => {
+          this.loading = true;
+          from(this.backendService.getFiscalyear()).subscribe((list) => {
+            this.lstFiscalyear = list.data as Fiscalyear[];
+            this.lstFiscalyear.forEach((rec) => {
+              switch (rec.state) {
+                case 1:
+                  rec.classRow = 'offen';
+                  break;
+                case 2:
+                  rec.classRow = 'provisorisch';
+                  break;
+                case 3:
+                  rec.classRow = 'abgeschlossen';
+                  break;
+              }
+            });
+            this.loading = false;
+            thisRef.messageService.add({
+              detail: 'Das Geschäftsjahr wurde abgeschlossen',
+              closable: true,
+              severity: 'info',
+              sticky: false,
+              summary: 'Geschäftsjahr abschliessen',
+            });
+          });
+        },
+      });
+  };
 
   editFiscalyear = (selRec?: Fiscalyear) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log("Edit Fiscalyear");
+    console.log('Edit Fiscalyear');
     thisRef.messageService.clear();
     this.clearFields();
     this.editMode = true;
-    if (selRec)
-      Object.assign(this.selFiscalyear, selRec)
-  }
+    if (selRec) Object.assign(this.selFiscalyear, selRec);
+  };
 
   delFiscalyear = (selRec?: Fiscalyear) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log("Del Fiscalyear");
+    console.log('Del Fiscalyear');
     thisRef.messageService.clear();
     this.clearFields();
 
     if (selRec)
-      this.backendService.delFiscalyear(selRec).subscribe(
-        {
-          complete: () => {
-            thisRef.lstFiscalyear.splice(thisRef.lstFiscalyear.indexOf(selRec), 1)
+      this.backendService.delFiscalyear(selRec).subscribe({
+        complete: () => {
+          thisRef.lstFiscalyear.splice(
+            thisRef.lstFiscalyear.indexOf(selRec),
+            1
+          );
 
-            thisRef.messageService.add({ detail: 'Das Geschäftsjahr ' + selRec.year + ' wurde gelöscht', closable: true, severity: 'info', sticky: false, summary: 'Geschäftsjahr löschen' });
-
-          }
-        }
-      )
-  }
+          thisRef.messageService.add({
+            detail: 'Das Geschäftsjahr ' + selRec.year + ' wurde gelöscht',
+            closable: true,
+            severity: 'info',
+            sticky: false,
+            summary: 'Geschäftsjahr löschen',
+          });
+        },
+      });
+  };
 
   addFiscalyear = () => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log("New Fiscalyear");
+    console.log('New Fiscalyear');
     this.clearFields();
     this.selFiscalyear.state = 1;
     thisRef.messageService.clear();
     this.addMode = true;
-  }
+  };
 
   exportFiscalyear = (selRec?: Fiscalyear) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log("Export Fiscalyear");
+    console.log('Export Fiscalyear');
     thisRef.messageService.clear();
-    this.fSev = 'info'
-    this.fValue = 'gestartet'
-    this.kSev = 'info'
-    this.kValue = 'gestartet'
-    this.jSev = 'info'
-    this.jValue = 'gestartet'
-    thisRef.progressVisible = true
+    this.fSev = 'info';
+    this.fValue = 'gestartet';
+    this.kSev = 'info';
+    this.kValue = 'gestartet';
+    this.jSev = 'info';
+    this.jValue = 'gestartet';
+    thisRef.progressVisible = true;
 
-    thisRef.fSev = 'warning'
-    thisRef.fValue = 'gestartet'
-    thisRef.backendService.exportAccData(Number(selRec.year))
-      .subscribe({
-        next: (result) => {
-          const filename = result.data.filename;
-          thisRef.backendService.downloadFile(filename)
-            .subscribe({
-              next: (data) => {
-                if (data.body) {
-                  const blob = new Blob([data.body]);
-                  const downloadURL = window.URL.createObjectURL(blob);
-                  const link = document.createElement('a');
-                  link.href = downloadURL;
-                  link.download = filename;
-                  link.click(); 
-                }
-              },
-              complete: () => {
-                thisRef.fSev = 'success'
-                thisRef.fValue = 'geladen'
-              }
-            })
-        },
-        complete: () => {
-          thisRef.kSev = 'warning'
-          thisRef.kValue = 'gestartet'
-          thisRef.backendService.exportAccountData(Number(selRec.year))
-            .subscribe({
-              next: (result) => {
-                if (result.type == 'info') {
+    thisRef.fSev = 'warn';
+    thisRef.fValue = 'gestartet';
+    thisRef.backendService.exportAccData(Number(selRec.year)).subscribe({
+      next: (result) => {
+        const filename = result.data.filename;
+        thisRef.backendService.downloadFile(filename).subscribe({
+          next: (data) => {
+            if (data.body) {
+              const blob = new Blob([data.body]);
+              const downloadURL = window.URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = downloadURL;
+              link.download = filename;
+              link.click();
+            }
+          },
+          complete: () => {
+            thisRef.fSev = 'success';
+            thisRef.fValue = 'geladen';
+          },
+        });
+      },
+      complete: () => {
+        thisRef.kSev = 'warn';
+        thisRef.kValue = 'gestartet';
+        thisRef.backendService
+          .exportAccountData(Number(selRec.year))
+          .subscribe({
+            next: (result) => {
+              if (result.type == 'info') {
                 const filename = result.data.filename;
-                thisRef.backendService.downloadFile(filename)
-                  .subscribe({
-                    next: (data) => {
-                      if (data.body) {
-                        const blob = new Blob([data.body]);
-                        const downloadURL = window.URL.createObjectURL(blob);
-                        const link = document.createElement('a');
-                        link.href = downloadURL;
-                        link.download = filename;
-                        link.click();
-                      }
-                    },
-                    complete: () => {
-                      thisRef.kSev = 'success'
-                      thisRef.kValue = 'geladen'
+                thisRef.backendService.downloadFile(filename).subscribe({
+                  next: (data) => {
+                    if (data.body) {
+                      const blob = new Blob([data.body]);
+                      const downloadURL = window.URL.createObjectURL(blob);
+                      const link = document.createElement('a');
+                      link.href = downloadURL;
+                      link.download = filename;
+                      link.click();
                     }
-                  })
-                }
-              },
-              complete: () => {
-                thisRef.jSev = 'warning'
-                thisRef.jValue = 'gestartet'
-                thisRef.backendService.exportJournal(Number(selRec.year), 1)
-                  .subscribe({
-                    next: (result) => {
-                      const filename = result.data.filename;
-                      thisRef.backendService.downloadFile(filename)
-                        .subscribe({
-                          next: (data) => {
-                            if (data.body) {
-                              const blob = new Blob([data.body]);
-                              const downloadURL = window.URL.createObjectURL(blob);
-                              const link = document.createElement('a');
-                              link.href = downloadURL;
-                              link.download = filename;
-                              link.click();
-                            }
-                          },
-                          complete: () => {
-                            thisRef.jSev = 'success'
-                            thisRef.jValue = 'geladen'
-                            timer(2000).subscribe(() => {
-                              thisRef.progressVisible = false
-                            })
-                          }
-                        })
-                    }
-                  })
+                  },
+                  complete: () => {
+                    thisRef.kSev = 'success';
+                    thisRef.kValue = 'geladen';
+                  },
+                });
               }
-            })
-        }
-      })
-  }
+            },
+            complete: () => {
+              thisRef.jSev = 'warn';
+              thisRef.jValue = 'gestartet';
+              thisRef.backendService
+                .exportJournal(Number(selRec.year), 1)
+                .subscribe({
+                  next: (result) => {
+                    const filename = result.data.filename;
+                    thisRef.backendService.downloadFile(filename).subscribe({
+                      next: (data) => {
+                        if (data.body) {
+                          const blob = new Blob([data.body]);
+                          const downloadURL = window.URL.createObjectURL(blob);
+                          const link = document.createElement('a');
+                          link.href = downloadURL;
+                          link.download = filename;
+                          link.click();
+                        }
+                      },
+                      complete: () => {
+                        thisRef.jSev = 'success';
+                        thisRef.jValue = 'geladen';
+                        timer(2000).subscribe(() => {
+                          thisRef.progressVisible = false;
+                        });
+                      },
+                    });
+                  },
+                });
+            },
+          });
+      },
+    });
+  };
 
   private clearFields() {
     this.addMode = false;
     this.editMode = false;
-    this.selFiscalyear = {}
-
+    this.selFiscalyear = {};
   }
   save() {
     let sub: Observable<any>;
 
     if (this.addMode) {
-      sub = this.backendService.addFiscalyear(this.selFiscalyear)
+      sub = this.backendService.addFiscalyear(this.selFiscalyear);
     } else {
-      sub = this.backendService.updFiscalyear(this.selFiscalyear)
+      sub = this.backendService.updFiscalyear(this.selFiscalyear);
     }
-    sub.subscribe(
-      {
-        complete: () => {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          this.backendService.getOneFiscalyear(this.selFiscalyear.year).subscribe(
-            {
-              next: (entry) => {
-                const fisc = entry.data as Fiscalyear;
-                if (this.addMode) {
-                  this.lstFiscalyear.push(fisc);
-                  this.lstFiscalyear.sort((a: Fiscalyear, b: Fiscalyear) => (b.year ? parseInt(b.year) : 0) - (a.year ? parseInt(a.year) : 0))
-                }
-                else
-                  this.lstFiscalyear = this.lstFiscalyear.map(obj => [fisc].find(o => o.id === obj.id) || obj);
+    sub.subscribe({
+      complete: () => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.backendService
+          .getOneFiscalyear(this.selFiscalyear.year)
+          .subscribe({
+            next: (entry) => {
+              const fisc = entry.data as Fiscalyear;
+              if (this.addMode) {
+                this.lstFiscalyear.push(fisc);
+                this.lstFiscalyear.sort(
+                  (a: Fiscalyear, b: Fiscalyear) =>
+                    (b.year ? parseInt(b.year) : 0) -
+                    (a.year ? parseInt(a.year) : 0)
+                );
+              } else
+                this.lstFiscalyear = this.lstFiscalyear.map(
+                  (obj) => [fisc].find((o) => o.id === obj.id) || obj
+                );
 
-                this.clearFields();
-              }
-            }
-          )
-        }
-      }
-    )
+              this.clearFields();
+            },
+          });
+      },
+    });
   }
 }

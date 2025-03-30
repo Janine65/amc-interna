@@ -7,9 +7,10 @@ import { AppTopBarComponent } from './app.topbar.component';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './app.layout.component.html',
-  providers: [MessageService],
+    selector: 'app-layout',
+    templateUrl: './app.layout.component.html',
+    providers: [MessageService],
+    standalone: false
 })
 export class AppLayoutComponent implements OnDestroy {
   overlayMenuOpenSubscription: Subscription;

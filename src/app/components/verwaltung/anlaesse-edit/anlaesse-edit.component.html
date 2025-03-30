@@ -4,7 +4,7 @@
       <div class="formgrid grid">
         <div class="field col-12 md:col-6 mt-4">
           <label for="datum" class="mr-2">Datum</label>
-          <p-calendar
+          <p-datepicker
             dateFormat="dd.mm.yy"
             id="datum"
             name="datum"
@@ -13,7 +13,7 @@
             appendTo="body"
             [(ngModel)]="anlass.datum_date"
             (onSelect)="getAnlaesse()"
-          ></p-calendar>
+          ></p-datepicker>
         </div>
         <div class="field col-12 md:col-6">
           <label for="status">Status</label>
@@ -28,11 +28,6 @@
             required
             class="p-2 appearance-none outline-none w-full"
           ></p-selectButton>
-          <app-input-validation
-            [control]="status"
-            [errDef]="{ required: 'Status muss ausgewählt sein' }"
-          >
-          </app-input-validation>
         </div>
         <div class="field col-12">
           <label for="bezeichnung">Bezeichnung</label>
@@ -47,14 +42,6 @@
             class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
             [(ngModel)]="anlass.name"
           />
-          <app-input-validation
-            [control]="bezeichnung"
-            [errDef]="{
-              required: 'Bezeichnung muss gesetzt sein',
-              minlength: 'Die Bezeichnung soll mind. 3 Zeichen betragen'
-            }"
-          >
-          </app-input-validation>
         </div>
         <div class="field col-12">
           <label for="beschreibung">Beschreibung</label>
@@ -118,7 +105,7 @@
         </div>
         <div class="field col-12">
           <label for="vorjahr" class="mr-2">Vorjahres Anlass</label>
-          <p-dropdown
+          <p-select
             id="vorjahr"
             [options]="dlstFKAnlaesse"
             optionLabel="value"
@@ -132,7 +119,7 @@
             [(ngModel)]="anlass.anlaesseid"
             [style]="{ width: '80%' }"
             appendTo="body"
-          ></p-dropdown>
+          ></p-select>
         </div>
       </div>
     </div>

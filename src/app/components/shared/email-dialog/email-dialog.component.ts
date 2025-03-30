@@ -7,9 +7,10 @@ import { environment } from '@environments/environment';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-email-dialog',
-  templateUrl: './email-dialog.component.html',
-  styleUrls: ['./email-dialog.component.scss'],
+    selector: 'app-email-dialog',
+    templateUrl: './email-dialog.component.html',
+    styleUrls: ['./email-dialog.component.scss'],
+    standalone: false
 })
 export class EmailDialogComponent implements OnInit, OnDestroy {
   emailBody: EmailBody;

@@ -10,9 +10,10 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { from } from 'rxjs';
 
 @Component({
-  selector: 'app-konto-bewegungen',
-  templateUrl: './konto-bewegungen.component.html',
-  styleUrls: ['./konto-bewegungen.component.scss']
+    selector: 'app-konto-bewegungen',
+    templateUrl: './konto-bewegungen.component.html',
+    styleUrls: ['./konto-bewegungen.component.scss'],
+    standalone: false
 })
 export class KontoBewegungenComponent implements OnInit {
   accountId: number;

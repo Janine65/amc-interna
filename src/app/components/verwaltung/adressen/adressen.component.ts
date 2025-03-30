@@ -38,6 +38,7 @@ export class AdresseFilter {
   templateUrl: './adressen.component.html',
   styles: [],
   providers: [DialogService],
+  standalone: false,
 })
 export class AdressenComponent implements OnInit {
   adressList: Adresse[] = [];
@@ -342,8 +343,8 @@ export class AdressenComponent implements OnInit {
         adresse: newAdr,
       },
       header: 'Neue Adresse erfassen',
-      width: '100%',
-      height: '100%',
+      width: '90%',
+      height: '90%',
       resizable: true,
       modal: true,
       maximizable: true,
@@ -370,8 +371,8 @@ export class AdressenComponent implements OnInit {
         adresse: selRec,
       },
       header: 'Adresse ändern',
-      width: '100%',
-      height: '100%',
+      width: '90%',
+      height: '90%',
       resizable: true,
       modal: true,
       maximizable: true,
