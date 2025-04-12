@@ -91,6 +91,7 @@ export class AuswertungComponent implements OnInit {
           indexAxis: 'y',
           plugins: {
             legend: {
+              position: 'top',
               labels: {
                 color: textColor,
               },
@@ -99,6 +100,7 @@ export class AuswertungComponent implements OnInit {
           scales: {
             x: {
               stacked: true,
+              position: 'bottom',
               ticks: {
                 color: textColorSecondary,
                 stepSize: 1,
@@ -110,6 +112,26 @@ export class AuswertungComponent implements OnInit {
                 color: surfaceBorder,
                 drawBorder: false,
               },
+            },
+            x2: {
+              stacked: true,
+              position: 'top',
+              ticks: {
+                color: textColorSecondary,
+                stepSize: 1,
+                font: {
+                  weight: 500,
+                },
+              },
+              grid: {
+                color: surfaceBorder,
+                drawBorder: false,
+              },
+              min: 0,
+              max: this.data.datasets.reduce(
+                (max, dataset) => Math.max(max, ...dataset.data),
+                -Infinity
+              ),
             },
             y: {
               stacked: true,
