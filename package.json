@@ -1,6 +1,6 @@
 {
   "name": "amc-interna",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "Auto-Moto-Club Administration: Frontend für die interne Applikation des Vereins.",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
