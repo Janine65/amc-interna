@@ -7,10 +7,10 @@ import { environment } from '@environments/environment';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-email-dialog',
-    templateUrl: './email-dialog.component.html',
-    styleUrls: ['./email-dialog.component.scss'],
-    standalone: false
+  selector: 'app-email-dialog',
+  templateUrl: './email-dialog.component.html',
+  styleUrls: ['./email-dialog.component.scss'],
+  standalone: false,
 })
 export class EmailDialogComponent implements OnInit, OnDestroy {
   emailBody: EmailBody;
@@ -160,7 +160,9 @@ export class EmailDialogComponent implements OnInit, OnDestroy {
         )
       ] as unknown as EmailSignature;
     }
-
+    let textStrap = this.emailBody.email_body.replace('<p>', '');
+    textStrap = textStrap.replace('</p>', '</br>');
+    this.emailBody.email_body = textStrap;
     console.log(this.emailBody);
 
     // alles bereit zum Senden der Email
