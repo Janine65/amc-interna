@@ -55,7 +55,8 @@
         },
         "development": {
           "buildTarget": "amc-interna:build:development",
-          "proxyConfig": "src/proxy.prod.json"
+          "proxyConfig": "src/proxy.local.json",
+          "port": 4201
         }
       },
       "defaultConfiguration": "development"

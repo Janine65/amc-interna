@@ -9,7 +9,7 @@ import {
 } from '@shared/basetable/basetable.component';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Observable, from, timer } from 'rxjs';
+import { Observable, from, map, timer, zip } from 'rxjs';
 
 type Severity =
   | 'success'
@@ -342,86 +342,95 @@ export class GeschaeftsjahrComponent implements OnInit {
 
     thisRef.fSev = 'warn';
     thisRef.fValue = 'gestartet';
-    thisRef.backendService.exportAccData(Number(selRec.year)).subscribe({
-      next: (result) => {
-        const filename = result.data.filename;
-        thisRef.backendService.downloadFile(filename).subscribe({
-          next: (data) => {
-            if (data.body) {
-              const blob = new Blob([data.body]);
-              const downloadURL = window.URL.createObjectURL(blob);
-              const link = document.createElement('a');
-              link.href = downloadURL;
-              link.download = filename;
-              link.click();
-            }
-          },
-          complete: () => {
-            thisRef.fSev = 'success';
-            thisRef.fValue = 'geladen';
-          },
-        });
-      },
-      complete: () => {
-        thisRef.kSev = 'warn';
-        thisRef.kValue = 'gestartet';
-        thisRef.backendService
-          .exportAccountData(Number(selRec.year))
-          .subscribe({
-            next: (result) => {
-              if (result.type == 'info') {
-                const filename = result.data.filename;
-                thisRef.backendService.downloadFile(filename).subscribe({
-                  next: (data) => {
-                    if (data.body) {
-                      const blob = new Blob([data.body]);
-                      const downloadURL = window.URL.createObjectURL(blob);
-                      const link = document.createElement('a');
-                      link.href = downloadURL;
-                      link.download = filename;
-                      link.click();
-                    }
-                  },
-                  complete: () => {
-                    thisRef.kSev = 'success';
-                    thisRef.kValue = 'geladen';
-                  },
+    let filename: string = '';
+
+    zip([
+      thisRef.backendService.exportAccData(Number(selRec.year)),
+      thisRef.backendService.exportAccountData(Number(selRec.year)),
+      thisRef.backendService.exportJournal(Number(selRec.year), 1),
+    ])
+      .pipe(
+        map(([accDataResult, accountDataResult, journalResult]) => {
+          // Handle Acc Data Result
+          if (accDataResult.type == 'info') {
+            filename = accDataResult.data.filename;
+            thisRef.backendService.downloadFile(filename).subscribe({
+              next: (data) => {
+                if (data.body) {
+                  const blob = new Blob([data.body]);
+                  const downloadURL = window.URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = downloadURL;
+                  link.download = filename;
+                  link.click();
+                }
+              },
+              complete: () => {
+                thisRef.fSev = 'success';
+                thisRef.fValue = 'geladen';
+              },
+            });
+          } else {
+            thisRef.fSev = 'danger';
+            thisRef.fValue = 'Fehler';
+            return;
+          }
+
+          // Handle Account Data Result
+          if (accountDataResult.type == 'info') {
+            const accountFilename = accountDataResult.data.filename;
+            thisRef.backendService.downloadFile(accountFilename).subscribe({
+              next: (data) => {
+                if (data.body) {
+                  const blob = new Blob([data.body]);
+                  const downloadURL = window.URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = downloadURL;
+                  link.download = accountFilename;
+                  link.click();
+                }
+              },
+              complete: () => {
+                thisRef.kSev = 'success';
+                thisRef.kValue = 'geladen';
+              },
+            });
+          } else {
+            thisRef.kSev = 'danger';
+            thisRef.kValue = 'Fehler';
+            return;
+          }
+
+          // Handle Journal Result
+          if (journalResult.type == 'info') {
+            const journalFilename = journalResult.data.filename;
+            thisRef.backendService.downloadFile(journalFilename).subscribe({
+              next: (data) => {
+                if (data.body) {
+                  const blob = new Blob([data.body]);
+                  const downloadURL = window.URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = downloadURL;
+                  link.download = journalFilename;
+                  link.click();
+                }
+              },
+              complete: () => {
+                thisRef.jSev = 'success';
+                thisRef.jValue = 'geladen';
+                timer(2000).subscribe(() => {
+                  thisRef.progressVisible = false;
                 });
-              }
-            },
-            complete: () => {
-              thisRef.jSev = 'warn';
-              thisRef.jValue = 'gestartet';
-              thisRef.backendService
-                .exportJournal(Number(selRec.year), 1)
-                .subscribe({
-                  next: (result) => {
-                    const filename = result.data.filename;
-                    thisRef.backendService.downloadFile(filename).subscribe({
-                      next: (data) => {
-                        if (data.body) {
-                          const blob = new Blob([data.body]);
-                          const downloadURL = window.URL.createObjectURL(blob);
-                          const link = document.createElement('a');
-                          link.href = downloadURL;
-                          link.download = filename;
-                          link.click();
-                        }
-                      },
-                      complete: () => {
-                        thisRef.jSev = 'success';
-                        thisRef.jValue = 'geladen';
-                        timer(2000).subscribe(() => {
-                          thisRef.progressVisible = false;
-                        });
-                      },
-                    });
-                  },
-                });
-            },
-          });
-      },
-    });
+              },
+            });
+          } else {
+            thisRef.kSev = 'danger';
+            thisRef.kValue = 'Fehler';
+            return;
+          }
+        })
+      )
+      .subscribe();
   };
 
   private clearFields() {

@@ -567,7 +567,10 @@ export class BackendService {
   }
   exportAccountData(jahr: number): Observable<RetDataFile> {
     const apiURL =
-      this.backendApiUrl + '/account/writekontoauszug?year=' + jahr;
+      this.backendApiUrl +
+      '/account/writekontoauszug?year=' +
+      jahr +
+      '&all=false';
     return this.http.get<RetDataFile>(apiURL, { headers: this.header });
   }
 }
