@@ -32,7 +32,7 @@ import { FileUpload } from 'primeng/fileupload';
     FileUpload,
   ],
 })
-export class EmailDialogComponent implements OnInit, OnDestroy {
+export class EmailDialogComponent {
   private backendService = inject(BackendService);
   ref = inject(DynamicDialogRef);
   config = inject(DynamicDialogConfig);
@@ -85,17 +85,6 @@ export class EmailDialogComponent implements OnInit, OnDestroy {
     const config = this.config;
 
     this.emailBody = config.data.emailBody;
-  }
-
-  ngOnInit(): void {
-    // TODO
-    return;
-  }
-
-  // make sure to destory the editor
-  ngOnDestroy(): void {
-    // TODO
-    return;
   }
 
   prepareFiles(files: File[]) {
@@ -189,12 +178,10 @@ export class EmailDialogComponent implements OnInit, OnDestroy {
     let textStrap = this.emailBody.email_body.replace('<p>', '');
     textStrap = textStrap.replace('</p>', '</br>');
     this.emailBody.email_body = textStrap;
-    console.log(this.emailBody);
 
     // alles bereit zum Senden der Email
     this.backendService.sendEmail(this.emailBody).subscribe({
       next: (res) => {
-        console.log(res);
         this.loading.set(false);
         if (res.type == '250 Message received')
           this.messageService.add({

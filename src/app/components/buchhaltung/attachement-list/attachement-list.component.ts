@@ -219,17 +219,14 @@ export class AttachementListComponent {
   };
 
   edit = (selRec?: Receipt) => {
-    //TODO
     const thisRef = this;
     if (selRec) {
-      //TODO
       thisRef.selAtt = selRec;
       thisRef.visible = true;
     }
   };
 
   editAttBez() {
-    //TODO
     this.visible = false;
     this.backendService.updReceipt(this.selAtt).subscribe({
       next: () => {

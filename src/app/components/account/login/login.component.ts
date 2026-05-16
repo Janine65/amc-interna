@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
-  ViewEncapsulation,
   inject,
   signal,
 } from '@angular/core';
@@ -32,7 +31,6 @@ import { Ripple } from 'primeng/ripple';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   providers: [MessageService],
-  encapsulation: ViewEncapsulation.None,
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -118,7 +116,6 @@ export class LoginComponent implements OnInit {
         next: async () => {
           // get return url from query parameters or default to home page
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-          console.log(returnUrl);
           await this.router.navigateByUrl(returnUrl);
         },
         error: (error) => {

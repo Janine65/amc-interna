@@ -60,7 +60,7 @@ export class AccountService {
         map((retData) => {
           this.saveUser(retData.data as User, retData.cookie);
           return this.userValue;
-        })
+        }),
       );
   }
 
@@ -72,19 +72,16 @@ export class AccountService {
         60;
       if (mins > 30 && mins < 60) {
         this.http
-          .get<RetDataUser>(
-            `${this.apiUrl}/auth/refreshToken?id=${this.userValue.id}`,
-            { headers: this.header }
-          )
+          .get<RetDataUser>(`${this.apiUrl}/auth/refreshToken`, {
+            headers: this.header,
+          })
           .subscribe({
             next: (retData) => {
-              console.log('Token wurde aktualisiert');
               this.saveUser(retData.data as User, retData.cookie);
               return this.userValue;
             },
           });
       } else if (mins > 60) {
-        console.log('es wird ausgelogget');
         await this.logout();
       }
     }
@@ -125,7 +122,7 @@ export class AccountService {
     });
   }
 
-  update(id: number, params: any) {
+  update(id: number, params: Partial<User>) {
     return this.http
       .patch(`${this.apiUrl}/user/${id}`, params, { headers: this.header })
       .pipe(
@@ -140,7 +137,7 @@ export class AccountService {
             this._userSubject?.next(user);
           }
           return x;
-        })
+        }),
       );
   }
 
@@ -154,7 +151,7 @@ export class AccountService {
             this.logout();
           }
           return x;
-        })
+        }),
       );
   }
 
@@ -168,7 +165,7 @@ export class AccountService {
             this.logout();
           }
           return x;
-        })
+        }),
       );
   }
 }

@@ -286,7 +286,6 @@ export class AdressenComponent implements OnInit {
   emailSelected = (selRec?: Adresse, lstData?: Adresse[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
     const thisRef: AdressenComponent = this;
-    console.log('Email an selectierte Adressen', lstData);
     thisRef.messageService.clear();
     const emailBody = new EmailBody({
       email_an: environment.defaultEmail,
@@ -325,7 +324,6 @@ export class AdressenComponent implements OnInit {
   addAdress = () => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: AdressenComponent = this;
-    console.log('New Adresse');
     thisRef.messageService.clear();
     const newAdr = new Adresse();
     newAdr.eintritt_date = new Date();
@@ -356,14 +354,12 @@ export class AdressenComponent implements OnInit {
         adresse.austritt_date = new Date(adresse.austritt);
 
         this.adressList.set([...this.adressList(), adresse]);
-        console.log(adresse);
       }
     });
   };
   editAdresse = (selRec?: Adresse) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: AdressenComponent = this;
-    console.log('Edit Adresse', selRec);
     thisRef.messageService.clear();
 
     thisRef.dialogRef = thisRef.dialogService.open(AdresseEditComponent, {
@@ -387,7 +383,6 @@ export class AdressenComponent implements OnInit {
             .adressList()
             .map((obj) => [adresse].find((o) => o.id === obj.id) ?? obj),
         );
-        console.log(adresse);
       }
     });
   };
@@ -395,7 +390,6 @@ export class AdressenComponent implements OnInit {
   showAdresse = (selRec?: Adresse) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: AdressenComponent = this;
-    console.log('Show Adresse', selRec);
     thisRef.messageService.clear();
 
     thisRef.dialogRef = thisRef.dialogService.open(AdresseShowComponent, {
@@ -415,7 +409,6 @@ export class AdressenComponent implements OnInit {
   delAdresse = (selRec?: Adresse) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: AdressenComponent = this;
-    console.log('Delete Adresse', selRec);
     thisRef.messageService.clear();
 
     if (selRec?.austritt.substring(0, 10) != '3000-01-01') {
@@ -474,7 +467,6 @@ export class AdressenComponent implements OnInit {
   exportAdressen = (selRec?: Adresse, lstData?: Adresse[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef = this;
-    console.log('Expoert Adressen');
 
     thisRef.backendService.exportAdressData(lstData).subscribe({
       next: (result) => {

@@ -1,5 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  NgForm,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { User } from '@app/models';
 import { AccountService } from '@app/service';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -17,26 +28,25 @@ import { ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    selector: 'app-add-edit',
-    templateUrl: './add-edit.component.html',
-    styleUrls: ['./add-edit.component.scss'],
-    providers: [ConfirmationService],
-    encapsulation: ViewEncapsulation.None,
-    imports: [
-        Bind,
-        ScrollPanel,
-        FormsModule,
-        ReactiveFormsModule,
-        CrInputPartial,
-        InputDirective,
-        InputText,
-        RadioButton,
-        PasswordDirective,
-        Toolbar,
-        ButtonDirective,
-        ConfirmDialog,
-    ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-add-edit',
+  templateUrl: './add-edit.component.html',
+  styleUrls: ['./add-edit.component.scss'],
+  providers: [ConfirmationService],
+  imports: [
+    Bind,
+    ScrollPanel,
+    FormsModule,
+    ReactiveFormsModule,
+    CrInputPartial,
+    InputDirective,
+    InputText,
+    RadioButton,
+    PasswordDirective,
+    Toolbar,
+    ButtonDirective,
+    ConfirmDialog,
+  ],
 })
 export class AddEditComponent implements OnInit {
   private accountService = inject(AccountService);
@@ -135,16 +145,16 @@ export class AddEditComponent implements OnInit {
     }
 
     if (this.wihtPwd) {
-      if (this.fg.value['password'] !== this.fg.value['passwordV']) {
+      if (this.fg.value['passwordN'] !== this.fg.value['passwordV']) {
         this.messageService.add({
-          detail: 'Die Passwörter sind identisch',
+          detail: 'Die Passwörter sind nicht identisch',
           closable: true,
           severity: 'error',
           summary: 'User speichern',
         });
         return;
       }
-      this.user.password = this.fg.value['password'];
+      this.user.password = this.fg.value['passwordN'];
     }
 
     if (this.user.id == undefined || this.user.id < 0) {

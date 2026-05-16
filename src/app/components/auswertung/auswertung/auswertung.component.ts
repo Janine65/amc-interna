@@ -24,8 +24,8 @@ export class AuswertungComponent implements OnInit {
     { value: 2, label: '2' },
     { value: 3, label: '3' },
   ]);
-  readonly data = signal<any>(undefined);
-  readonly options = signal<any>(undefined);
+  readonly data = signal<Record<string, unknown> | undefined>(undefined);
+  readonly options = signal<Record<string, unknown> | undefined>(undefined);
 
   selJahr = 2;
   jahr: number;

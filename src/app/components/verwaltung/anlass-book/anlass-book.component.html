@@ -75,7 +75,6 @@
               #teilnehmername
               id="teilnehmername"
               formControlName="teilnehmername"
-              [autofocus]="true"
               [suggestions]="lstFilteredAdressen()"
               (completeMethod)="searchTeilnehmer($event)"
               optionLabel="fullname"
@@ -83,6 +82,7 @@
               [dropdown]="true"
               (onSelect)="selectTeilnehmer($event.value)"
               [forceSelection]="true"
+              [autofocus]="true"
             >
             </p-autoComplete>
           </div>

@@ -1,14 +1,14 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import {
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   HostBinding,
   Input,
-  OnDestroy,
   OnInit,
   inject,
   input,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   NavigationEnd,
   Router,
@@ -22,12 +22,18 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { MenuItem } from 'primeng/api';
 import { MenuService } from './app.menu.service';
 import { LayoutService } from '../service/app.layout.service';
 import { Ripple } from 'primeng/ripple';
 import { NgClass } from '@angular/common';
+
+export interface AppMenuItem extends MenuItem {
+  class?: string;
+  badgeClass?: string;
+  items?: AppMenuItem[];
+}
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -123,14 +129,14 @@ import { NgClass } from '@angular/common';
   ],
   imports: [Ripple, NgClass, RouterLinkActive, RouterLink],
 })
-export class AppMenuitemComponent implements OnInit, OnDestroy {
+export class AppMenuitemComponent implements OnInit {
   layoutService = inject(LayoutService);
   private cd = inject(ChangeDetectorRef);
   router = inject(Router);
   private menuService = inject(MenuService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Input() item: any;
+  @Input() item!: AppMenuItem;
 
   readonly index = input.required<number>();
 
@@ -140,15 +146,12 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
 
   active = false;
 
-  menuSourceSubscription: Subscription;
-
-  menuResetSubscription: Subscription;
-
   key = '';
 
   constructor() {
-    this.menuSourceSubscription = this.menuService.menuSource$.subscribe(
-      (value) => {
+    this.menuService.menuSource$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((value) => {
         Promise.resolve(null).then(() => {
           if (value.routeEvent) {
             this.active =
@@ -164,17 +167,20 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
             }
           }
         });
-      },
-    );
+      });
 
-    this.menuResetSubscription = this.menuService.resetSource$.subscribe(() => {
-      this.active = false;
-    });
+    this.menuService.resetSource$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.active = false;
+      });
 
     this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .subscribe((params) => {
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => {
         if (this.item.routerLink) {
           this.updateActiveStateFromRoute();
         }
@@ -233,15 +239,5 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
   @HostBinding('class.active-menuitem')
   get activeClass() {
     return this.active && !this.root;
-  }
-
-  ngOnDestroy() {
-    if (this.menuSourceSubscription) {
-      this.menuSourceSubscription.unsubscribe();
-    }
-
-    if (this.menuResetSubscription) {
-      this.menuResetSubscription.unsubscribe();
-    }
   }
 }

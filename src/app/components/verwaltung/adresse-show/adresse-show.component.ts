@@ -255,7 +255,6 @@ export class AdresseShowComponent {
     )
       .pipe(
         map((result) => {
-          console.log(result);
           const events = result[0].data as Meisterschaft[];
           events.forEach((rec) => {
             rec.event_datum_date = new Date(rec.anlaesse.datum!);

@@ -9,10 +9,10 @@ import { Toolbar } from 'primeng/toolbar';
 import { Button } from 'primeng/button';
 
 @Component({
-    selector: 'app-attachment-add',
-    templateUrl: './attachment-add.component.html',
-    styleUrls: ['./attachment-add.component.scss'],
-    imports: [Bind, FileUpload, Toolbar, Button]
+  selector: 'app-attachment-add',
+  templateUrl: './attachment-add.component.html',
+  styleUrls: ['./attachment-add.component.scss'],
+  imports: [Bind, FileUpload, Toolbar, Button],
 })
 export class AttachmentAddComponent {
   private backendService = inject(BackendService);
@@ -65,13 +65,11 @@ export class AttachmentAddComponent {
 
   save() {
     const files = this.uploadFiles.map((value: File) => value.name).join(',');
-    console.log(files);
     if (files.length > 0)
       this.backendService
         .bulkAddReceipt(this.jahr, this.journalid, files)
         .subscribe({
           next: (resp) => {
-            console.log(resp);
             this.messageService.add({
               severity: 'success',
               summary: 'Erfolg',

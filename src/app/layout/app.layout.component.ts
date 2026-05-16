@@ -1,12 +1,14 @@
 import {
   Component,
+  DestroyRef,
   OnDestroy,
   Renderer2,
   inject,
   viewChild,
 } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs';
 import { LayoutService } from '../service/app.layout.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopBarComponent } from './app.topbar.component';
@@ -32,20 +34,20 @@ export class AppLayoutComponent implements OnDestroy {
   layoutService = inject(LayoutService);
   renderer = inject(Renderer2);
   router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
-  overlayMenuOpenSubscription: Subscription;
+  menuOutsideClickListener: (() => void) | null = null;
 
-  menuOutsideClickListener: any;
-
-  profileMenuOutsideClickListener: any;
+  profileMenuOutsideClickListener: (() => void) | null = null;
 
   readonly appSidebar = viewChild.required(AppSidebarComponent);
 
   readonly appTopbar = viewChild.required(AppTopBarComponent);
 
   constructor() {
-    this.overlayMenuOpenSubscription =
-      this.layoutService.overlayOpen$.subscribe(() => {
+    this.layoutService.overlayOpen$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
         if (!this.menuOutsideClickListener) {
           this.menuOutsideClickListener = this.renderer.listen(
             'document',
@@ -93,7 +95,10 @@ export class AppLayoutComponent implements OnDestroy {
       });
 
     this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe(() => {
         this.hideMenu();
         this.hideProfileMenu();
@@ -162,10 +167,6 @@ export class AppLayoutComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.overlayMenuOpenSubscription) {
-      this.overlayMenuOpenSubscription.unsubscribe();
-    }
-
     if (this.menuOutsideClickListener) {
       this.menuOutsideClickListener();
     }

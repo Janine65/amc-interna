@@ -306,12 +306,15 @@ export class KegelkasseComponent implements OnInit {
       },
     ]);
 
+    const str = localStorage.getItem('parameter');
+    const parameter = str ? JSON.parse(str) : [];
+    const paramJahr = parameter.find((param) => param.key === 'CLUBJAHR');
+    const jahr = paramJahr?.value
+      ? paramJahr.value
+      : new Date().getFullYear().toFixed(0);
+
     this.backendService
-      .getAnlaesseData(
-        new Date().getFullYear().toFixed(0),
-        new Date().getFullYear().toFixed(0),
-        true,
-      )
+      .getAnlaesseData(jahr, new Date().getFullYear().toFixed(0), true)
       .subscribe({
         next: (result) => {
           const anlaesse = result.data as Anlass[];

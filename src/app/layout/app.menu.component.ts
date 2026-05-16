@@ -1,16 +1,16 @@
 import {
   Component,
+  DestroyRef,
   OnChanges,
-  OnDestroy,
   OnInit,
   inject,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LayoutService } from '../service/app.layout.service';
 import { MenuItem, MessageService } from 'primeng/api';
 import { AccountService } from '@service/account.service';
 import { User } from '@model/user';
-import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { AppMenuitemComponent } from './app.menuitem.component';
 
@@ -19,26 +19,23 @@ import { AppMenuitemComponent } from './app.menuitem.component';
   templateUrl: './app.menu.component.html',
   imports: [AppMenuitemComponent],
 })
-export class AppMenuComponent implements OnInit, OnDestroy, OnChanges {
+export class AppMenuComponent implements OnInit, OnChanges {
   layoutService = inject(LayoutService);
   private router = inject(Router);
   private messages = inject(MessageService);
   private accountService = inject(AccountService);
+  private readonly destroyRef = inject(DestroyRef);
 
   public readonly model = signal<MenuItem[]>([]);
-  private destroyed$ = new Subject<boolean>();
   ngOnChanges(): void {
-    console.log('ngOnChanges');
     this.refreshMenu(this.accountService.userValue);
-  }
-  ngOnDestroy(): void {
-    this.destroyed$.next(false);
-    this.destroyed$.complete();
   }
 
   ngOnInit() {
     this.refreshMenu(this.accountService.userValue);
-    this.accountService.userSubject.subscribe((user) => this.refreshMenu(user));
+    this.accountService.userSubject
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((user) => this.refreshMenu(user));
   }
 
   refreshMenu(user: User | undefined) {

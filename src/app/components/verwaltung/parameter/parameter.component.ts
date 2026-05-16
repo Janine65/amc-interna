@@ -41,7 +41,6 @@ export class ParameterComponent implements OnInit {
     this.backendService.getParameterData().subscribe({
       next: (result) => {
         this.parameters.set(result.data as ParamData[]);
-        console.log(this.parameters());
         this.loading.set(false);
       },
     });

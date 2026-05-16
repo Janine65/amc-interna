@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Account, ParamData } from '@model/datatypes';
-import { BackendService } from '@app/service';
+import { BackendService, RetData } from '@app/service';
 import {
   TableOptions,
   TableToolbar,
@@ -272,7 +272,7 @@ export class KontenComponent implements OnInit {
   };
 
   save() {
-    let sub: Observable<any>;
+    let sub: Observable<RetData>;
 
     if (this.addMode()) {
       sub = this.backendService.addAccount(this.selAccount);

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Fiscalyear } from '@model/datatypes';
-import { BackendService } from '@app/service';
+import { BackendService, RetData } from '@app/service';
 import {
   TableOptions,
   TableToolbar,
@@ -215,7 +215,6 @@ export class GeschaeftsjahrComponent implements OnInit {
   closeTempFiscalyear = (selRec?: Fiscalyear) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log('Close temporary Fiscalyear');
     thisRef.messageService.clear();
     this.clearFields();
 
@@ -255,7 +254,6 @@ export class GeschaeftsjahrComponent implements OnInit {
   closeFiscalyear = (selRec?: Fiscalyear) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log('Close temporary Fiscalyear');
     thisRef.messageService.clear();
     this.clearFields();
 
@@ -295,7 +293,6 @@ export class GeschaeftsjahrComponent implements OnInit {
   editFiscalyear = (selRec?: Fiscalyear) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log('Edit Fiscalyear');
     thisRef.messageService.clear();
     this.clearFields();
     this.editMode.set(true);
@@ -305,7 +302,6 @@ export class GeschaeftsjahrComponent implements OnInit {
   delFiscalyear = (selRec?: Fiscalyear) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log('Del Fiscalyear');
     thisRef.messageService.clear();
     this.clearFields();
 
@@ -330,7 +326,6 @@ export class GeschaeftsjahrComponent implements OnInit {
   addFiscalyear = () => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log('New Fiscalyear');
     this.clearFields();
     this.selFiscalyear.state = 1;
     thisRef.messageService.clear();
@@ -340,7 +335,6 @@ export class GeschaeftsjahrComponent implements OnInit {
   exportFiscalyear = (selRec?: Fiscalyear) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: GeschaeftsjahrComponent = this;
-    console.log('Export Fiscalyear');
     thisRef.messageService.clear();
     this.fSev.set('info');
     this.fValue.set('gestartet');
@@ -449,7 +443,7 @@ export class GeschaeftsjahrComponent implements OnInit {
     this.selFiscalyear = {};
   }
   save() {
-    let sub: Observable<any>;
+    let sub: Observable<RetData>;
 
     if (this.addMode) {
       sub = this.backendService.addFiscalyear(this.selFiscalyear);

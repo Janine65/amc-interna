@@ -3,9 +3,9 @@ import { DecimalPipe, NgClass } from '@angular/common';
 import {
   Component,
   HostListener,
-  Input,
   OnDestroy,
   OnInit,
+  computed,
   inject,
   input,
   signal,
@@ -94,22 +94,26 @@ export class BaseTableComponent implements OnInit, OnDestroy {
   private accountService = inject(AccountService);
 
   readonly tableOptions = input<TableOptions[]>([]);
-  @Input() tableData: TableData[] = [];
-  @Input() formatFunction:
+  readonly tableData = input<TableData[]>([]);
+  readonly formatFunction = input<
     | ((
         field: string,
         value: string | number | boolean | null,
       ) => string | number | boolean | null)
-    | undefined;
+    | undefined
+  >(undefined);
   readonly tableToolbar = input<TableToolbar[]>([]);
   readonly localStorage = input('basetable');
   readonly diffCalcHight = input(300);
-  @Input() editable = true;
+  readonly editableInput = input(true, { alias: 'editable' });
   readonly rowClassField = input('');
 
-  selectedRecord?: TableData;
-  filteredRows = this.tableData;
+  readonly selectedRecord = signal<TableData | undefined>(undefined);
+  readonly filteredRows = signal<TableData[]>([]);
   readonly objHeight$ = signal('500px');
+  readonly editable = computed(
+    () => this.editableInput() && !!this.getEditFunc(),
+  );
   getScreenWidth = 0;
   getScreenHeight = 0;
   DecimalPipe?: DecimalPipe;
@@ -118,7 +122,6 @@ export class BaseTableComponent implements OnInit, OnDestroy {
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     this.getScreenHeight = window.innerHeight;
-    console.log(this.getScreenWidth, this.getScreenHeight);
     this.getHeight();
   }
 
@@ -126,7 +129,6 @@ export class BaseTableComponent implements OnInit, OnDestroy {
     this.getScreenWidth = window.innerWidth;
     this.getScreenHeight = window.innerHeight;
     this.getHeight();
-    if (!this.getEditFunc()) this.editable = false;
   }
 
   ngOnDestroy() {
@@ -182,21 +184,21 @@ export class BaseTableComponent implements OnInit, OnDestroy {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filterEvent(event: any) {
-    this.filteredRows = event.filteredValue;
+    this.filteredRows.set(event.filteredValue ?? []);
   }
 
   selectData(data: TableData) {
-    console.log('selectData: ', data);
-    this.selectedRecord = data;
+    this.selectedRecord.set(data);
     const funcDefault = this.retDefaultFunc();
-    if (funcDefault && this.selectedRecord) funcDefault(this.selectedRecord);
+    if (funcDefault && this.selectedRecord())
+      funcDefault(this.selectedRecord());
   }
 
   editData(data: TableData) {
-    console.log('editData: ', data);
-    this.selectedRecord = data;
+    this.selectedRecord.set(data);
     const funcDefault = this.getEditFunc();
-    if (funcDefault && this.selectedRecord) funcDefault(this.selectedRecord);
+    if (funcDefault && this.selectedRecord())
+      funcDefault(this.selectedRecord());
   }
 
   isButtonAllowed(ind: number): boolean {
@@ -218,10 +220,10 @@ export class BaseTableComponent implements OnInit, OnDestroy {
     const tableToolbar = this.tableToolbar();
     if (tableToolbar) {
       if (!this.isButtonAllowed(ind)) return true;
-      if (this.filteredRows.length == 0 && this.checkFiltering())
+      if (this.filteredRows().length == 0 && this.checkFiltering())
         return tableToolbar[ind].disabledWhenEmpty;
 
-      if (this.selectedRecord == undefined)
+      if (this.selectedRecord() == undefined)
         return tableToolbar[ind].disabledNoSelection;
 
       return false;
@@ -233,10 +235,9 @@ export class BaseTableComponent implements OnInit, OnDestroy {
   clickOnToolbar(ind: number) {
     const tableToolbar = this.tableToolbar();
     if (tableToolbar) {
-      console.log(`Button ${tableToolbar[ind].label} pressed`);
       tableToolbar[ind].clickfnc(
-        this.selectedRecord ? this.selectedRecord : undefined,
-        this.filteredRows,
+        this.selectedRecord() ?? undefined,
+        this.filteredRows(),
       );
     }
   }

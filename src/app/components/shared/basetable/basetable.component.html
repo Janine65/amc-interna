@@ -24,9 +24,10 @@
   #basetable
   [columns]="tableOptions()"
   styleClass=" p-datatable-striped"
-  [value]="tableData"
+  [value]="tableData()"
   selectionMode="single"
-  [(selection)]="selectedRecord"
+  [selection]="selectedRecord()"
+  (selectionChange)="selectedRecord.set($event)"
   (onFilter)="filterEvent($event)"
   dataKey="id"
   sortMode="multiple"
@@ -75,9 +76,9 @@
               {{ data[col.field] | dynamicPipe: col.pipe : col.args }}
             </div>
           }
-          @if (col.format && formatFunction) {
+          @if (col.format && formatFunction()) {
             <div>
-              {{ formatFunction(col.field, data[col.field]) }}
+              {{ formatFunction()!(col.field, data[col.field]) }}
             </div>
           }
           @if (
@@ -91,7 +92,7 @@
           }
         </td>
       }
-      @if (editable) {
+      @if (editable()) {
         <td>
           <button
             type="button"
@@ -111,7 +112,7 @@
   </ng-template>
   <ng-template pTemplate="summary">
     <div class="flex items-center justify-between">
-      {{ tableData ? tableData.length : 0 }} Datensätze.
+      {{ tableData() ? tableData().length : 0 }} Datensätze.
     </div>
   </ng-template>
 </p-table>

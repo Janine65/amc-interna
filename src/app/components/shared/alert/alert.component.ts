@@ -1,13 +1,13 @@
 import {
   Component,
+  DestroyRef,
   OnInit,
-  OnDestroy,
   inject,
   input,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, NavigationStart } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 import { Alert, AlertType } from '@app/models';
 import { AlertService } from '@app/service';
@@ -20,21 +20,21 @@ import { Button } from 'primeng/button';
   styleUrls: ['./alert.component.scss'],
   imports: [Bind, Button],
 })
-export class AlertComponent implements OnInit, OnDestroy {
+export class AlertComponent implements OnInit {
   private router = inject(Router);
   private alertService = inject(AlertService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly id = input('default-alert');
   readonly fade = input(true);
 
   readonly alerts = signal<Alert[]>([]);
-  alertSubscription!: Subscription;
-  routeSubscription!: Subscription;
 
   ngOnInit() {
     // subscribe to new alert notifications
-    this.alertSubscription = this.alertService
+    this.alertService
       .onAlert(this.id())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((alert) => {
         // clear alerts when an empty alert is received
         if (!alert.message) {
@@ -56,17 +56,13 @@ export class AlertComponent implements OnInit, OnDestroy {
       });
 
     // clear alerts on location change
-    this.routeSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        this.alertService.clear(this.id());
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    // unsubscribe to avoid memory leaks
-    this.alertSubscription.unsubscribe();
-    this.routeSubscription.unsubscribe();
+    this.router.events
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((event) => {
+        if (event instanceof NavigationStart) {
+          this.alertService.clear(this.id());
+        }
+      });
   }
 
   removeAlert(alert: Alert) {

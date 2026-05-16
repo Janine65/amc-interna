@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { HttpHeaders, HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '@environments/environment';
 import {
@@ -15,6 +14,7 @@ import {
   Budget,
 } from '@model/index';
 import { Package } from '@model/user';
+import { EmailBody } from '@app/components/shared/email-dialog/email-dialog.types';
 import { Observable } from 'rxjs';
 
 export interface RetData {
@@ -29,6 +29,12 @@ export interface RetDataFiles extends RetData {
 
 export interface RetDataFile extends RetData {
   data: { filename: string } | undefined;
+}
+
+export interface SheetParameter {
+  jahr: number;
+  type: number;
+  id: number | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -68,13 +74,13 @@ export class BackendService {
     return req;
   }
 
-  downloadFile(filename: string): Observable<any> {
+  downloadFile(filename: string): Observable<HttpResponse<Blob>> {
     const apiURL = this.backendApiUrl + '/files/download?filename=' + filename;
-    const req = new HttpRequest('GET', apiURL, {
+    return this.http.get(apiURL, {
       headers: this.header,
-      responseType: 'blob' as 'json',
+      responseType: 'blob',
+      observe: 'response',
     });
-    return this.http.request(req);
   }
 
   getParameterData(): Observable<RetData> {
@@ -145,7 +151,7 @@ export class BackendService {
       return this.http.patch<RetData>(
         this.backendApiUrl + '/adressen/' + adresse.id,
         body,
-        { headers: this.header }
+        { headers: this.header },
       );
     }
   }
@@ -165,13 +171,12 @@ export class BackendService {
     return this.http.post<RetDataFile>(apiURL, body, { headers: this.header });
   }
 
-  sendEmail(emailbody: any): Observable<RetData> {
+  sendEmail(emailbody: EmailBody): Observable<RetData> {
     const apiURL = this.backendApiUrl + '/adressen/sendmail';
     const body = JSON.stringify(emailbody);
     return this.http.post<RetData>(apiURL, body, { headers: this.header });
   }
 
-  // TODO
   qrBillAdresse(adresse: Adresse): Observable<RetData> {
     const apiURL = this.backendApiUrl + '/adressen/qrbill?id=' + adresse.id;
     return this.http.get<RetData>(apiURL, { headers: this.header });
@@ -181,7 +186,7 @@ export class BackendService {
   getAnlaesseData(
     fromJahr: string,
     toJahr: string,
-    istkegeln: boolean | undefined
+    istkegeln: boolean | undefined,
   ): Observable<RetData> {
     const params = new URLSearchParams();
     params.append('fromJahr', fromJahr);
@@ -220,12 +225,12 @@ export class BackendService {
     });
   }
 
-  getSheet(parameter: any): Observable<RetDataFile> {
+  getSheet(parameter: SheetParameter): Observable<RetDataFile> {
     const params = new URLSearchParams();
-    params.append('jahr', parameter.jahr);
-    params.append('type', parameter.type);
+    params.append('jahr', parameter.jahr.toString());
+    params.append('type', parameter.type.toString());
     if (parameter.id && parameter.id > 0)
-      params.append('adresseId', parameter.id);
+      params.append('adresseId', parameter.id.toString());
     const apiURL =
       this.backendApiUrl + '/anlaesse/writestammblatt?' + params.toString();
     return this.http.get<RetDataFile>(apiURL, { headers: this.header });
@@ -466,7 +471,7 @@ export class BackendService {
     return this.http.get<RetData>(apiURL, { headers: this.header });
   }
 
-  uploadAtt(reciept: string, year: string): Observable<any> {
+  uploadAtt(reciept: string, year: string): Observable<Blob> {
     const params = new URLSearchParams();
     params.append('filename', reciept);
     params.append('year', year);
@@ -474,7 +479,7 @@ export class BackendService {
       this.backendApiUrl + '/receipt/uploadatt?' + params.toString();
     return this.http.get(apiURL, {
       headers: this.header,
-      responseType: 'blob' as 'json',
+      responseType: 'blob',
     });
   }
 
@@ -507,7 +512,7 @@ export class BackendService {
   bulkAddReceipt(
     jahr: string,
     journalid: number,
-    files: string
+    files: string,
   ): Observable<RetDataFiles> {
     const apiURL = this.backendApiUrl + '/receipt/att2journal';
     const body: { uploadfiles: string; year: string; journalId: number } = {

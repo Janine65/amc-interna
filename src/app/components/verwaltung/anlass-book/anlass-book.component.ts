@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
-  AfterViewInit,
   Component,
+  DestroyRef,
   HostListener,
   inject,
   OnInit,
@@ -11,6 +11,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -27,7 +28,7 @@ import {
   DynamicDialogConfig,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
-import { Subscription, from, map, zip } from 'rxjs';
+import { Subscription, map, zip } from 'rxjs';
 import { Bind } from 'primeng/bind';
 import { Toast } from 'primeng/toast';
 import { Splitter } from 'primeng/splitter';
@@ -58,7 +59,7 @@ interface AutoCompleteCompleteEvent {
     Toolbar,
   ],
 })
-export class AnlassBookComponent implements OnInit, AfterViewInit {
+export class AnlassBookComponent implements OnInit {
   private backendService = inject(BackendService);
   ref = inject(DynamicDialogRef);
   config = inject(DynamicDialogConfig);
@@ -114,9 +115,8 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
   lstAdressen: Adresse[] = [];
   readonly lstFilteredAdressen = signal<Adresse[]>([]);
   selAdresse?: number;
-  subs!: Subscription;
-  dialogRef!: DynamicDialogRef;
   subFields: Subscription[] = [];
+  private readonly destroyRef = inject(DestroyRef);
 
   public objHeight$ = signal('0px');
   public objHeightE$ = signal('0px');
@@ -164,10 +164,6 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     this.getScreenHeight = window.innerHeight;
-    console.log(
-      'getScreenWidth: ' + this.getScreenWidth,
-      'getScreenHeight' + this.getScreenHeight,
-    );
     this.getHeight();
   }
 
@@ -189,22 +185,21 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
           this.lstAdressen.forEach(
             (adr) => (adr.fullname = adr.vorname + ' ' + adr.name),
           );
-          console.log(this.lstAdressen);
         }),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe();
   }
-  ngAfterViewInit(): void {
-    setTimeout(() => (this.teilnehmerObject().focused = true));
+  private focusTeilnehmer() {
+    const ac = this.teilnehmerObject();
+    const el = ac.inputEL?.nativeElement as HTMLInputElement | undefined;
+    if (el) el.focus();
+    ac.focused = true;
   }
 
   ngOnInit(): void {
     this.getScreenWidth = window.innerWidth;
     this.getScreenHeight = window.innerHeight;
-    console.log(
-      'getScreenWidth: ' + this.getScreenWidth,
-      'getScreenHeight' + this.getScreenHeight,
-    );
     this.getHeight();
   }
 
@@ -242,7 +237,6 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
 
   private getHeight() {
     this.objHeight$.set((this.getScreenHeight - 700).toFixed(0) + 'px');
-    console.log('objHeight$: ' + this.objHeight$());
     this.objHeightE$.set((this.getScreenHeight - 550).toFixed(0) + 'px');
   }
 
@@ -302,7 +296,7 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
     this.lstFilteredAdressen.set([]);
 
     this.teilnehmername.reset(null);
-    this.teilnehmerObject().focused = true;
+    this.focusTeilnehmer();
     this.setDisabled(true);
   }
 
@@ -356,7 +350,7 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
       return;
     }
     this.teilnehmername.setValue(adr);
-    this.teilnehmerObject().focused = true;
+    this.focusTeilnehmer();
     this.patchFields();
     this.fgMeisterschaft.markAsUntouched({ onlySelf: false });
 
@@ -365,23 +359,7 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
       this.renderer.selectRootElement('#wurf1').focus();
     else this.renderer.selectRootElement('#punkte').focus();
 
-    if (this.anlass.istkegeln) {
-      this.subFields.push(
-        this.wurf1.valueChanges.subscribe(() => this.inputWurf(1)),
-      );
-      this.subFields.push(
-        this.wurf2.valueChanges.subscribe(() => this.inputWurf(2)),
-      );
-      this.subFields.push(
-        this.wurf3.valueChanges.subscribe(() => this.inputWurf(3)),
-      );
-      this.subFields.push(
-        this.wurf4.valueChanges.subscribe(() => this.inputWurf(4)),
-      );
-      this.subFields.push(
-        this.wurf5.valueChanges.subscribe(() => this.inputWurf(5)),
-      );
-    }
+    this.subscribeWurfChanges();
   }
 
   selectTeilnehmer(adr: Adresse) {
@@ -411,23 +389,7 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
       this.renderer.selectRootElement('#wurf1').focus();
     else this.renderer.selectRootElement('#punkte').focus();
 
-    if (this.anlass.istkegeln) {
-      this.subFields.push(
-        this.wurf1.valueChanges.subscribe(() => this.inputWurf(1)),
-      );
-      this.subFields.push(
-        this.wurf2.valueChanges.subscribe(() => this.inputWurf(2)),
-      );
-      this.subFields.push(
-        this.wurf3.valueChanges.subscribe(() => this.inputWurf(3)),
-      );
-      this.subFields.push(
-        this.wurf4.valueChanges.subscribe(() => this.inputWurf(4)),
-      );
-      this.subFields.push(
-        this.wurf5.valueChanges.subscribe(() => this.inputWurf(5)),
-      );
-    }
+    this.subscribeWurfChanges();
   }
 
   searchTeilnehmer(event: AutoCompleteCompleteEvent) {
@@ -442,7 +404,8 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
     const filtered = this.lstAdressen.filter((adr) => {
       let match = false;
       lstString.forEach((text) => {
-        const regex = new RegExp(text, 'i');
+        const escaped = text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escaped, 'i');
         const matchL = adr.name!.match(regex);
         const matchV = adr.vorname!.match(regex);
         if (matchL || matchV) match = true;
@@ -461,6 +424,15 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
   unsubscribeList() {
     this.subFields.forEach((sub) => sub.unsubscribe());
     this.subFields = [];
+  }
+
+  private subscribeWurfChanges() {
+    if (!this.anlass.istkegeln) return;
+    for (let i = 1; i <= 5; i++) {
+      const ctrl = this.fgMeisterschaft.get('wurf' + i);
+      if (!ctrl) continue;
+      this.subFields.push(ctrl.valueChanges.subscribe(() => this.inputWurf(i)));
+    }
   }
 
   patchFields() {
@@ -518,22 +490,24 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
       this.backendService.addMeisterschaft(this.newMeisterschaft).subscribe({
         next: () => {
           this.clearTeilnehmer();
-          this.subs = from(
-            this.backendService.getMeisterschaft(this.anlass.id!),
-          ).subscribe((list) => {
-            this.lstMeisterschaft.set(list.data as Meisterschaft[]);
-          });
+          this.backendService
+            .getMeisterschaft(this.anlass.id!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((list) => {
+              this.lstMeisterschaft.set(list.data as Meisterschaft[]);
+            });
         },
       });
     } else {
       this.backendService.updMeisterschaft(this.newMeisterschaft).subscribe({
         next: () => {
           this.clearTeilnehmer();
-          this.subs = from(
-            this.backendService.getMeisterschaft(this.anlass.id!),
-          ).subscribe((list) => {
-            this.lstMeisterschaft.set(list.data as Meisterschaft[]);
-          });
+          this.backendService
+            .getMeisterschaft(this.anlass.id!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((list) => {
+              this.lstMeisterschaft.set(list.data as Meisterschaft[]);
+            });
         },
       });
     }

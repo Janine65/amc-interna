@@ -120,7 +120,6 @@ export class ListComponent implements OnInit {
     ]);
 
     this.accountService.getAll().subscribe((list) => {
-      console.log('got value ' + list);
       this.userList.set(list.data as User[]);
       this.loading.set(false);
     });
@@ -129,7 +128,6 @@ export class ListComponent implements OnInit {
   addUser = () => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: ListComponent = this;
-    console.log('Register User');
     const newUser = new User();
     newUser.role = 'user';
 
@@ -150,7 +148,6 @@ export class ListComponent implements OnInit {
     thisRef.dialogRef.onClose.subscribe((user: User) => {
       if (user) {
         this.userList.set([...this.userList(), user]);
-        console.log(user);
       }
     });
   };
@@ -158,7 +155,6 @@ export class ListComponent implements OnInit {
   editUser = (selRec?: TableData | undefined) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: ListComponent = this;
-    console.log('Benutzer anpassen', selRec);
     const newUser = structuredClone(selRec);
 
     thisRef.dialogRef = thisRef.dialogService.open(AddEditComponent, {
@@ -183,7 +179,6 @@ export class ListComponent implements OnInit {
             .userList()
             .map((obj) => [user].find((o) => o.id === obj.id) || obj),
         );
-        console.log(user);
       }
     });
   };
@@ -191,7 +186,6 @@ export class ListComponent implements OnInit {
   delUser = (selRec?: TableData) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: ListComponent = this;
-    console.log('Delete User');
     thisRef.confirmationService.confirm({
       message: 'Bist Du sicher, dass du diesen Benutzer löschen willst?',
       accept: () => {

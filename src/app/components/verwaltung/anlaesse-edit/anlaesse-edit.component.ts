@@ -81,8 +81,6 @@ export class AnlaesseEditComponent implements OnInit {
         }[];
         this.dlstFKAnlaesse.set(dlst);
 
-        console.log(dlst);
-
         if (this.anlass.anlaesseid) {
           const fFK = dlst.find((entry) => entry.id == this.anlass.anlaesseid);
           if (fFK) this.selFKAnlaesse = fFK;
@@ -123,7 +121,6 @@ export class AnlaesseEditComponent implements OnInit {
         : this.backendService.updAnlaesseData(this.anlass);
     prom.subscribe({
       next: (anl) => {
-        console.log(anl);
         this.ref.close(anl.data as Anlass);
       },
     });

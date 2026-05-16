@@ -80,7 +80,6 @@ export class AdresseEditComponent {
         const fFK = data.find((entry) => entry.id == this.adresse.adressenid);
         if (fFK) this.selFKAdressen = fFK;
       }
-      console.log(data);
     });
   }
 
@@ -291,7 +290,6 @@ export class AdresseEditComponent {
   }
   exportEmpty = () => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
-    console.log('Datenblatt leer für Adresse erstellen');
     const str = localStorage.getItem('parameter');
     const parameter: ParamData[] = str ? (JSON.parse(str) as ParamData[]) : [];
     const paramJahr = parameter.find(
@@ -323,7 +321,6 @@ export class AdresseEditComponent {
   };
   exportFull = () => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
-    console.log('Datenblatt voll für alle erstellen');
     const str = localStorage.getItem('parameter');
     const parameter: ParamData[] = str ? (JSON.parse(str) as ParamData[]) : [];
     const paramJahr = parameter.find(

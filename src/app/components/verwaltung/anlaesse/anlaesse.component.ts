@@ -213,7 +213,14 @@ export class AnlaesseComponent implements OnInit {
       },
     ]);
 
-    this.selJahr = new Date().getFullYear();
+    const str = localStorage.getItem('parameter');
+    const parameter = str ? JSON.parse(str) : [];
+    const paramJahr = parameter.find((param) => param.key === 'CLUBJAHR');
+    const jahr = paramJahr?.value
+      ? Number(paramJahr.value)
+      : new Date().getFullYear();
+
+    this.selJahr = jahr;
     this.selJahre.set([
       { label: (this.selJahr - 1).toString(), value: this.selJahr - 1 },
       { label: this.selJahr.toString(), value: this.selJahr },
@@ -260,7 +267,6 @@ export class AnlaesseComponent implements OnInit {
   addAnlass = (_selRec?: Anlass, _lstData?: Anlass[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
     const thisRef: AnlaesseComponent = this;
-    console.log('Neuer Anlass erfassen');
     thisRef.messageService.clear();
     const newAnl = new Anlass();
     newAnl.datum_date = new Date();
@@ -286,7 +292,6 @@ export class AnlaesseComponent implements OnInit {
 
         thisRef.anlaesseListAll.push(anlass);
         thisRef.chgJahr();
-        console.log(anlass);
       }
     });
   };
@@ -294,7 +299,6 @@ export class AnlaesseComponent implements OnInit {
   editAnlass = (selRec?: Anlass, _lstData?: Anlass[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
     const thisRef: AnlaesseComponent = this;
-    console.log('Anlass ändern', selRec);
     thisRef.messageService.clear();
 
     thisRef.dialogRef = thisRef.dialogService.open(AnlaesseEditComponent, {
@@ -318,7 +322,6 @@ export class AnlaesseComponent implements OnInit {
           (obj) => [anlass].find((o) => o.id === obj.id) || obj,
         );
         thisRef.chgJahr();
-        console.log(anlass);
       }
     });
   };
@@ -326,7 +329,6 @@ export class AnlaesseComponent implements OnInit {
   copyAnlass = (selRec?: Anlass, _lstData?: Anlass[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
     const thisRef: AnlaesseComponent = this;
-    console.log('Anlass kopieren', selRec);
     thisRef.messageService.clear();
     const newAnl = structuredClone(selRec);
     newAnl.id = undefined;
@@ -357,7 +359,6 @@ export class AnlaesseComponent implements OnInit {
 
         thisRef.anlaesseListAll.push(anlass);
         thisRef.chgJahr();
-        console.log(anlass);
       }
     });
   };
@@ -365,7 +366,6 @@ export class AnlaesseComponent implements OnInit {
   delAnlass = (selRec?: Anlass, _lstData?: Anlass[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
     const thisRef: AnlaesseComponent = this;
-    console.log('Anlass löschen', selRec);
     thisRef.messageService.clear();
 
     thisRef.backendService.delAnlaesseData(selRec).subscribe({
@@ -388,7 +388,6 @@ export class AnlaesseComponent implements OnInit {
   doAnlass = (selRec?: Anlass, _lstData?: Anlass[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
     const thisRef: AnlaesseComponent = this;
-    console.log('Anlass buchen', selRec);
     thisRef.messageService.clear();
 
     const longname =
@@ -404,6 +403,7 @@ export class AnlaesseComponent implements OnInit {
       modal: true,
       maximizable: true,
       draggable: true,
+      focusOnShow: false,
     });
     thisRef.dialogRef.onClose.subscribe();
   };
@@ -411,7 +411,6 @@ export class AnlaesseComponent implements OnInit {
   exportOne = (_selRec?: Anlass, _lstData?: Anlass[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
     const thisRef: AnlaesseComponent = this;
-    console.log('Datenblatt erstellen');
     from(
       this.backendService.getSheet({ jahr: this.selJahr, type: 0, id: null }),
     ).subscribe((response) => {
@@ -436,7 +435,6 @@ export class AnlaesseComponent implements OnInit {
   exportAllEmpty = (_selRec?: Anlass, _lstData?: Anlass[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
     const thisRef: AnlaesseComponent = this;
-    console.log('Datenblatt leer für alle erstellen');
     from(
       this.backendService.getSheet({ jahr: this.selJahr, type: 1, id: 0 }),
     ).subscribe((response) => {
@@ -460,7 +458,6 @@ export class AnlaesseComponent implements OnInit {
   exportAllFull = (_selRec?: Anlass, _lstData?: Anlass[]) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
     const thisRef: AnlaesseComponent = this;
-    console.log('Datenblatt voll für alle erstellen');
     from(
       this.backendService.getSheet({ jahr: this.selJahr, type: 2, id: 0 }),
     ).subscribe((response) => {

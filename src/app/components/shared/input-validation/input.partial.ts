@@ -4,7 +4,6 @@ import {
   Component,
   forwardRef,
   Input,
-  ViewEncapsulation,
   input,
   contentChild,
 } from '@angular/core';
@@ -14,8 +13,6 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 @Component({
   selector: 'cr-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: 'input.css',
-  encapsulation: ViewEncapsulation.None,
   template: `
     <div
       class="{{ cssPrefix() }}-field {{ typeCss }}"

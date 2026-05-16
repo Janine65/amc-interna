@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Account, Fiscalyear, Journal, ParamData } from '@model/datatypes';
-import { BackendService } from '@app/service';
+import { BackendService, RetData } from '@app/service';
 import {
   TableOptions,
   TableToolbar,
@@ -542,7 +542,6 @@ export class JournalComponent implements OnInit {
   showAtt = (selRec?: Journal) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: JournalComponent = this;
-    console.log('Show Attachement');
     thisRef.messageService.clear();
 
     if (selRec) {
@@ -567,7 +566,6 @@ export class JournalComponent implements OnInit {
   showAllAtt = () => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: JournalComponent = this;
-    console.log('Show All Attachement');
     thisRef.messageService.clear();
     thisRef.dialogRef = thisRef.dialogService.open(AttachementListComponent, {
       data: {
@@ -589,20 +587,17 @@ export class JournalComponent implements OnInit {
   editJournal = (selRec?: Journal) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: JournalComponent = this;
-    console.log('Edit Journal');
     thisRef.messageService.clear();
     thisRef.clearFields();
     thisRef.editMode.set(true);
     if (selRec) {
       Object.assign(thisRef.selJournal, selRec);
-      console.log(thisRef.selJournal);
     }
   };
 
   delJournal = (selRec?: Journal) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: JournalComponent = this;
-    console.log('Del Journal');
     thisRef.messageService.clear();
     this.clearFields();
 
@@ -618,7 +613,6 @@ export class JournalComponent implements OnInit {
   addJournal = () => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: JournalComponent = this;
-    console.log('New Journal');
     this.clearFields();
     thisRef.messageService.clear();
     this.addMode.set(true);
@@ -627,7 +621,6 @@ export class JournalComponent implements OnInit {
   copyJournal = (selRec?: Journal) => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisRef: JournalComponent = this;
-    console.log('Copy Journal');
     this.clearFields();
     thisRef.messageService.clear();
     this.addMode.set(true);
@@ -644,8 +637,7 @@ export class JournalComponent implements OnInit {
     this.selJournal = {};
   }
   save() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let sub: Observable<any>;
+    let sub: Observable<RetData>;
 
     this.selJournal.from_account =
       this.selJournal.account_journal_from_accountToaccount?.id;

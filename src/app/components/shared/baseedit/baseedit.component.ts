@@ -1,6 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import { TableData } from '../basetable/basetable.component';
-import {DialogService} from 'primeng/dynamicdialog';
+import { DialogService } from 'primeng/dynamicdialog';
 import { Bind } from 'primeng/bind';
 import { ScrollPanel } from 'primeng/scrollpanel';
 import { NgSwitch, NgClass } from '@angular/common';
@@ -12,7 +12,6 @@ import { ButtonDirective } from 'primeng/button';
 
 export class EditOptions {
   public title?: string;
-
 }
 
 export class EditFields {
@@ -27,8 +26,17 @@ export class EditToolbar {
   public btnClass: string;
   public icon: string;
   public isDefault: boolean;
-  public clickfnc: ((selRec?: TableData, lstData?: TableData[]) => void);
-  constructor(label: string, btnClass: string, icon: string, isDefault: boolean, clickfnc: (selRec?: TableData | undefined, lstData?: TableData[] | undefined) => void) {
+  public clickfnc: (selRec?: TableData, lstData?: TableData[]) => void;
+  constructor(
+    label: string,
+    btnClass: string,
+    icon: string,
+    isDefault: boolean,
+    clickfnc: (
+      selRec?: TableData | undefined,
+      lstData?: TableData[] | undefined,
+    ) => void,
+  ) {
     this.label = label;
     this.btnClass = btnClass;
     this.icon = icon;
@@ -38,12 +46,21 @@ export class EditToolbar {
 }
 
 @Component({
-    selector: 'app-baseedit',
-    templateUrl: './baseedit.component.html',
-    styleUrls: ['./baseedit.component.scss'],
-    imports: [Bind, ScrollPanel, NgSwitch, InputText, InputNumber, DatePicker, Toolbar, ButtonDirective, NgClass]
+  selector: 'app-baseedit',
+  templateUrl: './baseedit.component.html',
+  styleUrls: ['./baseedit.component.scss'],
+  imports: [
+    Bind,
+    ScrollPanel,
+    NgSwitch,
+    InputText,
+    InputNumber,
+    DatePicker,
+    Toolbar,
+    ButtonDirective,
+    NgClass,
+  ],
 })
-
 export class BaseeditComponent {
   dialogService = inject(DialogService);
 
@@ -52,10 +69,9 @@ export class BaseeditComponent {
   readonly editToolbar = input<EditToolbar[]>([]);
   readonly editData = input<TableData>({});
 
-  clickOnToolbar(ind: number) {      
+  clickOnToolbar(ind: number) {
     const editToolbar = this.editToolbar();
     if (editToolbar) {
-      console.log(`Button ${editToolbar[ind].label} pressed`);
       editToolbar[ind].clickfnc(this.editData());
     }
   }
