@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { commonTestProviders } from '@app/testing/test-providers';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 import { EmailDialogComponent } from './email-dialog.component';
 
@@ -8,9 +10,25 @@ describe('EmailDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EmailDialogComponent ]
-    })
-    .compileComponents();
+      imports: [EmailDialogComponent],
+      providers: [
+        ...commonTestProviders,
+        {
+          provide: DynamicDialogConfig,
+          useValue: {
+            data: {
+              emailBody: {
+                email_an: '',
+                email_cc: '',
+                email_bcc: '',
+                email_subject: '',
+                email_body: '',
+              },
+            },
+          },
+        },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(EmailDialogComponent);
     component = fixture.componentInstance;

@@ -1,8 +1,8 @@
 <p-scrollPanel [style]="{ width: '100%', height: '80%' }">
   <form [formGroup]="fg" autocomplete="off" (ngSubmit)="save()">
     <div class="card">
-      <div class="formgrid grid">
-        <div class="field col-12 md:col-6">
+      <div class="flex flex-wrap">
+        <div class="mb-4 w-full md:w-1/2">
           <label for="name">Name</label>
           <cr-input>
             <input
@@ -13,10 +13,10 @@
               class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
               [minlength]="3"
               required
-            />
+              />
           </cr-input>
         </div>
-        <div class="field col-12 md:col-6">
+        <div class="mb-4 w-full md:w-1/2">
           <label for="email">Email</label>
           <cr-input>
             <input
@@ -29,70 +29,76 @@
               autocomplete="off"
               required
               class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
-            />
+              />
           </cr-input>
         </div>
-        <div *ngIf="withRole" class="formgroup-inline field col-12">
-          <div class="field-radiobutton">
-            <p-radioButton
-              formControlName="role"
-              value="user"
-              inputId="user"
-            ></p-radioButton>
-            <label for="user">User</label>
+        @if (withRole) {
+          <div class="flex items-center flex-wrap mb-4 w-full">
+            <div class="flex items-center gap-2 mb-2">
+              <p-radioButton
+                formControlName="role"
+                value="user"
+                inputId="user"
+              ></p-radioButton>
+              <label for="user">User</label>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <p-radioButton
+                formControlName="role"
+                value="revisor"
+                inputId="revisor"
+              ></p-radioButton>
+              <label for="revisor">Revisor</label>
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <p-radioButton
+                formControlName="role"
+                value="admin"
+                inputId="admin"
+              ></p-radioButton>
+              <label for="admin">Admin</label>
+            </div>
           </div>
-          <div class="field-radiobutton">
-            <p-radioButton
-              formControlName="role"
-              value="revisor"
-              inputId="revisor"
-            ></p-radioButton>
-            <label for="revisor">Revisor</label>
+        }
+        @if (wihtPwd) {
+          <div class="mb-4 w-full md:w-1/2">
+            <label for="passwordN">Passwort</label>
+            <cr-input placeholder="Passwort">
+              <input
+                crinput
+                crpattern="password"
+                pPassword
+                toggleMask="true"
+                formControlName="passwordN"
+                type="password"
+                autocomplete="off"
+                required
+                class="w-full"
+                />
+            </cr-input>
           </div>
-          <div class="field-radiobutton">
-            <p-radioButton
-              formControlName="role"
-              value="admin"
-              inputId="admin"
-            ></p-radioButton>
-            <label for="admin">Admin</label>
+        }
+        @if (wihtPwd) {
+          <div class="mb-4 w-full md:w-1/2">
+            <label for="passwordV">Passwort wiederholen</label>
+            <cr-input placeholder="Passwort wiederholen">
+              <input
+                crinput
+                crpattern="password"
+                pPassword
+                toggleMask="true"
+                type="password"
+                validator="matchPassword"
+                [params]="fg?.get('passwordN')"
+                formControlName="passwordV"
+                autocomplete="off"
+                required
+                class="w-full"
+                />
+              <ng-container helptext>Passwort wiederholen</ng-container>
+            </cr-input>
           </div>
-        </div>
-        <div *ngIf="wihtPwd" class="field col-12 md:col-6">
-          <label for="passwordN">Passwort</label>
-          <cr-input placeholder="Passwort">
-            <input
-              crinput
-              crpattern="password"
-              pPassword
-              toggleMask="true"
-              formControlName="passwordN"
-              type="password"
-              autocomplete="off"
-              required
-              class="w-full"
-            />
-          </cr-input>
-        </div>
-        <div *ngIf="wihtPwd" class="field col-12 md:col-6">
-          <label for="passwordV">Passwort wiederholen</label>
-          <cr-input placeholder="Passwort wiederholen">
-            <input
-              crinput
-              crpattern="password"
-              pPassword
-              toggleMask="true"
-              type="password"
-              validator="matchPassword"
-              [params]="fg?.get('passwordN')"
-              formControlName="passwordV"
-              autocomplete="off"
-              required
-              class="w-full"
-            />
-            <ng-container helptext>Passwort wiederholen</ng-container>
-          </cr-input>
-        </div>
+        }
       </div>
     </div>
   </form>
@@ -106,15 +112,16 @@
     class="p-button-secondary p-button-outlined"
     (click)="back()"
   ></button>
-  <button
-    *ngIf="!wihtPwd && user.id! > 0"
-    pButton
-    type="button"
-    label="Neues Passwort"
-    icon="pi pi-slack"
-    class="p-button-secondary p-button-outlined"
-    (click)="newPwd()"
-  ></button>
+  @if (!wihtPwd && user.id! > 0) {
+    <button
+      pButton
+      type="button"
+      label="Neues Passwort"
+      icon="pi pi-slack"
+      class="p-button-secondary p-button-outlined"
+      (click)="newPwd()"
+    ></button>
+  }
   <button
     pButton
     type="button"

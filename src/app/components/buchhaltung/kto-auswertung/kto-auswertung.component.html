@@ -3,7 +3,7 @@
     <label for="seljahr" class="mr-1">Jahr wählen</label>
     <p-select
       id="seljahr"
-      [options]="selJahre"
+      [options]="selJahre()"
       [(ngModel)]="selJahr"
       (onChange)="chgJahr()"
     ></p-select>
@@ -23,91 +23,99 @@
     </p-tablist>
     <p-tabpanels>
       <p-tabpanel value="0">
-        <div class="grid grid-nogutter">
-          <div class="mb-1 col-12 md:col-6">
+        <div class="flex flex-wrap">
+          <div class="mb-1 w-full md:w-1/2">
             <div class="card" style="width: 100%">
               <h2>Aktiven</h2>
-              <div class="grid">
-                <div class="col-6 font-bold">Konto</div>
-                <div class="col-6 font-bold" style="text-align: right">
+              <div class="flex flex-wrap">
+                <div class="w-1/2 font-bold">Konto</div>
+                <div class="w-1/2 font-bold" style="text-align: right">
                   Betrag
                 </div>
                 <p-dataView
                   #aktiv
-                  [value]="lstAktivNodes"
-                  class="border-none"
+                  [value]="lstAktivNodes()"
+                  class="w-full border-0"
                   layout="list"
                 >
-                  <ng-template let-data #list>
-                    <div class="grid grid-nogutter border-none">
-                      <div
-                        *ngFor="let item of data; let ind = index"
-                        class="col-12"
-                      >
-                        <div
-                          class="flex flex-column sm:flex-row sm:align-items-center"
-                          [ngClass]="'auswList-' + (ind % 2)"
-                        >
-                          <div class="col-12 md:col-1">
-                            <div *ngIf="item.order > 0" [class]="item.$css">
-                              {{ item.order }}
+                  <ng-template #list let-data>
+                    <div class="flex flex-wrap border-0">
+                      @for (item of data; track item; let ind = $index) {
+                        <div class="w-full">
+                          <div
+                            class="flex flex-col sm:flex-row sm:items-center"
+                            [ngClass]="'auswList-' + (ind % 2)"
+                          >
+                            <div class="w-full md:w-1/12">
+                              @if (item.order > 0) {
+                                <div [class]="item.$css">
+                                  {{ item.order }}
+                                </div>
+                              }
                             </div>
-                          </div>
-                          <div class="col-12 md:col-5">
-                            <div [class]="item.$css">{{ item.name }}</div>
-                          </div>
-                          <div class="col-12 md:col-6">
-                            <div style="text-align: right" [class]="item.$css">
-                              {{ item.amount | number : "1.2-2" }}
+                            <div class="w-full md:w-5/12">
+                              <div [class]="item.$css">{{ item.name }}</div>
+                            </div>
+                            <div class="w-full md:w-1/2">
+                              <div
+                                style="text-align: right"
+                                [class]="item.$css"
+                              >
+                                {{ item.amount | number: "1.2-2" }}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      }
                     </div>
                   </ng-template>
                 </p-dataView>
               </div>
             </div>
           </div>
-          <div class="mb-1 col-12 md:col-6">
+          <div class="mb-1 w-full md:w-1/2">
             <div class="card" style="width: 100%">
               <h2>Passiven</h2>
-              <div class="grid">
-                <div class="col-6 font-bold">Konto</div>
-                <div class="col-6 font-bold" style="text-align: right">
+              <div class="flex flex-wrap">
+                <div class="w-1/2 font-bold">Konto</div>
+                <div class="w-1/2 font-bold" style="text-align: right">
                   Betrag
                 </div>
                 <p-dataView
                   #passiv
-                  [value]="lstPassivNodes"
-                  class="border-none"
+                  [value]="lstPassivNodes()"
+                  class="w-full border-0"
                   layout="list"
                 >
-                  <ng-template let-data #list>
-                    <div class="grid grid-nogutter border-none">
-                      <div
-                        *ngFor="let item of data; let ind = index"
-                        class="col-12"
-                      >
-                        <div
-                          class="flex flex-column sm:flex-row sm:align-items-center"
-                          [ngClass]="'auswList-' + (ind % 2)"
-                        >
-                          <div class="col-12 md:col-1">
-                            <div *ngIf="item.order > 0" [class]="item.$css">
-                              {{ item.order }}
+                  <ng-template #list let-data>
+                    <div class="flex flex-wrap border-0">
+                      @for (item of data; track item; let ind = $index) {
+                        <div class="w-full">
+                          <div
+                            class="flex flex-col sm:flex-row sm:items-center"
+                            [ngClass]="'auswList-' + (ind % 2)"
+                          >
+                            <div class="w-full md:w-1/12">
+                              @if (item.order > 0) {
+                                <div [class]="item.$css">
+                                  {{ item.order }}
+                                </div>
+                              }
                             </div>
-                          </div>
-                          <div class="col-12 md:col-5">
-                            <div [class]="item.$css">{{ item.name }}</div>
-                          </div>
-                          <div class="col-12 md:col-6">
-                            <div style="text-align: right" [class]="item.$css">
-                              {{ item.amount | number : "1.2-2" }}
+                            <div class="w-full md:w-5/12">
+                              <div [class]="item.$css">{{ item.name }}</div>
+                            </div>
+                            <div class="w-full md:w-1/2">
+                              <div
+                                style="text-align: right"
+                                [class]="item.$css"
+                              >
+                                {{ item.amount | number: "1.2-2" }}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      }
                     </div>
                   </ng-template>
                 </p-dataView>
@@ -117,124 +125,143 @@
         </div>
       </p-tabpanel>
       <p-tabpanel value="1">
-        <div class="grid grid-nogutter">
-          <div class="mb-1 col-12 md:col-6">
+        <div class="flex flex-wrap">
+          <div class="mb-1 w-full md:w-1/2">
             <div class="card" style="width: 100%">
               <h2>Aufwand</h2>
-              <div class="grid">
-                <div class="col-6 font-bold">Konto</div>
-                <div class="col-2 font-bold" style="text-align: right">
+              <div class="flex flex-wrap border-0">
+                <div class="w-1/2 font-bold">Konto</div>
+                <div class="w-1/6 font-bold" style="text-align: right">
                   Betrag
                 </div>
-                <div class="col-2 font-bold" style="text-align: right">
+                <div class="w-1/6 font-bold" style="text-align: right">
                   Budget
                 </div>
-                <div class="col-2 font-bold" style="text-align: right">
+                <div class="w-1/6 font-bold" style="text-align: right">
                   Diff
                 </div>
                 <p-dataView
                   #aufwand
-                  [value]="lstAufwandNodes"
-                  class="border-none"
+                  [value]="lstAufwandNodes()"
+                  class="w-full border-0"
                   layout="list"
-                  class="mr-4"
                 >
-                  <ng-template let-data #list>
-                    <div class="grid grid-nogutter border-none">
-                      <div
-                        *ngFor="let item of data; let ind = index"
-                        class="col-12"
-                      >
-                        <div
-                          class="flex flex-column sm:flex-row sm:align-items-center"
-                          [ngClass]="'auswList-' + (ind % 2)"
-                        >
-                          <div class="col-12 md:col-1">
-                            <div *ngIf="item.order > 0" [class]="item.$css">
-                              {{ item.order }}
+                  <ng-template #list let-data>
+                    <div class="flex flex-wrap border-0">
+                      @for (item of data; track item; let ind = $index) {
+                        <div class="w-full">
+                          <div
+                            class="flex flex-col sm:flex-row sm:items-center"
+                            [ngClass]="'auswList-' + (ind % 2)"
+                          >
+                            <div class="md:w-1/12">
+                              @if (item.order > 0) {
+                                <div [class]="item.$css">
+                                  {{ item.order }}
+                                </div>
+                              }
                             </div>
-                          </div>
-                          <div class="col-12 md:col-5">
-                            <div [class]="item.$css">{{ item.name }}</div>
-                          </div>
-                          <div class="col-12 md:col-2">
-                            <div style="text-align: right" [class]="item.$css">
-                              {{ item.amount | number : "1.2-2" }}
+                            <div class="md:w-5/12">
+                              <div [class]="item.$css">{{ item.name }}</div>
                             </div>
-                          </div>
-                          <div class="col-12 md:col-2">
-                            <div style="text-align: right" [class]="item.$css">
-                              {{ item.budget | number : "1.2-2" }}
+                            <div class="w-full md:w-1/6">
+                              <div
+                                style="text-align: right"
+                                [class]="item.$css"
+                              >
+                                {{ item.amount | number: "1.2-2" }}
+                              </div>
                             </div>
-                          </div>
-                          <div class="col-12 md:col-2">
-                            <div style="text-align: right" [class]="item.$css">
-                              {{ item.diff | number : "1.2-2" }}
+                            <div class="w-full md:w-1/6">
+                              <div
+                                style="text-align: right"
+                                [class]="item.$css"
+                              >
+                                {{ item.budget | number: "1.2-2" }}
+                              </div>
+                            </div>
+                            <div class="w-full md:w-1/6">
+                              <div
+                                style="text-align: right"
+                                [class]="item.$css"
+                              >
+                                {{ item.diff | number: "1.2-2" }}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      }
                     </div>
                   </ng-template>
                 </p-dataView>
               </div>
             </div>
           </div>
-          <div class="mb-1 col-12 md:col-6">
+          <div class="mb-1 w-full md:w-1/2">
             <div class="card" style="width: 100%">
               <h2>Ertrag</h2>
-              <div class="grid">
-                <div class="col-6 font-bold">Konto</div>
-                <div class="col-2 font-bold" style="text-align: right">
+              <div class="flex flex-wrap">
+                <div class="w-1/2 font-bold">Konto</div>
+                <div class="w-1/6 font-bold" style="text-align: right">
                   Betrag
                 </div>
-                <div class="col-2 font-bold" style="text-align: right">
+                <div class="w-1/6 font-bold" style="text-align: right">
                   Budget
                 </div>
-                <div class="col-2 font-bold" style="text-align: right">
+                <div class="w-1/6 font-bold" style="text-align: right">
                   Diff
                 </div>
                 <p-dataView
                   #ertrag
-                  [value]="lstErfolgNodes"
-                  class="border-none"
+                  [value]="lstErfolgNodes()"
+                  class="w-full border-0"
                   layout="list"
                 >
-                  <ng-template let-data #list>
-                    <div class="grid grid-nogutter border-none">
-                      <div
-                        *ngFor="let item of data; let ind = index"
-                        class="col-12"
-                      >
-                        <div
-                          class="flex flex-column sm:flex-row sm:align-items-center"
-                          [ngClass]="'auswList-' + (ind % 2)"
-                        >
-                          <div class="col-12 md:col-1">
-                            <div *ngIf="item.order > 0" [class]="item.$css">
-                              {{ item.order }}
+                  <ng-template #list let-data>
+                    <div class="flex flex-wrap border-0">
+                      @for (item of data; track item; let ind = $index) {
+                        <div class="w-full">
+                          <div
+                            class="flex flex-col sm:flex-row sm:items-center"
+                            [ngClass]="'auswList-' + (ind % 2)"
+                          >
+                            <div class="w-full md:w-1/12">
+                              @if (item.order > 0) {
+                                <div [class]="item.$css">
+                                  {{ item.order }}
+                                </div>
+                              }
                             </div>
-                          </div>
-                          <div class="col-12 md:col-5">
-                            <div [class]="item.$css">{{ item.name }}</div>
-                          </div>
-                          <div class="col-12 md:col-2">
-                            <div style="text-align: right" [class]="item.$css">
-                              {{ item.amount | number : "1.2-2" }}
+                            <div class="w-full md:w-5/12">
+                              <div [class]="item.$css">{{ item.name }}</div>
                             </div>
-                          </div>
-                          <div class="col-12 md:col-2">
-                            <div style="text-align: right" [class]="item.$css">
-                              {{ item.budget | number : "1.2-2" }}
+                            <div class="w-full md:w-1/6">
+                              <div
+                                style="text-align: right"
+                                [class]="item.$css"
+                              >
+                                {{ item.amount | number: "1.2-2" }}
+                              </div>
                             </div>
-                          </div>
-                          <div class="col-12 md:col-2">
-                            <div style="text-align: right" [class]="item.$css">
-                              {{ item.diff | number : "1.2-2" }}
+                            <div class="w-full md:w-1/6">
+                              <div
+                                style="text-align: right"
+                                [class]="item.$css"
+                              >
+                                {{ item.budget | number: "1.2-2" }}
+                              </div>
+                            </div>
+                            <div class="w-full md:w-1/6">
+                              <div
+                                style="text-align: right"
+                                [class]="item.$css"
+                              >
+                                {{ item.diff | number: "1.2-2" }}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      }
                     </div>
                   </ng-template>
                 </p-dataView>

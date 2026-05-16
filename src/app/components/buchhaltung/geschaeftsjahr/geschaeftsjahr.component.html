@@ -1,67 +1,99 @@
 <p-splitter [panelSizes]="[60, 40]" styleClass="mb-1">
-    <ng-template pTemplate>
-        <div class="card" style="width: 100%;">
-            <app-basetable [tableOptions]="cols" [tableData]="lstFiscalyear" [formatFunction]="formatField"
-                [tableToolbar]="toolbar" localStorage="fiscalyear">
-            </app-basetable>
-        </div>
-    </ng-template>
-    <ng-template pTemplate=>
-        <div class="card" style="width: 100%;">
-            <form autocomplete="off" (ngSubmit)="save()">
-                <div class="formgrid grid">
-                    <div class="field col-12 md:col-12 mt-4">
-                        <label for="year" class="mr-2 ">Jahr</label>
-                        <input type="text" name="year" pInputText minlength="4" required
-                            class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
-                            [(ngModel)]="selFiscalyear.year" [disabled]="!addMode">
-                    </div>
-                    <div class="field col-12 md:col-12 mt-4">
-                        <label for="name" class="mr-2 ">Bezeichnung</label>
-                        <input type="text" name="name" pInputText minlength="5" required
-                            class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
-                            [(ngModel)]="selFiscalyear.name" [disabled]="!editMode && !addMode">
-                    </div>
-                    <div class="field col-12 md:col-12 mt-4">
-                        <label for="state" class="mr-2 ">Status</label>
-                        <p-select name="state" [options]="lstStates" optionLabel="label" optionValue="value"                        
-                            [autoDisplayFirst]="true" [disabled]="!(editMode && selFiscalyear.state === 3)"
-                            class="mr-2 text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
-                            [(ngModel)]="selFiscalyear.state" [style]="{'width':'80%'}"></p-select>
-                    </div>
-                    <div class="field col-12 md:col-12 mt-4">
-                        <button pButton type="button" label="Sichern" icon="pi pi-save"
-                            class="p-button-primary p-button-outlined" (click)="save()"
-                            [disabled]="!editMode && !addMode"></button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </ng-template>
-</p-splitter>
-<p-dialog [visible]="progressVisible" [modal]="true" [style]="{width: '50vw'}">
-    <ng-template pTemplate="header">
-        Der Download dauert einen Moment.
-    </ng-template>
-    <p-progressBar mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar>
-    <div class="grid mt-2">
-        <div class="col-8">
-            Bilanz- und Erfolgsrechnung
-        </div>
-        <div class="col-4">
-            <p-tag [severity]="fSev" [value]="fValue"></p-tag>
-        </div>
-        <div class="col-8">
-            Kontoauszüge
-        </div>
-        <div class="col-4">
-            <p-tag [severity]="kSev" [value]="kValue"></p-tag>
-        </div>
-        <div class="col-8">
-            Journal und Attachments
-        </div>
-        <div class="col-4">
-            <p-tag [severity]="jSev" [value]="jValue"></p-tag>
-        </div>
+  <ng-template pTemplate>
+    <div class="card" style="width: 100%">
+      <app-basetable
+        [tableOptions]="cols()"
+        [tableData]="lstFiscalyear()"
+        [formatFunction]="formatField"
+        [tableToolbar]="toolbar()"
+        localStorage="fiscalyear"
+      >
+      </app-basetable>
     </div>
+  </ng-template>
+  <ng-template pTemplate="">
+    <div class="card" style="width: 100%">
+      <form autocomplete="off" (ngSubmit)="save()">
+        <div class="flex flex-wrap">
+          <div class="mb-4 w-full md:w-full mt-4">
+            <label for="year" class="mr-2">Jahr</label>
+            <input
+              type="text"
+              name="year"
+              pInputText
+              minlength="4"
+              required
+              class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
+              [(ngModel)]="selFiscalyear.year"
+              [disabled]="!addMode()"
+            />
+          </div>
+          <div class="mb-4 w-full md:w-full mt-4">
+            <label for="name" class="mr-2">Bezeichnung</label>
+            <input
+              type="text"
+              name="name"
+              pInputText
+              minlength="5"
+              required
+              class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
+              [(ngModel)]="selFiscalyear.name"
+              [disabled]="!editMode() && !addMode()"
+            />
+          </div>
+          <div class="mb-4 w-full md:w-full mt-4">
+            <label for="state" class="mr-2">Status</label>
+            <p-select
+              name="state"
+              [options]="lstStates()"
+              optionLabel="label"
+              optionValue="value"
+              [disabled]="!(editMode() && selFiscalyear.state === 3)"
+              class="mr-2 text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
+              [(ngModel)]="selFiscalyear.state"
+              [style]="{ width: '80%' }"
+            ></p-select>
+          </div>
+          <div class="mb-4 w-full md:w-full mt-4">
+            <button
+              pButton
+              type="button"
+              label="Sichern"
+              icon="pi pi-save"
+              class="p-button-primary p-button-outlined"
+              (click)="save()"
+              [disabled]="!editMode() && !addMode()"
+            ></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</p-splitter>
+<p-dialog
+  [visible]="progressVisible()"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+>
+  <ng-template pTemplate="header">
+    Der Download dauert einen Moment.
+  </ng-template>
+  <p-progressBar
+    mode="indeterminate"
+    [style]="{ height: '6px' }"
+  ></p-progressBar>
+  <div class="flex flex-wrap mt-2">
+    <div class="w-2/3">Bilanz- und Erfolgsrechnung</div>
+    <div class="w-1/3">
+      <p-tag [severity]="fSev()" [value]="fValue()"></p-tag>
+    </div>
+    <div class="w-2/3">Kontoauszüge</div>
+    <div class="w-1/3">
+      <p-tag [severity]="kSev()" [value]="kValue()"></p-tag>
+    </div>
+    <div class="w-2/3">Journal und Attachments</div>
+    <div class="w-1/3">
+      <p-tag [severity]="jSev()" [value]="jValue()"></p-tag>
+    </div>
+  </div>
 </p-dialog>

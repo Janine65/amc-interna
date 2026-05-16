@@ -1,7 +1,8 @@
 <app-basetable
-    [tableOptions]="cols"
-    [tableData]="adressList"
-    [formatFunction]="formatField"
-    [tableToolbar]="toolbar"
-    localStorage="adressen">
+  [tableOptions]="cols()"
+  [tableData]="adressList()"
+  [formatFunction]="formatField"
+  [tableToolbar]="toolbar()"
+  localStorage="adressen"
+>
 </app-basetable>

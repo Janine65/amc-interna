@@ -2,10 +2,11 @@ import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
   forwardRef,
   Input,
   ViewEncapsulation,
+  input,
+  contentChild,
 } from '@angular/core';
 import { InputDirective } from './input.directive';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -17,13 +18,13 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
   encapsulation: ViewEncapsulation.None,
   template: `
     <div
-      class="{{ cssPrefix }}-field {{ typeCss }}"
-      [class.cr-invalid-form]="invalidForm"
+      class="{{ cssPrefix() }}-field {{ typeCss }}"
+      [class.cr-invalid-form]="invalidForm()"
     >
-      <label class="cr-label" for="{{ for }}">{{ placeholder }}</label>
+      <label class="cr-label" for="{{ for }}">{{ placeholder() }}</label>
       <ng-content></ng-content>
       <span class="cr-required"></span>
-      <span class="cr-feedback" [class.cr-form-feedback]="invalidForm">{{
+      <span class="cr-feedback" [class.cr-form-feedback]="invalidForm()">{{
         errorText
       }}</span>
       <span class="cr-help">
@@ -40,31 +41,32 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class CrInputPartial implements AfterContentInit {
-  @ContentChild(InputDirective, { static: true })
-  inputDirective!: InputDirective;
+  readonly inputDirective = contentChild.required(InputDirective);
 
-  @Input() placeholder: string;
-  @Input() cssPrefix: string = 'cr';
-  @Input() error: string;
-  @Input() invalidForm: boolean;
+  readonly placeholder = input<string>(undefined);
+  readonly cssPrefix = input<string>('cr');
+  readonly error = input<string>(undefined);
+  readonly invalidForm = input<boolean>(undefined);
   @Input() for!: string;
-  @Input() type!: string;
+  readonly type = input<string>('text');
 
   get typeCss(): string {
-    return this.type ? `${this.cssPrefix}-${this.type}` : '';
+    const type = this.type();
+    return type ? `${this.cssPrefix()}-${type}` : '';
   }
 
   get errorText(): string {
-    return this.error || this.inputDirective?.errorText();
+    return this.error() || this.inputDirective()?.errorText();
   }
 
   ngAfterContentInit() {
-    if (this.inputDirective) {
-      const element = this.inputDirective.element;
+    const inputDirective = this.inputDirective();
+    if (inputDirective) {
+      const element = inputDirective.element;
 
       this.for = element.id;
       element.classList.add(`cr-input`);
-      element.setAttribute('placeholder', this.placeholder);
+      element.setAttribute('placeholder', this.placeholder());
     }
   }
 }

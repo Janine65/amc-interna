@@ -1,79 +1,155 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { Journal, ParamData } from '@model/datatypes';
 import { BackendService } from '@app/service';
-import { TableOptions, TableToolbar } from '@shared/basetable/basetable.component';
+import {
+  TableOptions,
+  TableToolbar,
+} from '@shared/basetable/basetable.component';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { from } from 'rxjs';
+import { Bind } from 'primeng/bind';
+import { Select } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { BaseTableComponent } from '../../shared/basetable/basetable.component';
 
 @Component({
-    selector: 'app-konto-bewegungen',
-    templateUrl: './konto-bewegungen.component.html',
-    styleUrls: ['./konto-bewegungen.component.scss'],
-    standalone: false
+  selector: 'app-konto-bewegungen',
+  templateUrl: './konto-bewegungen.component.html',
+  styleUrls: ['./konto-bewegungen.component.scss'],
+  imports: [Bind, Select, FormsModule, BaseTableComponent],
 })
 export class KontoBewegungenComponent implements OnInit {
+  private backendService = inject(BackendService);
+  ref = inject(DynamicDialogRef);
+  config = inject(DynamicDialogConfig);
+  private messageService = inject(MessageService);
+
   accountId: number;
-  loading = true;
-  cols: TableOptions[] = [];
-  toolbar: TableToolbar[] = [];
-  selJahre = [{}]
+  readonly loading = signal(true);
+  readonly cols = signal<TableOptions[]>([]);
+  readonly toolbar = signal<TableToolbar[]>([]);
+  readonly selJahre = signal<{ label?: string; value?: number }[]>([]);
   selJahr = 0;
 
-  lstJournal: Journal[] = []
+  readonly lstJournal = signal<Journal[]>([]);
 
-  constructor(
-    private backendService: BackendService,
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    private messageService: MessageService) {
+  constructor() {
+    const config = this.config;
+
     this.accountId = config.data.accountid;
 
     const str = localStorage.getItem('parameter');
     const parameter: ParamData[] = str ? JSON.parse(str) : [];
     const paramJahr = parameter.find((param) => param.key === 'CLUBJAHR');
-    this.selJahr = Number(paramJahr?.value)
-    this.selJahre.pop();
-    this.selJahre.push({ label: (this.selJahr - 2).toString(), value: this.selJahr - 2 });
-    this.selJahre.push({ label: (this.selJahr - 1).toString(), value: this.selJahr - 1 });
-    this.selJahre.push({ label: this.selJahr.toString(), value: this.selJahr });
-    this.selJahre.push({ label: (this.selJahr + 1).toString(), value: this.selJahr + 1 });
-
-
+    this.selJahr = Number(paramJahr?.value);
+    this.selJahre.set([
+      { label: (this.selJahr - 2).toString(), value: this.selJahr - 2 },
+      { label: (this.selJahr - 1).toString(), value: this.selJahr - 1 },
+      { label: this.selJahr.toString(), value: this.selJahr },
+      { label: (this.selJahr + 1).toString(), value: this.selJahr + 1 },
+    ]);
   }
 
   ngOnInit(): void {
-    this.cols = [
-      { field: 'journalno', header: 'No.', format: false, sortable: true, filtering: true, filter: 'numeric', pipe: DecimalPipe, args: '1.0-0' },
-      { field: 'date_date', header: 'Datum', format: false, sortable: true, filtering: true, filter: 'date', pipe: DatePipe, args: 'dd.MM.yyyy' },
-      { field: 'fromAcc', header: 'Konto Soll', format: false, sortable: true, filtering: true, filter: 'text' },
-      { field: 'toAcc', header: 'Konto Haben', format: false, sortable: true, filtering: true, filter: 'text' },
-      { field: 'memo', header: 'Text', format: false, sortable: false, filtering: false, filter: 'text' },
-      { field: 'soll', header: 'Soll', format: false, sortable: true, filtering: false, filter: 'numeric', pipe: DecimalPipe, args: '1.2-2' },
-      { field: 'haben', header: 'Haben', format: false, sortable: true, filtering: false, filter: 'numeric', pipe: DecimalPipe, args: '1.2-2' },
-    ];
+    this.cols.set([
+      {
+        field: 'journalno',
+        header: 'No.',
+        format: false,
+        sortable: true,
+        filtering: true,
+        filter: 'numeric',
+        pipe: DecimalPipe,
+        args: '1.0-0',
+      },
+      {
+        field: 'date_date',
+        header: 'Datum',
+        format: false,
+        sortable: true,
+        filtering: true,
+        filter: 'date',
+        pipe: DatePipe,
+        args: 'dd.MM.yyyy',
+      },
+      {
+        field: 'fromAcc',
+        header: 'Konto Soll',
+        format: false,
+        sortable: true,
+        filtering: true,
+        filter: 'text',
+      },
+      {
+        field: 'toAcc',
+        header: 'Konto Haben',
+        format: false,
+        sortable: true,
+        filtering: true,
+        filter: 'text',
+      },
+      {
+        field: 'memo',
+        header: 'Text',
+        format: false,
+        sortable: false,
+        filtering: false,
+        filter: 'text',
+      },
+      {
+        field: 'soll',
+        header: 'Soll',
+        format: false,
+        sortable: true,
+        filtering: false,
+        filter: 'numeric',
+        pipe: DecimalPipe,
+        args: '1.2-2',
+      },
+      {
+        field: 'haben',
+        header: 'Haben',
+        format: false,
+        sortable: true,
+        filtering: false,
+        filter: 'numeric',
+        pipe: DecimalPipe,
+        args: '1.2-2',
+      },
+    ]);
 
-    this.toolbar = [
-      { label: 'Schliessen', btnClass: 'p-button-secondary p-button-outlined', clickfnc: this.back, disabledNoSelection: false, disabledWhenEmpty: false, icon: '', isDefault: false, roleNeeded: '' , isEditFunc: false},
-    ];
+    this.toolbar.set([
+      {
+        label: 'Schliessen',
+        btnClass: 'p-button-secondary p-button-outlined',
+        clickfnc: this.back,
+        disabledNoSelection: false,
+        disabledWhenEmpty: false,
+        icon: '',
+        isDefault: false,
+        roleNeeded: '',
+        isEditFunc: false,
+      },
+    ]);
 
     this.readJournal();
-  
   }
 
   private readJournal() {
-    from(this.backendService.getOneAccount(this.selJahr, this.accountId))
-      .subscribe(list => {
-        this.lstJournal = list.data as Journal[];
-        console.log(list);
-        this.lstJournal.forEach(x => {
-          x.date_date = new Date(x.date);
-        })
-        this.loading = false;
+    from(
+      this.backendService.getOneAccount(this.selJahr, this.accountId),
+    ).subscribe((list) => {
+      const data = list.data as Journal[];
+      data.forEach((x) => {
+        x.date_date = new Date(x.date);
       });
+      this.lstJournal.set(data);
+      this.loading.set(false);
+    });
   }
 
   chgJahr() {
@@ -81,6 +157,6 @@ export class KontoBewegungenComponent implements OnInit {
   }
 
   back = () => {
-    this.ref.close()
-  }
+    this.ref.close();
+  };
 }

@@ -1,40 +1,65 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AccountAuswertung, ParamData } from '@model/datatypes';
 import { BackendService } from '@app/service';
 import { MessageService } from 'primeng/api';
+import { Bind } from 'primeng/bind';
+import { Toolbar } from 'primeng/toolbar';
+import { Select } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { Button } from 'primeng/button';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
+import { Ripple } from 'primeng/ripple';
+import { DataView } from 'primeng/dataview';
+import { NgClass, DecimalPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-kto-auswertung',
-    templateUrl: './kto-auswertung.component.html',
-    styleUrls: ['./kto-auswertung.component.scss'],
-    standalone: false
+  selector: 'app-kto-auswertung',
+  templateUrl: './kto-auswertung.component.html',
+  styleUrls: ['./kto-auswertung.component.scss'],
+  imports: [
+    Bind,
+    Toolbar,
+    Select,
+    FormsModule,
+    Button,
+    Tabs,
+    TabList,
+    Ripple,
+    Tab,
+    TabPanels,
+    TabPanel,
+    DataView,
+    NgClass,
+    DecimalPipe,
+  ],
 })
 export class KtoAuswertungComponent {
+  private backendService = inject(BackendService);
+  private messageService = inject(MessageService);
 
-  selJahre = [{}]
+  readonly selJahre = signal<{ label?: string; value?: number }[]>([]);
   selJahr = 0;
-  jahr = 0;
-  lstAccountData: AccountAuswertung[] = [];
-  lstAktivNodes: AccountAuswertung[] = [];
-  lstPassivNodes: AccountAuswertung[] = [];
-  lstAufwandNodes: AccountAuswertung[] = [];
-  lstErfolgNodes: AccountAuswertung[] = [];
+  readonly jahr = signal(0);
+  readonly lstAktivNodes = signal<AccountAuswertung[]>([]);
+  readonly lstPassivNodes = signal<AccountAuswertung[]>([]);
+  readonly lstAufwandNodes = signal<AccountAuswertung[]>([]);
+  readonly lstErfolgNodes = signal<AccountAuswertung[]>([]);
 
-  constructor(
-    private backendService: BackendService,
-    private messageService: MessageService) {
+  constructor() {
     const str = localStorage.getItem('parameter');
     const parameter: ParamData[] = str ? JSON.parse(str) : [];
     const paramJahr = parameter.find((param) => param.key === 'CLUBJAHR');
-    this.jahr = Number(paramJahr?.value)
-    this.selJahr = this.jahr;
-    this.selJahre.pop();
-    this.selJahre.push({ label: (this.jahr - 4).toString(), value: this.jahr - 4 });
-    this.selJahre.push({ label: (this.jahr - 3).toString(), value: this.jahr - 3 });
-    this.selJahre.push({ label: (this.jahr - 2).toString(), value: this.jahr - 2 });
-    this.selJahre.push({ label: (this.jahr - 1).toString(), value: this.jahr - 1 });
-    this.selJahre.push({ label: this.jahr.toString(), value: this.jahr });
-    this.selJahre.push({ label: (this.jahr + 1).toString(), value: this.jahr + 1 });
+    const jahr = Number(paramJahr?.value);
+    this.jahr.set(jahr);
+    this.selJahr = jahr;
+    this.selJahre.set([
+      { label: (jahr - 4).toString(), value: jahr - 4 },
+      { label: (jahr - 3).toString(), value: jahr - 3 },
+      { label: (jahr - 2).toString(), value: jahr - 2 },
+      { label: (jahr - 1).toString(), value: jahr - 1 },
+      { label: jahr.toString(), value: jahr },
+      { label: (jahr + 1).toString(), value: jahr + 1 },
+    ]);
     this.readBericht();
   }
 
@@ -43,123 +68,126 @@ export class KtoAuswertungComponent {
   }
 
   readBericht() {
-    // Read Data
     this.backendService.showAccData(this.selJahr).subscribe({
       next: (result) => {
-        if ((result.data as []).length > 0) {
-          this.lstAccountData = result.data as AccountAuswertung[];
-          this.lstAktivNodes = [];
-          this.lstPassivNodes = [];
-          this.lstAufwandNodes = [];
-          this.lstErfolgNodes = [];
-
-          let iTotalAktiv = 0, iTotalPassiv = 0, iTotalAufwand = 0, iTotalErfolg = 0
-          let iBudgetAufwand = 0, iBudgetErfolg = 0;
-
-          this.lstAccountData.forEach(rec => {
-            switch (rec.level) {
-              case 1:
-                this.lstAktivNodes.push(rec);
-                iTotalAktiv += rec.amount;
-                break;
-
-              case 2:
-                this.lstPassivNodes.push(rec);
-                iTotalPassiv += rec.amount;
-                break;
-
-              case 4:
-                this.lstAufwandNodes.push(rec);
-                iTotalAufwand += rec.amount;
-                iBudgetAufwand += rec.budget;
-                break;
-
-              case 6:
-                this.lstErfolgNodes.push(rec);
-                iTotalErfolg += rec.amount;
-                iBudgetErfolg += rec.budget;
-                break;
-
-              default:
-                break;
-            }
-          })
-
-          let iDiffTotal = iTotalAktiv - iTotalPassiv;
-          let TotalRec = new AccountAuswertung();
-          TotalRec.amount = iDiffTotal;
-          TotalRec.name = iDiffTotal < 0 ? 'Verlust' : 'Gewinn';
-          TotalRec.$css = iDiffTotal < 0 ? 'alert-minus' : 'alert-plus';
-          if (iDiffTotal < 0) {
-            this.lstAktivNodes.push(TotalRec);
-          } else {
-            this.lstPassivNodes.push(TotalRec);
-          }
-          TotalRec = new AccountAuswertung();
-          TotalRec.amount = Math.max(iTotalAktiv, iTotalPassiv);
-          TotalRec.name = 'Aktiv'
-          TotalRec.$css = 'alert-total';
-          this.lstAktivNodes.push(TotalRec)
-          TotalRec = new AccountAuswertung();
-          TotalRec.amount = Math.max(iTotalAktiv, iTotalPassiv);
-          TotalRec.name = 'Passiv'
-          TotalRec.$css = 'alert-total';
-          this.lstPassivNodes.push(TotalRec)
-
-          TotalRec = new AccountAuswertung();
-          TotalRec.amount = iTotalErfolg;
-          TotalRec.budget = iBudgetErfolg;
-          TotalRec.diff = TotalRec.amount - TotalRec.budget;
-          TotalRec.name = 'Ertrag';
-          TotalRec.$css = 'alert-total';
-          this.lstErfolgNodes.push(TotalRec);
-          TotalRec = new AccountAuswertung();
-          TotalRec.amount = iTotalAufwand;
-          TotalRec.budget = iBudgetAufwand;
-          TotalRec.diff = TotalRec.amount - TotalRec.budget;
-          TotalRec.name = 'Aufwand';
-          TotalRec.$css = 'alert-total';
-          this.lstAufwandNodes.push(TotalRec);
-
-          iDiffTotal = iTotalErfolg - iTotalAufwand;
-          TotalRec = new AccountAuswertung();
-          TotalRec.amount = iDiffTotal;
-          TotalRec.budget = iBudgetErfolg - iBudgetAufwand;
-          TotalRec.diff = TotalRec.budget - TotalRec.amount;
-          TotalRec.name = iDiffTotal < 0 ? 'Verlust' : 'Gewinn';
-          TotalRec.$css = iDiffTotal < 0 ? 'alert-minus' : 'alert-plus';
-          if (iDiffTotal < 0) {
-            this.lstErfolgNodes.push(TotalRec);
-          } else {
-            this.lstAufwandNodes.push(TotalRec);
-          }
+        const data = result.data as AccountAuswertung[];
+        if (!data || data.length === 0) {
+          return;
         }
-      }
-    })
+
+        const aktiv: AccountAuswertung[] = [];
+        const passiv: AccountAuswertung[] = [];
+        const aufwand: AccountAuswertung[] = [];
+        const erfolg: AccountAuswertung[] = [];
+
+        let iTotalAktiv = 0,
+          iTotalPassiv = 0,
+          iTotalAufwand = 0,
+          iTotalErfolg = 0;
+        let iBudgetAufwand = 0,
+          iBudgetErfolg = 0;
+
+        data.forEach((rec) => {
+          switch (rec.level) {
+            case 1:
+              aktiv.push(rec);
+              iTotalAktiv += rec.amount;
+              break;
+            case 2:
+              passiv.push(rec);
+              iTotalPassiv += rec.amount;
+              break;
+            case 4:
+              aufwand.push(rec);
+              iTotalAufwand += rec.amount;
+              iBudgetAufwand += rec.budget;
+              break;
+            case 6:
+              erfolg.push(rec);
+              iTotalErfolg += rec.amount;
+              iBudgetErfolg += rec.budget;
+              break;
+            default:
+              break;
+          }
+        });
+
+        let iDiffTotal = iTotalAktiv - iTotalPassiv;
+        let totalRec = new AccountAuswertung();
+        totalRec.amount = iDiffTotal;
+        totalRec.name = iDiffTotal < 0 ? 'Verlust' : 'Gewinn';
+        totalRec.$css = iDiffTotal < 0 ? 'alert-minus' : 'alert-plus';
+        if (iDiffTotal < 0) {
+          aktiv.push(totalRec);
+        } else {
+          passiv.push(totalRec);
+        }
+        totalRec = new AccountAuswertung();
+        totalRec.amount = Math.max(iTotalAktiv, iTotalPassiv);
+        totalRec.name = 'Aktiv';
+        totalRec.$css = 'alert-total';
+        aktiv.push(totalRec);
+        totalRec = new AccountAuswertung();
+        totalRec.amount = Math.max(iTotalAktiv, iTotalPassiv);
+        totalRec.name = 'Passiv';
+        totalRec.$css = 'alert-total';
+        passiv.push(totalRec);
+
+        totalRec = new AccountAuswertung();
+        totalRec.amount = iTotalErfolg;
+        totalRec.budget = iBudgetErfolg;
+        totalRec.diff = totalRec.amount - totalRec.budget;
+        totalRec.name = 'Ertrag';
+        totalRec.$css = 'alert-total';
+        erfolg.push(totalRec);
+        totalRec = new AccountAuswertung();
+        totalRec.amount = iTotalAufwand;
+        totalRec.budget = iBudgetAufwand;
+        totalRec.diff = totalRec.amount - totalRec.budget;
+        totalRec.name = 'Aufwand';
+        totalRec.$css = 'alert-total';
+        aufwand.push(totalRec);
+
+        iDiffTotal = iTotalErfolg - iTotalAufwand;
+        totalRec = new AccountAuswertung();
+        totalRec.amount = iDiffTotal;
+        totalRec.budget = iBudgetErfolg - iBudgetAufwand;
+        totalRec.diff = totalRec.budget - totalRec.amount;
+        totalRec.name = iDiffTotal < 0 ? 'Verlust' : 'Gewinn';
+        totalRec.$css = iDiffTotal < 0 ? 'alert-minus' : 'alert-plus';
+        if (iDiffTotal < 0) {
+          erfolg.push(totalRec);
+        } else {
+          aufwand.push(totalRec);
+        }
+
+        this.lstAktivNodes.set(aktiv);
+        this.lstPassivNodes.set(passiv);
+        this.lstAufwandNodes.set(aufwand);
+        this.lstErfolgNodes.set(erfolg);
+      },
+    });
   }
-  
+
   export() {
     this.backendService.exportAccData(this.selJahr).subscribe({
       next: (result) => {
         if (result.type == 'info') {
           const filename = result.data.filename;
-          this.backendService.downloadFile(filename).subscribe(
-            {
-              next(data) {
-                if (data.body) {
-                  const blob = new Blob([data.body]);
-                  const downloadURL = window.URL.createObjectURL(blob);
-                  const link = document.createElement('a');
-                  link.href = downloadURL;
-                  link.download = filename;
-                  link.click();
-                }
-              },
-            }
-          )
+          this.backendService.downloadFile(filename).subscribe({
+            next(data) {
+              if (data.body) {
+                const blob = new Blob([data.body]);
+                const downloadURL = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = downloadURL;
+                link.download = filename;
+                link.click();
+              }
+            },
+          });
         }
-      }
-    })
+      },
+    });
   }
-
 }

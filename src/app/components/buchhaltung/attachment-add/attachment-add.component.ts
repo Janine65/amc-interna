@@ -1,28 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { BackendService } from '@app/service';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
+import { Bind } from 'primeng/bind';
+import { FileUpload } from 'primeng/fileupload';
+import { Toolbar } from 'primeng/toolbar';
+import { Button } from 'primeng/button';
 
 @Component({
     selector: 'app-attachment-add',
     templateUrl: './attachment-add.component.html',
     styleUrls: ['./attachment-add.component.scss'],
-    standalone: false
+    imports: [Bind, FileUpload, Toolbar, Button]
 })
 export class AttachmentAddComponent {
+  private backendService = inject(BackendService);
+  ref = inject(DynamicDialogRef);
+  config = inject(DynamicDialogConfig);
+  private messageService = inject(MessageService);
+
   journalid = 0;
   jahr: string = '';
   uploadFiles: File[] = [];
   uploadProgress: number | null = null;
   uploadSub?: Subscription;
 
-  constructor(
-    private backendService: BackendService,
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    private messageService: MessageService
-  ) {
+  constructor() {
+    const config = this.config;
+
     this.journalid = config.data.journalid;
     this.jahr = config.data.jahr;
   }

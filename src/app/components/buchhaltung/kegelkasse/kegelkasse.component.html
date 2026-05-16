@@ -43,27 +43,22 @@
         </p-toolbar>
       </div>
       <form [formGroup]="fgKasse" autocomplete="off">
-        <div class="field grid pb-0">
-          <label for="date" class="pr-2 col-fixed" style="width: 210px"
-            >Anlass</label
-          >
+        <div class="mb-4 flex flex-wrap pb-0">
+          <label for="date" class="pr-2" style="width: 210px">Anlass</label>
           <p-select
             name="date"
             appendTo="body"
             [autofocus]="true"
-            [options]="lKegelDatum"
+            [options]="lKegelDatum()"
             optionLabel="longname"
             optionValue="datum"
             formControlName="date"
           ></p-select>
         </div>
-        <div class="grid">
-          <div class="col-6">
-            <div class="field grid pb-0">
-              <label
-                for="kasse"
-                class="text-right pr-2 col-fixed"
-                style="width: 210px"
+        <div class="flex flex-wrap">
+          <div class="w-1/2">
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="kasse" class="text-right pr-2" style="width: 210px"
                 >Kasse</label
               >
               <p-inputNumber
@@ -75,8 +70,8 @@
                 formControlName="kasse"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
-              <label for="rappen5" class="pr-2 col-fixed" style="width: 80px"
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="rappen5" class="pr-2" style="width: 80px"
                 >0.05 x</label
               >
               <p-inputNumber
@@ -88,7 +83,7 @@
               ></p-inputNumber>
               <label
                 for="rappen5_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -102,11 +97,8 @@
                 class="text-right"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
-              <label
-                for="rappen10"
-                class="text-right pr-2 col-fixed"
-                style="width: 80px"
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="rappen10" class="text-right pr-2" style="width: 80px"
                 >0.10 x</label
               >
               <p-inputNumber
@@ -118,7 +110,7 @@
               ></p-inputNumber>
               <label
                 for="rappen10_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -132,11 +124,8 @@
                 class="text-right"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
-              <label
-                for="rappen20"
-                class="text-right pr-2 col-fixed"
-                style="width: 80px"
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="rappen20" class="text-right pr-2" style="width: 80px"
                 >0.20 x</label
               >
               <p-inputNumber
@@ -148,7 +137,7 @@
               ></p-inputNumber>
               <label
                 for="rappen20_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -162,11 +151,8 @@
                 class="text-right"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
-              <label
-                for="rappen50"
-                class="text-right pr-2 col-fixed"
-                style="width: 80px"
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="rappen50" class="text-right pr-2" style="width: 80px"
                 >0.50 x</label
               >
               <p-inputNumber
@@ -178,7 +164,7 @@
               ></p-inputNumber>
               <label
                 for="rappen50_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -192,11 +178,8 @@
                 class="text-right"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
-              <label
-                for="franken1"
-                class="text-right pr-2 col-fixed"
-                style="width: 80px"
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="franken1" class="text-right pr-2" style="width: 80px"
                 >1.00 x</label
               >
               <p-inputNumber
@@ -208,7 +191,7 @@
               ></p-inputNumber>
               <label
                 for="franken1_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -223,12 +206,9 @@
               ></p-inputNumber>
             </div>
           </div>
-          <div class="col-6">
-            <div class="field grid pb-0">
-              <label
-                for="franken2"
-                class="text-right pr-2 col-fixed"
-                style="width: 80px"
+          <div class="w-1/2">
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="franken2" class="text-right pr-2" style="width: 80px"
                 >2.00 x</label
               >
               <p-inputNumber
@@ -240,7 +220,7 @@
               ></p-inputNumber>
               <label
                 for="franken2_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -254,11 +234,8 @@
                 class="text-right"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
-              <label
-                for="franken5"
-                class="text-right pr-2 col-fixed"
-                style="width: 80px"
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="franken5" class="text-right pr-2" style="width: 80px"
                 >5.00 x</label
               >
               <p-inputNumber
@@ -270,7 +247,7 @@
               ></p-inputNumber>
               <label
                 for="franken5_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -284,11 +261,8 @@
                 class="text-right"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
-              <label
-                for="franken10"
-                class="text-right pr-2 col-fixed"
-                style="width: 80px"
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="franken10" class="text-right pr-2" style="width: 80px"
                 >10.00 x</label
               >
               <p-inputNumber
@@ -300,7 +274,7 @@
               ></p-inputNumber>
               <label
                 for="franken10_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -314,8 +288,8 @@
                 class="text-right"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
-              <label for="franken20" class="pr-2 col-fixed" style="width: 80px"
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="franken20" class="pr-2" style="width: 80px"
                 >20.00 x</label
               >
               <p-inputNumber
@@ -327,7 +301,7 @@
               ></p-inputNumber>
               <label
                 for="franken20_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -341,11 +315,8 @@
                 class="text-right"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
-              <label
-                for="franken50"
-                class="text-right pr-2 col-fixed"
-                style="width: 80px"
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="franken50" class="text-right pr-2" style="width: 80px"
                 >50.00 x</label
               >
               <p-inputNumber
@@ -357,7 +328,7 @@
               ></p-inputNumber>
               <label
                 for="franken50_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -371,10 +342,10 @@
                 class="text-right"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
+            <div class="mb-4 flex flex-wrap pb-0">
               <label
                 for="franken100"
-                class="text-right pr-2 col-fixed"
+                class="text-right pr-2"
                 style="width: 80px"
                 >100.00 x</label
               >
@@ -386,7 +357,7 @@
               ></p-inputNumber>
               <label
                 for="franken100_sum"
-                class="text-right pr-2 pl-2 col-fixed"
+                class="text-right pr-2 pl-2"
                 style="width: 40px"
                 >=</label
               >
@@ -399,10 +370,8 @@
                 formControlName="franken100_sum"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0">
-              <label for="total" class="pr-2 col-fixed" style="width: 210px"
-                >Total</label
-              >
+            <div class="mb-4 flex flex-wrap pb-0">
+              <label for="total" class="pr-2" style="width: 210px">Total</label>
               <p-inputNumber
                 inputId="decimal"
                 locale="de-CH"
@@ -412,8 +381,8 @@
                 formControlName="total"
               ></p-inputNumber>
             </div>
-            <div class="field grid pb-0 text-lg text-xl">
-              <label for="differenz" class="pr-2 col-fixed" style="width: 210px"
+            <div class="mb-4 flex flex-wrap pb-0 text-lg">
+              <label for="differenz" class="pr-2" style="width: 210px"
                 >Differenz</label
               >
               <p-inputNumber
@@ -429,26 +398,26 @@
         </div>
       </form>
       <hr />
-      <div class="grid">
-        <span class="col-12 font-bold">Journaleintrag:</span>
-        <span class="col-1">{{ kegelkasse.journal?.journalno }}</span>
-        <span class="col-3">{{
+      <div class="flex flex-wrap">
+        <span class="w-full font-bold">Journaleintrag:</span>
+        <span class="w-1/12">{{ kegelkasse.journal?.journalno }}</span>
+        <span class="w-1/4">{{
           kegelkasse.journal?.account_journal_from_accountToaccount?.longname
         }}</span>
-        <span class="col-3">{{
+        <span class="w-1/4">{{
           kegelkasse.journal?.account_journal_to_accountToaccount?.longname
         }}</span>
-        <span class="col-2">{{ kegelkasse.journal?.memo }}</span>
-        <span class="col-2">{{
-          kegelkasse.journal?.amount | dynamicPipe : decimalPipe : "1.2-2"
+        <span class="w-1/6">{{ kegelkasse.journal?.memo }}</span>
+        <span class="w-1/6">{{
+          kegelkasse.journal?.amount | dynamicPipe: decimalPipe : "1.2-2"
         }}</span>
       </div>
     </p-tabpanel>
     <p-tabpanel value="1">
       <app-basetable
-        [tableOptions]="cols"
-        [tableData]="lstKegelkasse"
-        [tableToolbar]="toolbar"
+        [tableOptions]="cols()"
+        [tableData]="lstKegelkasse()"
+        [tableToolbar]="toolbar()"
         localStorage="kegelkasse"
         [editable]="false"
       >

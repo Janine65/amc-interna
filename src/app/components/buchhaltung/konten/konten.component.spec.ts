@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { commonTestProviders } from '@app/testing/test-providers';
 
 import { KontenComponent } from './konten.component';
 
@@ -8,8 +9,9 @@ describe('KontenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ KontenComponent ]
-    })
+    imports: [KontenComponent],
+    providers: commonTestProviders
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(KontenComponent);

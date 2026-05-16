@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { commonTestProviders } from '@app/testing/test-providers';
 
 import { KtoAuswertungComponent } from './kto-auswertung.component';
 
@@ -8,8 +9,9 @@ describe('KtoAuswertungComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ KtoAuswertungComponent ]
-    })
+    imports: [KtoAuswertungComponent],
+    providers: commonTestProviders
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(KtoAuswertungComponent);

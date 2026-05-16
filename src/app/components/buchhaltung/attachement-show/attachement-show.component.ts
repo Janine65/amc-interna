@@ -1,25 +1,32 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  inject,
+  signal,
+} from '@angular/core';
 import { BackendService } from '@app/service';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
-    selector: 'app-attachement-show',
-    templateUrl: './attachement-show.component.html',
-    styleUrls: ['./attachement-show.component.scss'],
-    standalone: false
+  selector: 'app-attachement-show',
+  templateUrl: './attachement-show.component.html',
+  styleUrls: ['./attachement-show.component.scss'],
 })
 export class AttachementShowComponent implements AfterViewInit, OnDestroy {
+  private backendService = inject(BackendService);
+  config = inject(DynamicDialogConfig);
+  private sanitizer = inject(DomSanitizer);
+
   receipt = '';
   year = '';
-  pdfFile: SafeResourceUrl = '';
-  documentBlobObjectUrl = '';
+  readonly pdfFile = signal<SafeResourceUrl>('');
+  private documentBlobObjectUrl = '';
 
-  constructor(
-    private backendService: BackendService,
-    public config: DynamicDialogConfig,
-    private sanitizer: DomSanitizer
-  ) {
+  constructor() {
+    const config = this.config;
+
     this.receipt = config.data.receipt;
     this.year = config.data.year;
   }
@@ -32,8 +39,10 @@ export class AttachementShowComponent implements AfterViewInit, OnDestroy {
     this.backendService.uploadAtt(this.receipt, this.year).subscribe({
       next: (file) => {
         this.documentBlobObjectUrl = URL.createObjectURL(file);
-        this.pdfFile = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.documentBlobObjectUrl
+        this.pdfFile.set(
+          this.sanitizer.bypassSecurityTrustResourceUrl(
+            this.documentBlobObjectUrl,
+          ),
         );
       },
     });

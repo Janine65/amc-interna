@@ -2,10 +2,10 @@
   <ng-template pTemplate>
     <div class="card" style="width: 100%">
       <app-basetable
-        [tableOptions]="cols"
-        [tableData]="lstAccount"
+        [tableOptions]="cols()"
+        [tableData]="lstAccount()"
         [formatFunction]="formatField"
-        [tableToolbar]="toolbar"
+        [tableToolbar]="toolbar()"
         localStorage="account"
       >
       </app-basetable>
@@ -14,8 +14,8 @@
   <ng-template pTemplate>
     <div class="card" style="width: 100%">
       <form autocomplete="off" (ngSubmit)="save()">
-        <div class="formgrid grid">
-          <div class="field col-12 md:col-12 mt-4">
+        <div class="flex flex-wrap">
+          <div class="mb-4 w-full md:w-full mt-4">
             <label for="name" class="mr-2">Name</label>
             <input
               type="text"
@@ -25,10 +25,10 @@
               required
               class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
               [(ngModel)]="selAccount.name"
-              [disabled]="!editMode && !addMode"
+              [disabled]="!editMode() && !addMode()"
             />
           </div>
-          <div class="field col-12 md:col-12 mt-4">
+          <div class="mb-4 w-full md:w-full mt-4">
             <label for="level" class="mr-2">Level</label>
             <input
               type="text"
@@ -38,10 +38,10 @@
               required
               class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
               [(ngModel)]="selAccount.level"
-              [disabled]="!editMode && !addMode"
+              [disabled]="!editMode() && !addMode()"
             />
           </div>
-          <div class="field col-12 md:col-12 mt-4">
+          <div class="mb-4 w-full md:w-full mt-4">
             <label for="order" class="mr-2">Order</label>
             <input
               type="text"
@@ -51,24 +51,23 @@
               required
               class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
               [(ngModel)]="selAccount.order"
-              [disabled]="!editMode && !addMode"
+              [disabled]="!editMode() && !addMode()"
             />
           </div>
-          <div class="field col-12 md:col-12 mt-4">
+          <div class="mb-4 w-full md:w-full mt-4">
             <label for="status" class="mr-2">Status</label>
             <p-select
               name="state"
-              [options]="lstStates"
+              [options]="lstStates()"
               optionLabel="label"
               optionValue="value"
-              [autoDisplayFirst]="true"
-              [disabled]="!editMode && !addMode"
+              [disabled]="!editMode() && !addMode()"
               class="mr-2 text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
               [(ngModel)]="selAccount.status"
               [style]="{ width: '80%' }"
             ></p-select>
           </div>
-          <div class="field col-12 md:col-12 mt-4">
+          <div class="mb-4 w-full md:w-full mt-4">
             <button
               pButton
               type="button"
@@ -76,7 +75,7 @@
               icon="pi pi-save"
               class="p-button-primary p-button-outlined"
               (click)="save()"
-              [disabled]="!editMode && !addMode"
+              [disabled]="!editMode() && !addMode()"
             ></button>
           </div>
         </div>

@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { LayoutService } from "../service/app.layout.service";
 import { Package } from '@model/user';
 import { AccountService } from '@service/account.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-footer',
     templateUrl: './app.footer.component.html',
-    standalone: false
+    imports: [RouterLink]
 })
 export class AppFooterComponent implements OnInit {
+    layoutService = inject(LayoutService);
+    private accountService = inject(AccountService);
+
     appVersion = '';
-    
-    constructor(public layoutService: LayoutService,
-        private accountService: AccountService) {
-     }
     ngOnInit(): void {
         const pkgFrontString = localStorage.getItem('aboutFrontend');
         let pkgFront: Package = {}, pkgBack: Package = {};

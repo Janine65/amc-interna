@@ -1,15 +1,25 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { Fiscalyear } from '@model/datatypes';
 import { BackendService } from '@app/service';
 import {
   TableOptions,
   TableToolbar,
 } from '@shared/basetable/basetable.component';
-import { MessageService } from 'primeng/api';
+import { MessageService, PrimeTemplate } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Observable, from, map, timer, zip } from 'rxjs';
+import { Bind } from 'primeng/bind';
+import { Splitter } from 'primeng/splitter';
+import { BaseTableComponent } from '../../shared/basetable/basetable.component';
+import { FormsModule } from '@angular/forms';
+import { InputText } from 'primeng/inputtext';
+import { Select } from 'primeng/select';
+import { ButtonDirective } from 'primeng/button';
+import { Dialog } from 'primeng/dialog';
+import { ProgressBar } from 'primeng/progressbar';
+import { Tag } from 'primeng/tag';
 
 type Severity =
   | 'success'
@@ -25,51 +35,49 @@ type Severity =
   templateUrl: './geschaeftsjahr.component.html',
   styleUrls: ['./geschaeftsjahr.component.scss'],
   providers: [DialogService],
-  standalone: false,
+  imports: [
+    Bind,
+    Splitter,
+    PrimeTemplate,
+    BaseTableComponent,
+    FormsModule,
+    InputText,
+    Select,
+    ButtonDirective,
+    Dialog,
+    ProgressBar,
+    Tag,
+  ],
 })
 export class GeschaeftsjahrComponent implements OnInit {
-  lstFiscalyear: Fiscalyear[] = [];
-  selFiscalyear: Fiscalyear = {};
-  loading = true;
-  cols: TableOptions[] = [];
-  toolbar: TableToolbar[] = [];
-  editMode = false;
-  addMode = false;
-  progressVisible = false;
-  fTag: { value: string; severity: string } = {
-    value: 'gestartet',
-    severity: 'info',
-  };
-  kTag: { value: string; severity: string } = {
-    value: 'gestartet',
-    severity: 'info',
-  };
-  jTag: { value: string; severity: string } = {
-    value: 'gestartet',
-    severity: 'info',
-  };
-  fSev: Severity = 'info';
-  fValue = 'gestartet';
-  kSev: Severity = 'info';
-  kValue = 'gestartet';
-  jSev: Severity = 'info';
-  jValue = 'gestartet';
+  private backendService = inject(BackendService);
+  private dialogService = inject(DialogService);
+  private messageService = inject(MessageService);
 
-  lstStates = [
+  readonly lstFiscalyear = signal<Fiscalyear[]>([]);
+  selFiscalyear: Fiscalyear = {};
+  readonly loading = signal(true);
+  readonly cols = signal<TableOptions[]>([]);
+  readonly toolbar = signal<TableToolbar[]>([]);
+  readonly editMode = signal(false);
+  readonly addMode = signal(false);
+  readonly progressVisible = signal(false);
+  readonly fSev = signal<Severity>('info');
+  readonly fValue = signal('gestartet');
+  readonly kSev = signal<Severity>('info');
+  readonly kValue = signal('gestartet');
+  readonly jSev = signal<Severity>('info');
+  readonly jValue = signal('gestartet');
+
+  readonly lstStates = signal([
     { label: 'Offen', value: 1 },
     { label: 'provisorisch Abgeschlossen', value: 2 },
     { label: 'Abgeschlossen', value: 3 },
-  ];
+  ]);
   selState = 1;
 
-  constructor(
-    private backendService: BackendService,
-    private dialogService: DialogService,
-    private messageService: MessageService
-  ) {}
-
   ngOnInit(): void {
-    this.cols = [
+    this.cols.set([
       {
         field: 'year',
         header: 'Jahr',
@@ -94,9 +102,9 @@ export class GeschaeftsjahrComponent implements OnInit {
         filtering: false,
         filter: undefined,
       },
-    ];
+    ]);
 
-    this.toolbar = [
+    this.toolbar.set([
       {
         label: 'Edit',
         btnClass: 'p-button-primary p-button-outlined',
@@ -163,11 +171,11 @@ export class GeschaeftsjahrComponent implements OnInit {
         roleNeeded: '',
         isEditFunc: false,
       },
-    ];
+    ]);
 
     from(this.backendService.getFiscalyear()).subscribe((list) => {
-      this.lstFiscalyear = list.data as Fiscalyear[];
-      this.lstFiscalyear.forEach((rec) => {
+      const data = list.data as Fiscalyear[];
+      data.forEach((rec) => {
         switch (rec.state) {
           case 1:
             rec.classRow = 'offen';
@@ -180,13 +188,14 @@ export class GeschaeftsjahrComponent implements OnInit {
             break;
         }
       });
-      this.loading = false;
+      this.lstFiscalyear.set(data);
+      this.loading.set(false);
     });
   }
 
   formatField(
     field: string,
-    value: string | number | boolean | null
+    value: string | number | boolean | null,
   ): string | number | boolean | null {
     if (field == 'state') {
       switch (value as number) {
@@ -213,10 +222,10 @@ export class GeschaeftsjahrComponent implements OnInit {
     if (selRec)
       this.backendService.closeFiscalyear(selRec.year, 2).subscribe({
         complete: () => {
-          this.loading = true;
+          this.loading.set(true);
           from(this.backendService.getFiscalyear()).subscribe((list) => {
-            this.lstFiscalyear = list.data as Fiscalyear[];
-            this.lstFiscalyear.forEach((rec) => {
+            const data = list.data as Fiscalyear[];
+            data.forEach((rec) => {
               switch (rec.state) {
                 case 1:
                   rec.classRow = 'offen';
@@ -229,7 +238,8 @@ export class GeschaeftsjahrComponent implements OnInit {
                   break;
               }
             });
-            this.loading = false;
+            this.lstFiscalyear.set(data);
+            this.loading.set(false);
             thisRef.messageService.add({
               detail: 'Das Geschäftsjahr wurde provisorisch abgeschlossen',
               closable: true,
@@ -252,10 +262,10 @@ export class GeschaeftsjahrComponent implements OnInit {
     if (selRec)
       this.backendService.closeFiscalyear(selRec.year, 3).subscribe({
         complete: () => {
-          this.loading = true;
+          this.loading.set(true);
           from(this.backendService.getFiscalyear()).subscribe((list) => {
-            this.lstFiscalyear = list.data as Fiscalyear[];
-            this.lstFiscalyear.forEach((rec) => {
+            const data = list.data as Fiscalyear[];
+            data.forEach((rec) => {
               switch (rec.state) {
                 case 1:
                   rec.classRow = 'offen';
@@ -268,7 +278,8 @@ export class GeschaeftsjahrComponent implements OnInit {
                   break;
               }
             });
-            this.loading = false;
+            this.lstFiscalyear.set(data);
+            this.loading.set(false);
             thisRef.messageService.add({
               detail: 'Das Geschäftsjahr wurde abgeschlossen',
               closable: true,
@@ -287,7 +298,7 @@ export class GeschaeftsjahrComponent implements OnInit {
     console.log('Edit Fiscalyear');
     thisRef.messageService.clear();
     this.clearFields();
-    this.editMode = true;
+    this.editMode.set(true);
     if (selRec) Object.assign(this.selFiscalyear, selRec);
   };
 
@@ -301,9 +312,8 @@ export class GeschaeftsjahrComponent implements OnInit {
     if (selRec)
       this.backendService.delFiscalyear(selRec).subscribe({
         complete: () => {
-          thisRef.lstFiscalyear.splice(
-            thisRef.lstFiscalyear.indexOf(selRec),
-            1
+          thisRef.lstFiscalyear.set(
+            thisRef.lstFiscalyear().filter((r) => r !== selRec),
           );
 
           thisRef.messageService.add({
@@ -324,7 +334,7 @@ export class GeschaeftsjahrComponent implements OnInit {
     this.clearFields();
     this.selFiscalyear.state = 1;
     thisRef.messageService.clear();
-    this.addMode = true;
+    this.addMode.set(true);
   };
 
   exportFiscalyear = (selRec?: Fiscalyear) => {
@@ -332,16 +342,16 @@ export class GeschaeftsjahrComponent implements OnInit {
     const thisRef: GeschaeftsjahrComponent = this;
     console.log('Export Fiscalyear');
     thisRef.messageService.clear();
-    this.fSev = 'info';
-    this.fValue = 'gestartet';
-    this.kSev = 'info';
-    this.kValue = 'gestartet';
-    this.jSev = 'info';
-    this.jValue = 'gestartet';
-    thisRef.progressVisible = true;
+    this.fSev.set('info');
+    this.fValue.set('gestartet');
+    this.kSev.set('info');
+    this.kValue.set('gestartet');
+    this.jSev.set('info');
+    this.jValue.set('gestartet');
+    thisRef.progressVisible.set(true);
 
-    thisRef.fSev = 'warn';
-    thisRef.fValue = 'gestartet';
+    thisRef.fSev.set('warn');
+    thisRef.fValue.set('gestartet');
     let filename: string = '';
 
     zip([
@@ -366,13 +376,13 @@ export class GeschaeftsjahrComponent implements OnInit {
                 }
               },
               complete: () => {
-                thisRef.fSev = 'success';
-                thisRef.fValue = 'geladen';
+                thisRef.fSev.set('success');
+                thisRef.fValue.set('geladen');
               },
             });
           } else {
-            thisRef.fSev = 'danger';
-            thisRef.fValue = 'Fehler';
+            thisRef.fSev.set('danger');
+            thisRef.fValue.set('Fehler');
             return;
           }
 
@@ -391,13 +401,13 @@ export class GeschaeftsjahrComponent implements OnInit {
                 }
               },
               complete: () => {
-                thisRef.kSev = 'success';
-                thisRef.kValue = 'geladen';
+                thisRef.kSev.set('success');
+                thisRef.kValue.set('geladen');
               },
             });
           } else {
-            thisRef.kSev = 'danger';
-            thisRef.kValue = 'Fehler';
+            thisRef.kSev.set('danger');
+            thisRef.kValue.set('Fehler');
             return;
           }
 
@@ -416,26 +426,26 @@ export class GeschaeftsjahrComponent implements OnInit {
                 }
               },
               complete: () => {
-                thisRef.jSev = 'success';
-                thisRef.jValue = 'geladen';
+                thisRef.jSev.set('success');
+                thisRef.jValue.set('geladen');
                 timer(2000).subscribe(() => {
-                  thisRef.progressVisible = false;
+                  thisRef.progressVisible.set(false);
                 });
               },
             });
           } else {
-            thisRef.kSev = 'danger';
-            thisRef.kValue = 'Fehler';
+            thisRef.kSev.set('danger');
+            thisRef.kValue.set('Fehler');
             return;
           }
-        })
+        }),
       )
       .subscribe();
   };
 
   private clearFields() {
-    this.addMode = false;
-    this.editMode = false;
+    this.addMode.set(false);
+    this.editMode.set(false);
     this.selFiscalyear = {};
   }
   save() {
@@ -454,16 +464,19 @@ export class GeschaeftsjahrComponent implements OnInit {
           .subscribe({
             next: (entry) => {
               const fisc = entry.data as Fiscalyear;
-              if (this.addMode) {
-                this.lstFiscalyear.push(fisc);
-                this.lstFiscalyear.sort(
+              if (this.addMode()) {
+                const list = [...this.lstFiscalyear(), fisc];
+                list.sort(
                   (a: Fiscalyear, b: Fiscalyear) =>
                     (b.year ? parseInt(b.year) : 0) -
-                    (a.year ? parseInt(a.year) : 0)
+                    (a.year ? parseInt(a.year) : 0),
                 );
+                this.lstFiscalyear.set(list);
               } else
-                this.lstFiscalyear = this.lstFiscalyear.map(
-                  (obj) => [fisc].find((o) => o.id === obj.id) || obj
+                this.lstFiscalyear.set(
+                  this.lstFiscalyear().map(
+                    (obj) => [fisc].find((o) => o.id === obj.id) || obj,
+                  ),
                 );
 
               this.clearFields();

@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,
     "strict": false,
@@ -11,40 +10,23 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES2022",
-    "module": "ES2022",
+    "module": "preserve",
     "useDefineForClassFields": false,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
-    "types": [
-      "node",
-      "jest"
-    ],
+    "lib": ["ES2022", "dom"],
+    "types": ["node", "jest"],
     "paths": {
-      "@app/*": [
-        "src/app/*"
-      ],
-      "@environments/*": [
-        "src/environments/*"
-      ],
-      "@model/*": [
-        "src/app/models/*"
-      ],
-      "@service/*": [
-        "src/app/service/*"
-      ],
-      "@shared/*": [
-        "src/app/components/shared/*"
-      ]
+      "@app/*": ["./src/app/*"],
+      "@environments/*": ["./src/environments/*"],
+      "@model/*": ["./src/app/models/*"],
+      "@service/*": ["./src/app/service/*"],
+      "@shared/*": ["./src/app/components/shared/*"]
     }
   },
   "angularCompilerOptions": {
@@ -55,9 +37,7 @@
     "strictTemplates": true
   },
   "ts-node": {
-    "require": [
-      "tsconfig-paths/register"
-    ],
+    "require": ["tsconfig-paths/register"],
     "compilerOptions": {
       "module": "NodeNext"
     },

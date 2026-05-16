@@ -2,7 +2,7 @@
   Auswertung für
   <p-select
     id="jahr"
-    [options]="selJahre"
+    [options]="selJahre()"
     optionLabel="label"
     optionValue="value"
     [(ngModel)]="selJahr"
@@ -11,5 +11,5 @@
   ></p-select>
 </h2>
 <div class="card" style="height: 80%; overflow-y: auto">
-  <p-chart type="bar" [data]="data" [options]="options"></p-chart>
+  <p-chart type="bar" [data]="data()" [options]="options()"></p-chart>
 </div>

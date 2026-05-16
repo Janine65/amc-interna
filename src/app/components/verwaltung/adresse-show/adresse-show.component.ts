@@ -1,5 +1,5 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MeisterAdresse, Meisterschaft } from '@model/datatypes';
 import { BackendService } from '@app/service';
 import {
@@ -9,32 +9,47 @@ import {
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { map, zip } from 'rxjs';
+import { Bind } from 'primeng/bind';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
+import { Ripple } from 'primeng/ripple';
+import { BaseTableComponent } from '../../shared/basetable/basetable.component';
 
 @Component({
-    selector: 'app-adresse-show',
-    templateUrl: './adresse-show.component.html',
-    styleUrls: ['./adresse-show.component.scss'],
-    standalone: false
+  selector: 'app-adresse-show',
+  templateUrl: './adresse-show.component.html',
+  styleUrls: ['./adresse-show.component.scss'],
+  imports: [
+    Bind,
+    Tabs,
+    TabList,
+    Ripple,
+    Tab,
+    TabPanels,
+    TabPanel,
+    BaseTableComponent,
+  ],
 })
 export class AdresseShowComponent {
+  private backendService = inject(BackendService);
+  ref = inject(DynamicDialogRef);
+  config = inject(DynamicDialogConfig);
+  private messageService = inject(MessageService);
+
   dialogRef?: DynamicDialogRef;
-  cols: TableOptions[] = [];
-  toolbar: TableToolbar[] = [];
-  lstEvents: Meisterschaft[] = [];
-  colsM: TableOptions[] = [];
-  toolbarM: TableToolbar[] = [];
-  lstMeister: MeisterAdresse[] = [];
+  readonly cols = signal<TableOptions[]>([]);
+  readonly toolbar = signal<TableToolbar[]>([]);
+  readonly lstEvents = signal<Meisterschaft[]>([]);
+  readonly colsM = signal<TableOptions[]>([]);
+  readonly toolbarM = signal<TableToolbar[]>([]);
+  readonly lstMeister = signal<MeisterAdresse[]>([]);
   adresseid = 0;
 
-  constructor(
-    private backendService: BackendService,
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    private messageService: MessageService
-  ) {
+  constructor() {
+    const config = this.config;
+
     this.adresseid = config.data.adresseid;
 
-    this.cols = [
+    this.cols.set([
       {
         field: 'jahr',
         header: 'Jahr',
@@ -89,9 +104,9 @@ export class AdresseShowComponent {
         filtering: true,
         filter: 'boolean',
       },
-    ];
+    ]);
 
-    this.toolbar = [
+    this.toolbar.set([
       {
         label: 'Schliessen',
         btnClass: 'p-button-secondary p-button-outlined',
@@ -103,9 +118,9 @@ export class AdresseShowComponent {
         roleNeeded: '',
         isEditFunc: false,
       },
-    ];
+    ]);
 
-    this.colsM = [
+    this.colsM.set([
       {
         field: 'jahr',
         header: 'Jahr',
@@ -218,9 +233,9 @@ export class AdresseShowComponent {
         filtering: true,
         filter: 'boolean',
       },
-    ];
+    ]);
 
-    this.toolbarM = [
+    this.toolbarM.set([
       {
         label: 'Schliessen',
         btnClass: 'p-button-secondary p-button-outlined',
@@ -232,23 +247,24 @@ export class AdresseShowComponent {
         roleNeeded: '',
         isEditFunc: false,
       },
-    ];
+    ]);
 
     zip(
       this.backendService.getAdresseMeisterschaft(this.adresseid),
-      this.backendService.getAdresseMeister(this.adresseid)
+      this.backendService.getAdresseMeister(this.adresseid),
     )
       .pipe(
         map((result) => {
           console.log(result);
-          this.lstEvents = result[0].data as Meisterschaft[];
-          this.lstEvents.forEach((rec) => {
+          const events = result[0].data as Meisterschaft[];
+          events.forEach((rec) => {
             rec.event_datum_date = new Date(rec.anlaesse.datum!);
             rec.jahr = rec.event_datum_date.getFullYear();
             rec.name = rec.anlaesse.name;
           });
-          this.lstMeister = result[1].data as MeisterAdresse[];
-        })
+          this.lstEvents.set(events);
+          this.lstMeister.set(result[1].data as MeisterAdresse[]);
+        }),
       )
       .subscribe();
   }

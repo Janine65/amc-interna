@@ -1,33 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MeisterschaftAuswertung, ParamData } from '@model/datatypes';
 import { BackendService } from '@app/service';
 import { MessageService } from 'primeng/api';
+import { Bind } from 'primeng/bind';
+import { Select } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { UIChart } from 'primeng/chart';
 
 @Component({
   selector: 'app-auswertung',
   templateUrl: './auswertung.component.html',
   styleUrls: ['./auswertung.component.scss'],
-  standalone: false,
+  imports: [Bind, Select, FormsModule, UIChart],
 })
 export class AuswertungComponent implements OnInit {
-  lstGraphData: MeisterschaftAuswertung[] = [];
-  parameter: ParamData[] = [];
-  selJahre = [
+  private backendService = inject(BackendService);
+  private messageService = inject(MessageService);
+
+  readonly selJahre = signal<{ value: number; label: string }[]>([
     { value: 1, label: '1' },
     { value: 2, label: '2' },
     { value: 3, label: '3' },
-  ];
+  ]);
+  readonly data = signal<any>(undefined);
+  readonly options = signal<any>(undefined);
+
   selJahr = 2;
   jahr: number;
-  data: any;
-  options: any;
+  private parameter: ParamData[] = [];
+  private lstGraphData: MeisterschaftAuswertung[] = [];
 
-  constructor(
-    private backendService: BackendService,
-    private messageService: MessageService
-  ) {
+  constructor() {
     const str = localStorage.getItem('parameter');
     this.parameter = str ? JSON.parse(str) : [];
     const paramJahr = this.parameter.find((param) => param.key === 'CLUBJAHR');
@@ -36,9 +41,11 @@ export class AuswertungComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.jahr) {
-      this.selJahre[0] = { value: this.jahr - 2, label: String(this.jahr - 2) };
-      this.selJahre[1] = { value: this.jahr - 1, label: String(this.jahr - 1) };
-      this.selJahre[2] = { value: this.jahr, label: String(this.jahr) };
+      this.selJahre.set([
+        { value: this.jahr - 2, label: String(this.jahr - 2) },
+        { value: this.jahr - 1, label: String(this.jahr - 1) },
+        { value: this.jahr, label: String(this.jahr) },
+      ]);
       this.selJahr = this.jahr;
     }
 
@@ -64,12 +71,12 @@ export class AuswertungComponent implements OnInit {
           const datum = new Date(rec.datum!);
           labels.push([rec.name!, datum.toLocaleDateString()]);
           dataset1.push(
-            rec._count!.meisterschaft ? rec._count!.meisterschaft : 0
+            rec._count!.meisterschaft ? rec._count!.meisterschaft : 0,
           );
           dataset2.push(rec.gaeste ? rec.gaeste : 0);
         });
 
-        this.data = {
+        const data = {
           labels: labels,
           datasets: [
             {
@@ -86,8 +93,9 @@ export class AuswertungComponent implements OnInit {
             },
           ],
         };
+        this.data.set(data);
 
-        this.options = {
+        this.options.set({
           indexAxis: 'y',
           plugins: {
             legend: {
@@ -128,9 +136,9 @@ export class AuswertungComponent implements OnInit {
                 drawBorder: false,
               },
               min: 0,
-              max: this.data.datasets.reduce(
+              max: data.datasets.reduce(
                 (max, dataset) => Math.max(max, ...dataset.data),
-                -Infinity
+                -Infinity,
               ),
             },
             y: {
@@ -147,7 +155,7 @@ export class AuswertungComponent implements OnInit {
               },
             },
           },
-        };
+        });
       },
     });
   }

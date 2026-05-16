@@ -1,4 +1,8 @@
 {
   "workbench.externalBrowser": "chrome",
-  "nxConsole.nxWorkspacePath": ""
+  "nxConsole.nxWorkspacePath": "",
+  "chat.tools.terminal.autoApprove": {
+    "npx ng": true,
+    "npx nx": true
+  }
 }

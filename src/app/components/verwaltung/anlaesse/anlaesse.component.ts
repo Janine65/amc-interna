@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { BackendService } from '@app/service';
 import { MessageService } from 'primeng/api';
 import { from } from 'rxjs';
@@ -13,33 +13,35 @@ import {
 import { AnlaesseEditComponent } from '../anlaesse-edit/anlaesse-edit.component';
 import { AnlassBookComponent } from '../anlass-book/anlass-book.component';
 import { DatePipe, DecimalPipe } from '@angular/common';
+import { Bind } from 'primeng/bind';
+import { Select } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { BaseTableComponent } from '../../shared/basetable/basetable.component';
 
 @Component({
-    selector: 'app-anlaesse',
-    templateUrl: './anlaesse.component.html',
-    styles: [],
-    providers: [DialogService],
-    standalone: false
+  selector: 'app-anlaesse',
+  templateUrl: './anlaesse.component.html',
+  styles: [],
+  providers: [DialogService],
+  imports: [Bind, Select, FormsModule, BaseTableComponent],
 })
 export class AnlaesseComponent implements OnInit {
-  anlaesseList: Anlass[] = [];
-  anlaesseListAll: Anlass[] = [];
-  loading = true;
+  private backendService = inject(BackendService);
+  private dialogService = inject(DialogService);
+  private messageService = inject(MessageService);
+
+  readonly anlaesseList = signal<Anlass[]>([]);
+  private anlaesseListAll: Anlass[] = [];
+  readonly loading = signal(true);
 
   dialogRef?: DynamicDialogRef;
-  cols: TableOptions[] = [];
-  toolbar: TableToolbar[] = [];
+  readonly cols = signal<TableOptions[]>([]);
+  readonly toolbar = signal<TableToolbar[]>([]);
 
-  selJahre = [{}];
+  readonly selJahre = signal<{ label?: string; value?: number }[]>([]);
   selJahr = 0;
-
-  constructor(
-    private backendService: BackendService,
-    private dialogService: DialogService,
-    private messageService: MessageService
-  ) {}
   ngOnInit(): void {
-    this.cols = [
+    this.cols.set([
       {
         field: 'datum_date',
         header: 'Datum',
@@ -118,9 +120,9 @@ export class AnlaesseComponent implements OnInit {
         filtering: true,
         filter: 'text',
       },
-    ];
+    ]);
 
-    this.toolbar = [
+    this.toolbar.set([
       {
         label: 'Punkte vergeben',
         btnClass: 'p-button-primary p-button-outlined',
@@ -209,27 +211,22 @@ export class AnlaesseComponent implements OnInit {
         roleNeeded: '',
         isEditFunc: false,
       },
-    ];
+    ]);
 
     this.selJahr = new Date().getFullYear();
-    this.selJahre.pop();
-    this.selJahre.push({
-      label: (this.selJahr - 1).toString(),
-      value: this.selJahr - 1,
-    });
-    this.selJahre.push({ label: this.selJahr.toString(), value: this.selJahr });
-    this.selJahre.push({
-      label: (this.selJahr + 1).toString(),
-      value: this.selJahr + 1,
-    });
+    this.selJahre.set([
+      { label: (this.selJahr - 1).toString(), value: this.selJahr - 1 },
+      { label: this.selJahr.toString(), value: this.selJahr },
+      { label: (this.selJahr + 1).toString(), value: this.selJahr + 1 },
+    ]);
 
     // read Anlaesse
     from(
       this.backendService.getAnlaesseData(
         (this.selJahr - 1).toFixed(0),
         (this.selJahr + 1).toFixed(0),
-        undefined
-      )
+        undefined,
+      ),
     ).subscribe((list) => {
       this.anlaesseListAll = list.data as Anlass[];
       this.anlaesseListAll.forEach((anl) => {
@@ -238,13 +235,13 @@ export class AnlaesseComponent implements OnInit {
         if (anl.status == 0) anl.classRow = 'inactive';
       });
       this.chgJahr();
-      this.loading = false;
+      this.loading.set(false);
     });
   }
 
   formatField(
     field: string,
-    value: string | number | boolean | null
+    value: string | number | boolean | null,
   ): string | number | boolean | null {
     if (field == 'status')
       return value && (value as number) == 1 ? 'Aktiv' : 'Inaktiv';
@@ -253,8 +250,10 @@ export class AnlaesseComponent implements OnInit {
   }
 
   chgJahr() {
-    this.anlaesseList = this.anlaesseListAll.filter(
-      (anl) => anl.datum_date?.getFullYear() === this.selJahr
+    this.anlaesseList.set(
+      this.anlaesseListAll.filter(
+        (anl) => anl.datum_date?.getFullYear() === this.selJahr,
+      ),
     );
   }
 
@@ -316,7 +315,7 @@ export class AnlaesseComponent implements OnInit {
         anlass.vorjahr = anlass.anlaesse ? anlass.anlaesse.longname : '';
 
         thisRef.anlaesseListAll = thisRef.anlaesseListAll.map(
-          (obj) => [anlass].find((o) => o.id === obj.id) || obj
+          (obj) => [anlass].find((o) => o.id === obj.id) || obj,
         );
         thisRef.chgJahr();
         console.log(anlass);
@@ -371,11 +370,10 @@ export class AnlaesseComponent implements OnInit {
 
     thisRef.backendService.delAnlaesseData(selRec).subscribe({
       complete: () => {
-        thisRef.anlaesseListAll.splice(
-          thisRef.anlaesseListAll.indexOf(selRec),
-          1
+        thisRef.anlaesseListAll = thisRef.anlaesseListAll.filter(
+          (a) => a !== selRec,
         );
-        thisRef.anlaesseList.splice(thisRef.anlaesseList.indexOf(selRec), 1);
+        thisRef.chgJahr();
 
         thisRef.messageService.add({
           detail: 'Der Anlass wurde gelöscht',
@@ -415,7 +413,7 @@ export class AnlaesseComponent implements OnInit {
     const thisRef: AnlaesseComponent = this;
     console.log('Datenblatt erstellen');
     from(
-      this.backendService.getSheet({ jahr: this.selJahr, type: 0, id: null })
+      this.backendService.getSheet({ jahr: this.selJahr, type: 0, id: null }),
     ).subscribe((response) => {
       if (response.type == 'info') {
         const filename = response.data.filename;
@@ -440,7 +438,7 @@ export class AnlaesseComponent implements OnInit {
     const thisRef: AnlaesseComponent = this;
     console.log('Datenblatt leer für alle erstellen');
     from(
-      this.backendService.getSheet({ jahr: this.selJahr, type: 1, id: 0 })
+      this.backendService.getSheet({ jahr: this.selJahr, type: 1, id: 0 }),
     ).subscribe((response) => {
       if (response.type == 'info') {
         const filename = response.data.filename;
@@ -464,7 +462,7 @@ export class AnlaesseComponent implements OnInit {
     const thisRef: AnlaesseComponent = this;
     console.log('Datenblatt voll für alle erstellen');
     from(
-      this.backendService.getSheet({ jahr: this.selJahr, type: 2, id: 0 })
+      this.backendService.getSheet({ jahr: this.selJahr, type: 2, id: 0 }),
     ).subscribe((response) => {
       if (response.type == 'info') {
         const filename = response.data.filename;

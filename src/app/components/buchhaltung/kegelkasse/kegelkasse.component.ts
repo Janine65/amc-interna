@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Account, Anlass, Journal, Kegelkasse } from '@model/datatypes';
 import { BackendService } from '@app/service';
 import { MessageService } from 'primeng/api';
@@ -11,14 +17,44 @@ import {
   TableToolbar,
 } from '@shared/basetable/basetable.component';
 import { User } from '@model/user';
+import { Bind } from 'primeng/bind';
+import { Toast } from 'primeng/toast';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
+import { Ripple } from 'primeng/ripple';
+import { Toolbar } from 'primeng/toolbar';
+import { ButtonDirective } from 'primeng/button';
+import { Select } from 'primeng/select';
+import { InputNumber } from 'primeng/inputnumber';
+import { BaseTableComponent } from '../../shared/basetable/basetable.component';
+import { DynamicPipe } from '@shared/basetable/dynamicpipe';
 
 @Component({
   selector: 'app-kegelkasse',
   templateUrl: './kegelkasse.component.html',
   styleUrls: ['./kegelkasse.component.scss'],
-  standalone: false,
+  imports: [
+    Bind,
+    Toast,
+    Tabs,
+    TabList,
+    Ripple,
+    Tab,
+    TabPanels,
+    TabPanel,
+    Toolbar,
+    ButtonDirective,
+    FormsModule,
+    ReactiveFormsModule,
+    Select,
+    InputNumber,
+    BaseTableComponent,
+    DynamicPipe,
+  ],
 })
 export class KegelkasseComponent implements OnInit {
+  private backendService = inject(BackendService);
+  private messageService = inject(MessageService);
+
   fgKasse = new FormGroup({
     date: new FormControl<string | null>({ value: null, disabled: false }),
     kasse: new FormControl<number | null>({ value: 0.0, disabled: true }),
@@ -120,13 +156,13 @@ export class KegelkasseComponent implements OnInit {
   subFields!: Subscription[];
   fromAcc = 0;
   kegelkasse: Kegelkasse = {};
-  lstKegelkasse: Kegelkasse[] = [];
+  readonly lstKegelkasse = signal<Kegelkasse[]>([]);
 
-  lstAnlaesse: Anlass[] = [];
-  cols: TableOptions[] = [];
-  toolbar: TableToolbar[] = [];
+  readonly lstAnlaesse = signal<Anlass[]>([]);
+  readonly cols = signal<TableOptions[]>([]);
+  readonly toolbar = signal<TableToolbar[]>([]);
 
-  lKegelDatum: Anlass[] = [];
+  readonly lKegelDatum = signal<Anlass[]>([]);
 
   get date() {
     return this.fgKasse.get('date');
@@ -207,16 +243,11 @@ export class KegelkasseComponent implements OnInit {
     return this.fgKasse.get('differenz');
   }
 
-  constructor(
-    private backendService: BackendService,
-    private messageService: MessageService
-  ) {}
-
   ngOnInit(): void {
     this.subFields = [];
     this.subscribeFields();
 
-    this.cols = [
+    this.cols.set([
       {
         field: 'datum',
         header: 'Datum',
@@ -273,28 +304,30 @@ export class KegelkasseComponent implements OnInit {
         filtering: false,
         filter: undefined,
       },
-    ];
+    ]);
 
     this.backendService
       .getAnlaesseData(
         new Date().getFullYear().toFixed(0),
         new Date().getFullYear().toFixed(0),
-        true
+        true,
       )
       .subscribe({
         next: (result) => {
-          this.lstAnlaesse = result.data as Anlass[];
-          this.lKegelDatum = [];
-          this.lstAnlaesse.forEach((value) => {
+          const anlaesse = result.data as Anlass[];
+          const datums: Anlass[] = [];
+          anlaesse.forEach((value) => {
             value.datum_date = new Date(value.datum);
             const tmpDate = value.datum_date;
-            this.lKegelDatum.push(value);
+            datums.push(value);
             if (
               tmpDate.getMonth() == new Date().getMonth() &&
               tmpDate.getFullYear() == new Date().getFullYear()
             )
               this.date.setValue(value.datum!);
           });
+          this.lstAnlaesse.set(anlaesse);
+          this.lKegelDatum.set(datums);
         },
       });
   }
@@ -309,62 +342,62 @@ export class KegelkasseComponent implements OnInit {
   subscribeFields() {
     this.subFields.push(
       this.rappen5.valueChanges.subscribe(() =>
-        this.calculate(this.rappen5.value, 'rappen5_sum', 0.05)
-      )
+        this.calculate(this.rappen5.value, 'rappen5_sum', 0.05),
+      ),
     );
     this.subFields.push(
       this.rappen10.valueChanges.subscribe(() =>
-        this.calculate(this.rappen10.value, 'rappen10_sum', 0.1)
-      )
+        this.calculate(this.rappen10.value, 'rappen10_sum', 0.1),
+      ),
     );
     this.subFields.push(
       this.rappen20.valueChanges.subscribe(() =>
-        this.calculate(this.rappen20.value, 'rappen20_sum', 0.2)
-      )
+        this.calculate(this.rappen20.value, 'rappen20_sum', 0.2),
+      ),
     );
     this.subFields.push(
       this.rappen50.valueChanges.subscribe(() =>
-        this.calculate(this.rappen50.value, 'rappen50_sum', 0.5)
-      )
+        this.calculate(this.rappen50.value, 'rappen50_sum', 0.5),
+      ),
     );
     this.subFields.push(
       this.franken1.valueChanges.subscribe(() =>
-        this.calculate(this.franken1.value, 'franken1_sum', 1)
-      )
+        this.calculate(this.franken1.value, 'franken1_sum', 1),
+      ),
     );
     this.subFields.push(
       this.franken2.valueChanges.subscribe(() =>
-        this.calculate(this.franken2.value, 'franken2_sum', 2)
-      )
+        this.calculate(this.franken2.value, 'franken2_sum', 2),
+      ),
     );
     this.subFields.push(
       this.franken5.valueChanges.subscribe(() =>
-        this.calculate(this.franken5.value, 'franken5_sum', 5)
-      )
+        this.calculate(this.franken5.value, 'franken5_sum', 5),
+      ),
     );
     this.subFields.push(
       this.franken10.valueChanges.subscribe(() =>
-        this.calculate(this.franken10.value, 'franken10_sum', 10)
-      )
+        this.calculate(this.franken10.value, 'franken10_sum', 10),
+      ),
     );
     this.subFields.push(
       this.franken20.valueChanges.subscribe(() =>
-        this.calculate(this.franken20.value, 'franken20_sum', 20)
-      )
+        this.calculate(this.franken20.value, 'franken20_sum', 20),
+      ),
     );
     this.subFields.push(
       this.franken50.valueChanges.subscribe(() =>
-        this.calculate(this.franken50.value, 'franken50_sum', 50)
-      )
+        this.calculate(this.franken50.value, 'franken50_sum', 50),
+      ),
     );
     this.subFields.push(
       this.franken100.valueChanges.subscribe(() =>
-        this.calculate(this.franken100.value, 'franken100_sum', 100)
-      )
+        this.calculate(this.franken100.value, 'franken100_sum', 100),
+      ),
     );
 
     this.subFields.push(
-      this.date.valueChanges.subscribe(() => this.changeDate(this.date.value))
+      this.date.valueChanges.subscribe(() => this.changeDate(this.date.value)),
     );
   }
 
@@ -399,9 +432,9 @@ export class KegelkasseComponent implements OnInit {
       zip(
         this.backendService.getKegelkasse(
           date.getMonth() + 1,
-          date.getFullYear()
+          date.getFullYear(),
         ),
-        this.backendService.getAmountOneAcc(sKegelDate, 1002)
+        this.backendService.getAmountOneAcc(sKegelDate, 1002),
       )
         .pipe(
           map(([result1, result]) => {
@@ -424,7 +457,7 @@ export class KegelkasseComponent implements OnInit {
               const user = localStorage.getItem('user');
               if (user) {
                 this.kegelkasse.user = new BehaviorSubject<User>(
-                  JSON.parse(user)
+                  JSON.parse(user),
                 ).value;
                 this.kegelkasse.userid = this.kegelkasse.user.id;
               }
@@ -435,7 +468,7 @@ export class KegelkasseComponent implements OnInit {
             this.kasse.setValue(amount);
             this.kegelkasse.kasse = amount;
             this.calculate(null, null, 0);
-          })
+          }),
         )
         .subscribe();
     }
@@ -462,11 +495,11 @@ export class KegelkasseComponent implements OnInit {
         this.franken10_sum.getRawValue() +
         this.franken20_sum.getRawValue() +
         this.franken50_sum.getRawValue() +
-        this.franken100_sum.getRawValue()
+        this.franken100_sum.getRawValue(),
     );
 
     this.differenz.setValue(
-      Number((this.total.getRawValue() - this.kasse.getRawValue()).toFixed(2))
+      Number((this.total.getRawValue() - this.kasse.getRawValue()).toFixed(2)),
     );
   }
 
@@ -520,7 +553,7 @@ export class KegelkasseComponent implements OnInit {
           this.kegelkasse.journal.date = this.date.value;
           zip(
             this.backendService.updJournal(this.kegelkasse.journal),
-            this.backendService.updKegelkasse(this.kegelkasse)
+            this.backendService.updKegelkasse(this.kegelkasse),
           )
             .pipe(
               map(() => {
@@ -531,7 +564,7 @@ export class KegelkasseComponent implements OnInit {
                   closable: true,
                   summary: 'Kegelkasse speichern',
                 });
-              })
+              }),
             )
             .subscribe();
         }
@@ -608,11 +641,11 @@ export class KegelkasseComponent implements OnInit {
         .getAllKegelkasse(new Date(this.date.value).getFullYear())
         .subscribe({
           next: (list) => {
-            this.lstKegelkasse = list.data as Kegelkasse[];
-            for (const entry of this.lstKegelkasse) {
+            const data = list.data as Kegelkasse[];
+            for (const entry of data) {
               entry.datum_date = new Date(entry.datum);
-              const anl = this.lstAnlaesse.find(
-                (value) => value.datum == entry.datum
+              const anl = this.lstAnlaesse().find(
+                (value) => value.datum == entry.datum,
               );
               if (anl) entry.cntUsers = anl._count.meisterschaft;
               if (entry.user) entry.userName = entry.user.name;
@@ -621,6 +654,7 @@ export class KegelkasseComponent implements OnInit {
                 entry.amountProUser = entry.differenz / entry.cntUsers;
               else entry.amountProUser = 0;
             }
+            this.lstKegelkasse.set(data);
           },
         });
     }

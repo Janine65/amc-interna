@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { commonTestProviders } from '@app/testing/test-providers';
 
 import { MeisterschaftComponent } from './meisterschaft.component';
 
@@ -8,8 +9,9 @@ describe('MeisterschaftComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MeisterschaftComponent ]
-    })
+    imports: [MeisterschaftComponent],
+    providers: commonTestProviders
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(MeisterschaftComponent);

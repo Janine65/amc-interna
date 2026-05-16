@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { from, Subscription } from 'rxjs';
 import { BackendService } from '@app/service';
 import { Adresse } from '@model/datatypes';
 import {
   TableOptions,
   TableToolbar,
+  BaseTableComponent,
 } from '../../shared/basetable/basetable.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AdresseEditComponent } from '../adresse-edit/adresse-edit.component';
@@ -38,25 +39,23 @@ export class AdresseFilter {
   templateUrl: './adressen.component.html',
   styles: [],
   providers: [DialogService],
-  standalone: false,
+  imports: [BaseTableComponent],
 })
 export class AdressenComponent implements OnInit {
-  adressList: Adresse[] = [];
-  loading = true;
+  private backendService = inject(BackendService);
+  private dialogService = inject(DialogService);
+  private messageService = inject(MessageService);
+
+  readonly adressList = signal<Adresse[]>([]);
+  readonly loading = signal(true);
   subs!: Subscription;
 
   dialogRef?: DynamicDialogRef;
-  cols: TableOptions[] = [];
-  toolbar: TableToolbar[] = [];
-
-  constructor(
-    private backendService: BackendService,
-    private dialogService: DialogService,
-    private messageService: MessageService
-  ) {}
+  readonly cols = signal<TableOptions[]>([]);
+  readonly toolbar = signal<TableToolbar[]>([]);
 
   ngOnInit(): void {
-    this.cols = [
+    this.cols.set([
       {
         field: 'mnr',
         header: 'MNR',
@@ -167,9 +166,9 @@ export class AdressenComponent implements OnInit {
         pipe: DatePipe,
         args: 'yyyy',
       },
-    ];
+    ]);
 
-    this.toolbar = [
+    this.toolbar.set([
       {
         label: 'Email',
         btnClass: 'p-button-secondary p-button-outlined',
@@ -247,25 +246,26 @@ export class AdressenComponent implements OnInit {
         roleNeeded: 'admin',
         isEditFunc: false,
       },
-    ];
+    ]);
 
     this.subs = from(this.backendService.getAdressenData()).subscribe(
       (list) => {
-        this.adressList = list.data as Adresse[];
-        this.adressList.forEach((adr) => {
+        const data = list.data as Adresse[];
+        data.forEach((adr) => {
           adr.eintritt_date = new Date(adr.eintritt);
           adr.austritt_date = new Date(adr.austritt);
           if (adr.austritt.substring(0, 10) !== '3000-01-01')
             adr.classRow = 'inactive';
         });
-        this.loading = false;
-      }
+        this.adressList.set(data);
+        this.loading.set(false);
+      },
     );
   }
 
   formatField(
     field: string,
-    value: string | number | boolean | null
+    value: string | number | boolean | null,
   ): string | number | boolean | null {
     switch (field) {
       case 'eintritt':
@@ -296,14 +296,14 @@ export class AdressenComponent implements OnInit {
       email_body: '',
       email_signature: Object.keys(EmailSignature)[
         Object.values(EmailSignature).indexOf(
-          environment.defaultSignature as unknown as EmailSignature
+          environment.defaultSignature as unknown as EmailSignature,
         )
       ] as unknown as EmailSignature,
     });
 
     lstData?.forEach(
       (adresse) =>
-        (emailBody.email_bcc += adresse.email != '' ? adresse.email + ';' : '')
+        (emailBody.email_bcc += adresse.email != '' ? adresse.email + ';' : ''),
     );
     this.dialogRef = this.dialogService.open(EmailDialogComponent, {
       data: {
@@ -355,7 +355,7 @@ export class AdressenComponent implements OnInit {
         adresse.eintritt_date = new Date(adresse.eintritt);
         adresse.austritt_date = new Date(adresse.austritt);
 
-        this.adressList.push(adresse);
+        this.adressList.set([...this.adressList(), adresse]);
         console.log(adresse);
       }
     });
@@ -382,8 +382,10 @@ export class AdressenComponent implements OnInit {
       if (adresse) {
         adresse.eintritt_date = new Date(adresse.eintritt);
         adresse.austritt_date = new Date(adresse.austritt);
-        thisRef.adressList = thisRef.adressList.map(
-          (obj) => [adresse].find((o) => o.id === obj.id) ?? obj
+        thisRef.adressList.set(
+          thisRef
+            .adressList()
+            .map((obj) => [adresse].find((o) => o.id === obj.id) ?? obj),
         );
         console.log(adresse);
       }
@@ -433,8 +435,10 @@ export class AdressenComponent implements OnInit {
             const adresse = retData.data as Adresse;
             adresse.eintritt_date = new Date(adresse.eintritt);
             adresse.austritt_date = new Date(adresse.austritt);
-            thisRef.adressList = thisRef.adressList.map((obj) =>
-              adresse.id === obj.id ? adresse : obj
+            thisRef.adressList.set(
+              thisRef
+                .adressList()
+                .map((obj) => (adresse.id === obj.id ? adresse : obj)),
             );
             thisRef.messageService.add({
               detail: 'Das Austrittsdatum wurde auf den 31.12. gesetz',

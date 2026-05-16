@@ -1,93 +1,97 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable prefer-spread */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { Subscription, from, map, zip } from 'rxjs';
 import { BackendService } from '@app/service';
-import { Fiscalyear, OverviewData, ParamData } from 'src/app/models/datatypes';
+import { Fiscalyear, OverviewData, ParamData } from '@model/datatypes';
 import pkg from './../../../../package.json';
+import { Bind } from 'primeng/bind';
+import { Fieldset } from 'primeng/fieldset';
 
 @Component({
-    selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.scss'],
-    standalone: false
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
+  imports: [Bind, Fieldset],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  dashboarData : OverviewData[] = []
-  parameter: ParamData[] = [];
-  fiscalyear?: Fiscalyear;
-  jahr = '';
-  subs!: Subscription;
-  loading = true;
+  private backendService = inject(BackendService);
 
-  constructor(private backendService: BackendService) {}
-  
+  readonly dashboarData = signal<OverviewData[]>([]);
+  readonly fiscalyear = signal<Fiscalyear | undefined>(undefined);
+  readonly jahr = signal('');
+  readonly loading = signal(true);
+  private parameter: ParamData[] = [];
+  private subs!: Subscription;
+
   ngOnDestroy(): void {
-    if (this.subs) 
-      this.subs.unsubscribe();
+    if (this.subs) this.subs.unsubscribe();
   }
-  
-  ngOnInit() {
-    
-    this.subs = from(this.backendService.getParameterData())
-    .subscribe(async list => {
-      this.parameter = list.data as ParamData[];
-      console.log(this.parameter);
-      localStorage.setItem('parameter', JSON.stringify(this.parameter));
-      const element = this.parameter.find(element => element.key === 'CLUBJAHR');
-      if (element) {
-        this.jahr = element.value;      
-        const header = document.getElementById('header');
-        header!.innerText = "Auto-Moto-Club Swissair - Clubjahr " + this.jahr
-        this.subs.unsubscribe();
-        this.subs = zip(
-          this.backendService.getAbout(),
-          this.backendService.getDashboardAdressData(),
-          this.backendService.getDashboardAnlaesseData(),
-          this.backendService.getDashboardClubmeisterData(),
-          this.backendService.getDashboardKegelmeisterData(),
-          this.backendService.getDashboarJournalData(this.jahr)
-          )
-        .pipe(map(([about, list1, list2, list3, list4, retdata]) => {
-          localStorage.setItem('aboutBackend', JSON.stringify(about));
-          localStorage.setItem('aboutFrontend', JSON.stringify(pkg));
-          this.dashboarData.push.apply(this.dashboarData, list1.data);
-          this.dashboarData.push.apply(this.dashboarData, list2.data);
-          this.dashboarData.push.apply(this.dashboarData, list3.data);
-          this.dashboarData.push.apply(this.dashboarData, list4.data);
-          this.fiscalyear = retdata.data as Fiscalyear;
-          if (this.fiscalyear) {
-            let value = ''
-            switch (this.fiscalyear.state) {
-              case 1:
-                value = this.fiscalyear.name + " - offen"
-                break;
-              case 2:
-                value = this.fiscalyear.name + " - prov. abgeschlossen"
-                break;
-              default:
-                value = this.fiscalyear.name + " - abgeschlossen"
-                break;
-            }
-            this.dashboarData.push({label: 'Buchhaltung', value: value})
-          }
-          this.loading = false;
-          console.log(this.dashboarData)
-        }))
-        .subscribe()
-      }
-  });
-}
 
-public getJahr() : string {
-  if (!this.loading)
-    return this.jahr
-  return ''
-}
+  ngOnInit() {
+    this.subs = from(this.backendService.getParameterData()).subscribe(
+      async (list) => {
+        this.parameter = list.data as ParamData[];
+        localStorage.setItem('parameter', JSON.stringify(this.parameter));
+        const element = this.parameter.find(
+          (element) => element.key === 'CLUBJAHR',
+        );
+        if (element) {
+          this.jahr.set(element.value);
+          const header = document.getElementById('header');
+          header!.innerText =
+            'Auto-Moto-Club Swissair - Clubjahr ' + this.jahr();
+          this.subs.unsubscribe();
+          this.subs = zip(
+            this.backendService.getAbout(),
+            this.backendService.getDashboardAdressData(),
+            this.backendService.getDashboardAnlaesseData(),
+            this.backendService.getDashboardClubmeisterData(),
+            this.backendService.getDashboardKegelmeisterData(),
+            this.backendService.getDashboarJournalData(this.jahr()),
+          )
+            .pipe(
+              map(([about, list1, list2, list3, list4, retdata]) => {
+                localStorage.setItem('aboutBackend', JSON.stringify(about));
+                localStorage.setItem('aboutFrontend', JSON.stringify(pkg));
+                const data: OverviewData[] = [];
+                data.push(...(list1.data as OverviewData[]));
+                data.push(...(list2.data as OverviewData[]));
+                data.push(...(list3.data as OverviewData[]));
+                data.push(...(list4.data as OverviewData[]));
+                const fy = retdata.data as Fiscalyear;
+                this.fiscalyear.set(fy);
+                if (fy) {
+                  let value = '';
+                  switch (fy.state) {
+                    case 1:
+                      value = fy.name + ' - offen';
+                      break;
+                    case 2:
+                      value = fy.name + ' - prov. abgeschlossen';
+                      break;
+                    default:
+                      value = fy.name + ' - abgeschlossen';
+                      break;
+                  }
+                  data.push({ label: 'Buchhaltung', value });
+                }
+                this.dashboarData.set(data);
+                this.loading.set(false);
+              }),
+            )
+            .subscribe();
+        }
+      },
+    );
+  }
+
+  public getJahr(): string {
+    if (!this.loading()) return this.jahr();
+    return '';
+  }
   getAnzahlForKey(key: string): string {
-    const element = this.dashboarData.find((rec) => rec.label === key)
-    if (element)
-      return element.value;
+    const element = this.dashboarData().find((rec) => rec.label === key);
+    if (element) return element.value;
 
     return 'not found';
   }

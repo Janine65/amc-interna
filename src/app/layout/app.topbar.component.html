@@ -14,5 +14,9 @@
   >
     <i class="pi pi-bars"></i>
   </button>
-  <p-button [outlined]="true" [icon]="iconMode" (onClick)="toggleDarkMode()" />
+  <p-button
+    [outlined]="true"
+    [icon]="iconMode()"
+    (onClick)="toggleDarkMode()"
+  />
 </div>

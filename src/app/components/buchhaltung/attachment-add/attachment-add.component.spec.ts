@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { commonTestProviders } from '@app/testing/test-providers';
 
 import { AttachmentAddComponent } from './attachment-add.component';
 
@@ -8,8 +9,9 @@ describe('AttachmentAddComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AttachmentAddComponent ]
-    })
+    imports: [AttachmentAddComponent],
+    providers: commonTestProviders
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(AttachmentAddComponent);

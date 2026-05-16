@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpHeaders, HttpClient, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '@environments/environment';
 import {
   ParamData,
@@ -33,10 +33,12 @@ export interface RetDataFile extends RetData {
 
 @Injectable({ providedIn: 'root' })
 export class BackendService {
+  private http = inject(HttpClient);
+
   private header!: HttpHeaders;
   private backendApiUrl: string = '';
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.header = new HttpHeaders({
       'Access-Control-Allow-Origin': environment.apiUrlSelf,
       'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',

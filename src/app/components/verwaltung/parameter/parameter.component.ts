@@ -1,32 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ParamData } from '@model/datatypes';
 import { BackendService, RetData } from '@app/service';
-import { MessageService } from 'primeng/api';
+import { MessageService, PrimeTemplate } from 'primeng/api';
 import { Observable } from 'rxjs';
+import { Bind } from 'primeng/bind';
+import { Toast } from 'primeng/toast';
+import { ButtonDirective } from 'primeng/button';
+import { Ripple } from 'primeng/ripple';
+import { TableModule } from 'primeng/table';
+import { FormsModule } from '@angular/forms';
+import { InputText } from 'primeng/inputtext';
+import { Textarea } from 'primeng/textarea';
 
 @Component({
-    selector: 'app-parameter',
-    templateUrl: './parameter.component.html',
-    styles: [],
-    standalone: false
+  selector: 'app-parameter',
+  templateUrl: './parameter.component.html',
+  styles: [],
+  imports: [
+    Bind,
+    Toast,
+    ButtonDirective,
+    Ripple,
+    TableModule,
+    PrimeTemplate,
+    FormsModule,
+    InputText,
+    Textarea,
+  ],
 })
 export class ParameterComponent implements OnInit {
-  parameters: ParamData[] = [];
-  loading = true;
+  private backendService = inject(BackendService);
+  private messageService = inject(MessageService);
+
+  readonly parameters = signal<ParamData[]>([]);
+  readonly loading = signal(true);
 
   clonedParameters: { [s: string]: ParamData } = {};
-
-  constructor(
-    private backendService: BackendService,
-    private messageService: MessageService
-  ) {}
 
   ngOnInit(): void {
     this.backendService.getParameterData().subscribe({
       next: (result) => {
-        this.parameters = result.data as ParamData[];
-        console.log(this.parameters);
-        this.loading = false;
+        this.parameters.set(result.data as ParamData[]);
+        console.log(this.parameters());
+        this.loading.set(false);
       },
     });
   }
@@ -34,10 +50,10 @@ export class ParameterComponent implements OnInit {
     this.clonedParameters[parameter.id] = { ...parameter };
   }
 
-  onRowDelete(parameter: ParamData, index: number) {
+  onRowDelete(parameter: ParamData, _index: number) {
     this.backendService.delParameterData(parameter).subscribe({
       next: () => {
-        delete this.parameters[index];
+        this.parameters.set(this.parameters().filter((p) => p !== parameter));
       },
     });
   }
@@ -50,7 +66,9 @@ export class ParameterComponent implements OnInit {
     sub.subscribe({
       next: (ret) => {
         delete this.clonedParameters[parameter.id];
-        this.parameters[index] = ret.data as ParamData;
+        const updated = [...this.parameters()];
+        updated[index] = ret.data as ParamData;
+        this.parameters.set(updated);
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -61,11 +79,13 @@ export class ParameterComponent implements OnInit {
   }
 
   onRowEditCancel(parameter: ParamData, index: number) {
-    this.parameters[index] = this.clonedParameters[parameter.id];
+    const updated = [...this.parameters()];
+    updated[index] = this.clonedParameters[parameter.id];
+    this.parameters.set(updated);
     delete this.clonedParameters[parameter.id];
   }
 
   onAddNewRow() {
-    this.parameters.unshift({ id: 0, key: '', value: '' });
+    this.parameters.set([{ id: 0, key: '', value: '' }, ...this.parameters()]);
   }
 }

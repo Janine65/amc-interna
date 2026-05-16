@@ -1,8 +1,8 @@
 <p-scrollPanel [style]="{ width: '100%', height: '80%' }">
   <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
     <div class="card">
-      <div class="formgrid grid">
-        <div class="field col-12 md:col-6 mt-4">
+      <div class="flex flex-wrap">
+        <div class="mb-4 w-full md:w-1/2 mt-4">
           <label for="datum" class="mr-2">Datum</label>
           <p-datepicker
             dateFormat="dd.mm.yy"
@@ -15,10 +15,10 @@
             (onSelect)="getAnlaesse()"
           ></p-datepicker>
         </div>
-        <div class="field col-12 md:col-6">
+        <div class="mb-4 w-full md:w-1/2">
           <label for="status">Status</label>
           <p-selectButton
-            [options]="lstStatus"
+            [options]="lstStatus()"
             [(ngModel)]="anlass.status"
             optionLabel="name"
             optionValue="code"
@@ -29,7 +29,7 @@
             class="p-2 appearance-none outline-none w-full"
           ></p-selectButton>
         </div>
-        <div class="field col-12">
+        <div class="mb-4 w-full">
           <label for="bezeichnung">Bezeichnung</label>
           <input
             type="text"
@@ -43,7 +43,7 @@
             [(ngModel)]="anlass.name"
           />
         </div>
-        <div class="field col-12">
+        <div class="mb-4 w-full">
           <label for="beschreibung">Beschreibung</label>
           <textarea
             [(ngModel)]="anlass.beschreibung"
@@ -53,8 +53,8 @@
             class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
           ></textarea>
         </div>
-        <div class="formgroup-inline field col-12">
-          <div class="field-checkbox">
+        <div class="flex items-center flex-wrap mb-4 w-full">
+          <div class="flex items-center gap-2 mb-2">
             <input
               type="checkbox"
               id="kegeln"
@@ -63,7 +63,7 @@
             />
             <label for="kegeln">Kegeln?</label>
           </div>
-          <div class="field-checkbox">
+          <div class="flex items-center gap-2 mb-2">
             <input
               type="checkbox"
               id="nachkegeln"
@@ -72,7 +72,7 @@
             />
             <label for="nachkegeln">Nachkegeln?</label>
           </div>
-          <div class="field-checkbox">
+          <div class="flex items-center gap-2 mb-2">
             <input
               type="checkbox"
               id="sam"
@@ -82,7 +82,7 @@
             <label for="sam">SAM-Anlass?</label>
           </div>
         </div>
-        <div class="field col-12 md:col-6">
+        <div class="mb-4 w-full md:w-1/2">
           <label for="punkte">Punkte</label>
           <p-inputNumber
             inputId="integeronly"
@@ -93,7 +93,7 @@
             class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
           ></p-inputNumber>
         </div>
-        <div class="field col-12 md:col-6">
+        <div class="mb-4 w-full md:w-1/2">
           <label for="gaeste">Gäste</label>
           <p-inputNumber
             inputId="integeronly"
@@ -103,16 +103,15 @@
             class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
           ></p-inputNumber>
         </div>
-        <div class="field col-12">
+        <div class="mb-4 w-full">
           <label for="vorjahr" class="mr-2">Vorjahres Anlass</label>
           <p-select
             id="vorjahr"
-            [options]="dlstFKAnlaesse"
+            [options]="dlstFKAnlaesse()"
             optionLabel="value"
             optionValue="id"
             [filter]="true"
             filterBy="value"
-            [autoDisplayFirst]="false"
             [showClear]="true"
             name="vorjahr"
             class="mr-2 text-base text-color surface-overlay p-2 appearance-none outline-none w-full"

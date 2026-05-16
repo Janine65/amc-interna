@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, inject } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { AccountService, AlertService } from '@app/service';
@@ -6,11 +6,10 @@ import { AlertType } from '@model/alert';
 
 @Injectable({ providedIn: 'root'})
 export class AuthGuard  {
-    constructor(
-        private router: Router,
-        private accountService: AccountService,
-        private alertService: AlertService
-    ) {}
+    private router = inject(Router);
+    private accountService = inject(AccountService);
+    private alertService = inject(AlertService);
+
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const user = this.accountService.userValue;

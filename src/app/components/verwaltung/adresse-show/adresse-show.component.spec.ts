@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { commonTestProviders } from '@app/testing/test-providers';
 
 import { AdresseShowComponent } from './adresse-show.component';
 
@@ -8,8 +9,9 @@ describe('AdresseShowComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdresseShowComponent ]
-    })
+    imports: [AdresseShowComponent],
+    providers: commonTestProviders
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(AdresseShowComponent);

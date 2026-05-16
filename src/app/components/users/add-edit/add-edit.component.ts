@@ -1,40 +1,61 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
-import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { User } from '@app/models';
 import { AccountService } from '@app/service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
+import { Bind } from 'primeng/bind';
+import { ScrollPanel } from 'primeng/scrollpanel';
+import { CrInputPartial } from '../../shared/input-validation/input.partial';
+import { InputDirective } from '../../shared/input-validation/input.directive';
+import { InputText } from 'primeng/inputtext';
+import { RadioButton } from 'primeng/radiobutton';
+import { PasswordDirective } from 'primeng/password';
+import { Toolbar } from 'primeng/toolbar';
+import { ButtonDirective } from 'primeng/button';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'app-add-edit',
-  templateUrl: './add-edit.component.html',
-  styleUrls: ['./add-edit.component.scss'],
-  providers: [ConfirmationService],
-  encapsulation: ViewEncapsulation.None,
-  standalone: false,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-add-edit',
+    templateUrl: './add-edit.component.html',
+    styleUrls: ['./add-edit.component.scss'],
+    providers: [ConfirmationService],
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        Bind,
+        ScrollPanel,
+        FormsModule,
+        ReactiveFormsModule,
+        CrInputPartial,
+        InputDirective,
+        InputText,
+        RadioButton,
+        PasswordDirective,
+        Toolbar,
+        ButtonDirective,
+        ConfirmDialog,
+    ],
 })
 export class AddEditComponent implements OnInit {
+  private accountService = inject(AccountService);
+  ref = inject(DynamicDialogRef);
+  config = inject(DynamicDialogConfig);
+  private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
+  private fb = inject(FormBuilder);
+
   user!: User;
   withRole = false;
   wihtPwd = true;
   subs!: Subscription;
   fg: FormGroup;
 
-  constructor(
-    private accountService: AccountService,
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private fb: FormBuilder
-  ) {
+  constructor() {
+    const accountService = this.accountService;
+    const config = this.config;
+
     if (config.data) {
       this.wihtPwd = config.data.withPwd;
       this.withRole = config.data.withRole;

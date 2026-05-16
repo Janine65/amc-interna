@@ -1,17 +1,27 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { Account, Fiscalyear, Journal, ParamData } from '@model/datatypes';
 import { BackendService } from '@app/service';
 import {
   TableOptions,
   TableToolbar,
 } from '@shared/basetable/basetable.component';
-import { MessageService } from 'primeng/api';
+import { MessageService, PrimeTemplate } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable, map, zip } from 'rxjs';
 import { AttachementListComponent } from '../attachement-list/attachement-list.component';
 import { AttachmentAddComponent } from '../attachment-add/attachment-add.component';
 import { DatePipe, DecimalPipe } from '@angular/common';
+import { Bind } from 'primeng/bind';
+import { Splitter } from 'primeng/splitter';
+import { BaseTableComponent } from '../../shared/basetable/basetable.component';
+import { Select } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { DatePicker } from 'primeng/datepicker';
+import { AutoComplete } from 'primeng/autocomplete';
+import { InputText } from 'primeng/inputtext';
+import { InputNumber } from 'primeng/inputnumber';
+import { ButtonDirective } from 'primeng/button';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -19,66 +29,73 @@ interface AutoCompleteCompleteEvent {
 }
 
 @Component({
-    selector: 'app-journal',
-    templateUrl: './journal.component.html',
-    styleUrls: ['./journal.component.scss'],
-    providers: [DialogService],
-    standalone: false
+  selector: 'app-journal',
+  templateUrl: './journal.component.html',
+  styleUrls: ['./journal.component.scss'],
+  providers: [DialogService],
+  imports: [
+    Bind,
+    Splitter,
+    PrimeTemplate,
+    BaseTableComponent,
+    Select,
+    FormsModule,
+    DatePicker,
+    AutoComplete,
+    InputText,
+    InputNumber,
+    ButtonDirective,
+  ],
 })
 export class JournalComponent implements OnInit {
+  private backendService = inject(BackendService);
+  private dialogService = inject(DialogService);
+  private messageService = inject(MessageService);
+
   dialogRef?: DynamicDialogRef;
 
-  selJahre = [{}];
+  readonly selJahre = signal<{ label?: string; value?: number }[]>([]);
   selJahr = 0;
 
-  lstJournal: Journal[] = [];
+  readonly lstJournal = signal<Journal[]>([]);
   selJournal: Journal = {};
-  loading = true;
-  cols: TableOptions[] = [];
-  toolbar: TableToolbar[] = [];
+  readonly loading = signal(true);
+  readonly cols = signal<TableOptions[]>([]);
+  readonly toolbar = signal<TableToolbar[]>([]);
   toolbarRW: TableToolbar[] = [];
   toolbarRO: TableToolbar[] = [];
-  editMode = false;
-  addMode = false;
+  readonly editMode = signal(false);
+  readonly addMode = signal(false);
 
-  lstStates = [
+  readonly lstStates = signal<{ label: string; value: number }[]>([
     { label: 'Aktiv', value: 1 },
     { label: 'Inaktiv', value: 0 },
-  ];
+  ]);
   selState = 1;
   parameter: ParamData[];
   jahr: number;
   lstAccounts: Account[] = [];
-  lstFromAccounts: Account[] = [];
-  lstToAccounts: Account[] = [];
+  readonly lstFromAccounts = signal<Account[]>([]);
+  readonly lstToAccounts = signal<Account[]>([]);
   selFromAccount: Account = {};
   selToAccount: Account = {};
   selFiscalyear: Fiscalyear = {};
 
-  constructor(
-    private backendService: BackendService,
-    private dialogService: DialogService,
-    private messageService: MessageService
-  ) {
+  constructor() {
     const str = localStorage.getItem('parameter');
     this.parameter = str ? JSON.parse(str) : [];
     const paramJahr = this.parameter.find((param) => param.key === 'CLUBJAHR');
     this.jahr = Number(paramJahr?.value);
     this.selJahr = this.jahr;
-    this.selJahre.pop();
-    this.selJahre.push({
-      label: (this.jahr - 1).toString(),
-      value: this.jahr - 1,
-    });
-    this.selJahre.push({ label: this.jahr.toString(), value: this.jahr });
-    this.selJahre.push({
-      label: (this.jahr + 1).toString(),
-      value: this.jahr + 1,
-    });
+    this.selJahre.set([
+      { label: (this.jahr - 1).toString(), value: this.jahr - 1 },
+      { label: this.jahr.toString(), value: this.jahr },
+      { label: (this.jahr + 1).toString(), value: this.jahr + 1 },
+    ]);
   }
 
   ngOnInit(): void {
-    this.cols = [
+    this.cols.set([
       {
         field: 'journalno',
         header: 'No.',
@@ -133,7 +150,7 @@ export class JournalComponent implements OnInit {
         pipe: DecimalPipe,
         args: '1.2-2',
       },
-    ];
+    ]);
 
     this.toolbarRW = [
       {
@@ -304,12 +321,12 @@ export class JournalComponent implements OnInit {
     zip(
       this.backendService.getJournal(this.selJahr),
       this.backendService.getAccount(),
-      this.backendService.getOneFiscalyear(this.selJahr.toString())
+      this.backendService.getOneFiscalyear(this.selJahr.toString()),
     )
       .pipe(
         map(([list1, list2, result]) => {
-          this.lstJournal = list1.data as Journal[];
-          this.lstJournal.forEach((x) => {
+          this.lstJournal.set(list1.data as Journal[]);
+          this.lstJournal().forEach((x) => {
             x.date_date = new Date(x.date);
             x.fromAcc =
               x.account_journal_from_accountToaccount?.order.toFixed(0) +
@@ -325,17 +342,17 @@ export class JournalComponent implements OnInit {
           this.lstAccounts = list2.data as Account[];
           this.selFiscalyear = result.data as Fiscalyear;
           if (!this.selFiscalyear || this.selFiscalyear.state == 3)
-            this.toolbar = this.toolbarRO;
-          else this.toolbar = this.toolbarRW;
-          this.loading = false;
-        })
+            this.toolbar.set(this.toolbarRO);
+          else this.toolbar.set(this.toolbarRW);
+          this.loading.set(false);
+        }),
       )
       .subscribe();
   }
 
   formatField(
     field: string,
-    value: string | number | boolean | null
+    value: string | number | boolean | null,
   ): string | number | boolean | null {
     if (field == 'date') {
       const options: Intl.DateTimeFormatOptions = {
@@ -344,7 +361,7 @@ export class JournalComponent implements OnInit {
         day: '2-digit',
       };
       return new Intl.DateTimeFormat('de-CH', options).format(
-        new Date(value as string)
+        new Date(value as string),
       );
       //return new Date((value as string)).toLocaleDateString('de-CH', options)
     }
@@ -371,11 +388,13 @@ export class JournalComponent implements OnInit {
 
   fromAccountSearch(event: AutoCompleteCompleteEvent) {
     // document why this method 'fromAccountSel' is empty
-    this.lstFromAccounts = [];
     const lstString = event.query.split(' ');
-    if (!lstString || lstString.length == 0) return;
+    if (!lstString || lstString.length == 0) {
+      this.lstFromAccounts.set([]);
+      return;
+    }
 
-    this.lstFromAccounts = this.lstAccounts.filter((acc) => {
+    const list = this.lstAccounts.filter((acc) => {
       let match = false;
       lstString.forEach((text) => {
         const regex = new RegExp(text, 'i');
@@ -385,18 +404,21 @@ export class JournalComponent implements OnInit {
       });
       return match;
     });
-    if (this.lstFromAccounts.length == 1) {
-      this.fromAccountSel(this.lstFromAccounts[0]);
+    this.lstFromAccounts.set(list);
+    if (list.length == 1) {
+      this.fromAccountSel(list[0]);
     }
   }
 
   toAccountSearch(event: AutoCompleteCompleteEvent) {
     // document why this method 'toAccountSel' is empty
-    this.lstToAccounts = [];
     const lstString = event.query.split(' ');
-    if (!lstString || lstString.length == 0) return;
+    if (!lstString || lstString.length == 0) {
+      this.lstToAccounts.set([]);
+      return;
+    }
 
-    this.lstToAccounts = this.lstAccounts.filter((acc) => {
+    const list = this.lstAccounts.filter((acc) => {
       let match = false;
       lstString.forEach((text) => {
         const regex = new RegExp(text, 'i');
@@ -406,8 +428,9 @@ export class JournalComponent implements OnInit {
       });
       return match;
     });
-    if (this.lstToAccounts.length == 1) {
-      this.toAccountSel(this.lstToAccounts[0]);
+    this.lstToAccounts.set(list);
+    if (list.length == 1) {
+      this.toAccountSel(list[0]);
     }
   }
 
@@ -569,7 +592,7 @@ export class JournalComponent implements OnInit {
     console.log('Edit Journal');
     thisRef.messageService.clear();
     thisRef.clearFields();
-    thisRef.editMode = true;
+    thisRef.editMode.set(true);
     if (selRec) {
       Object.assign(thisRef.selJournal, selRec);
       console.log(thisRef.selJournal);
@@ -586,7 +609,8 @@ export class JournalComponent implements OnInit {
     if (selRec)
       this.backendService.delJournal(selRec).subscribe({
         complete: () => {
-          thisRef.lstJournal.splice(thisRef.lstJournal.indexOf(selRec), 1);
+          const list = thisRef.lstJournal();
+          thisRef.lstJournal.set(list.filter((x) => x !== selRec));
         },
       });
   };
@@ -597,7 +621,7 @@ export class JournalComponent implements OnInit {
     console.log('New Journal');
     this.clearFields();
     thisRef.messageService.clear();
-    this.addMode = true;
+    this.addMode.set(true);
   };
 
   copyJournal = (selRec?: Journal) => {
@@ -606,7 +630,7 @@ export class JournalComponent implements OnInit {
     console.log('Copy Journal');
     this.clearFields();
     thisRef.messageService.clear();
-    this.addMode = true;
+    this.addMode.set(true);
 
     if (selRec) {
       thisRef.selJournal = structuredClone(selRec);
@@ -615,8 +639,8 @@ export class JournalComponent implements OnInit {
   };
 
   private clearFields() {
-    this.addMode = false;
-    this.editMode = false;
+    this.addMode.set(false);
+    this.editMode.set(false);
     this.selJournal = {};
   }
   save() {
@@ -629,12 +653,12 @@ export class JournalComponent implements OnInit {
       this.selJournal.account_journal_to_accountToaccount?.id;
     this.selJournal.date = `${this.selJournal.date_date.getFullYear()}-${this.selJournal.date_date.toLocaleString(
       'default',
-      { month: '2-digit' }
+      { month: '2-digit' },
     )}-${this.selJournal.date_date.toLocaleString('default', {
       day: '2-digit',
     })}`;
 
-    if (this.addMode) {
+    if (this.addMode()) {
       sub = this.backendService.addJournal(this.selJournal);
     } else {
       sub = this.backendService.updJournal(this.selJournal);
@@ -651,18 +675,21 @@ export class JournalComponent implements OnInit {
             jour.toAcc = jour.account_journal_to_accountToaccount?.longname;
             jour.to_account = jour.account_journal_to_accountToaccount?.id;
 
-            if (this.addMode) {
-              this.lstJournal.push(jour);
-              this.lstJournal.sort((a: Journal, b: Journal) =>
+            if (this.addMode()) {
+              const list = [...this.lstJournal(), jour];
+              list.sort((a: Journal, b: Journal) =>
                 a.journalno && b.journalno
                   ? a.journalno - b.journalno
                   : a.date_date < b.date_date
-                  ? -1
-                  : 1
+                    ? -1
+                    : 1,
               );
+              this.lstJournal.set(list);
             } else
-              this.lstJournal = this.lstJournal.map(
-                (obj) => [jour].find((o) => o.id === obj.id) ?? obj
+              this.lstJournal.set(
+                this.lstJournal().map(
+                  (obj) => [jour].find((o) => o.id === obj.id) ?? obj,
+                ),
               );
 
             this.clearFields();

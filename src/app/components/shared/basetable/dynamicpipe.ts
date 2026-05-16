@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injector, Pipe, PipeTransform, Type } from '@angular/core';
+import { Injector, Pipe, PipeTransform, Type, inject } from '@angular/core';
 
-@Pipe({
-    name: 'dynamicPipe',
-    standalone: false
-})
+@Pipe({ name: 'dynamicPipe' })
 export class DynamicPipe implements PipeTransform {
-  public constructor(private injector: Injector) {}
+  private injector = inject(Injector);
+
 
   transform(value: any, requiredPipe: Type<any>, pipeArgs: any): any {
     const injector = Injector.create({

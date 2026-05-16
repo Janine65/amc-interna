@@ -6,9 +6,9 @@
   <p-tabpanels>
     <p-tabpanel value="0">
       <app-basetable
-        [tableOptions]="cols"
-        [tableData]="lstEvents"
-        [tableToolbar]="toolbar"
+        [tableOptions]="cols()"
+        [tableData]="lstEvents()"
+        [tableToolbar]="toolbar()"
         localStorage="adresse_events"
         [editable]="false"
         [diffCalcHight]="500"
@@ -17,9 +17,9 @@
     </p-tabpanel>
     <p-tabpanel value="1">
       <app-basetable
-        [tableOptions]="colsM"
-        [tableData]="lstMeister"
-        [tableToolbar]="toolbarM"
+        [tableOptions]="colsM()"
+        [tableData]="lstMeister()"
+        [tableToolbar]="toolbarM()"
         localStorage="adresse_meister"
         [editable]="false"
         [diffCalcHight]="500"

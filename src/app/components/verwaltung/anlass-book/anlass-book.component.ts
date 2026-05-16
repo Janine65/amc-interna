@@ -5,14 +5,22 @@ import {
   AfterViewInit,
   Component,
   HostListener,
+  inject,
   OnInit,
   Renderer2,
-  ViewChild,
+  signal,
+  viewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Adresse, Anlass, Meisterschaft } from '@model/datatypes';
 import { BackendService } from '@app/service';
-import { MessageService } from 'primeng/api';
+import { MessageService, PrimeTemplate } from 'primeng/api';
 import { AutoComplete } from 'primeng/autocomplete';
 import {
   DialogService,
@@ -20,6 +28,12 @@ import {
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { Subscription, from, map, zip } from 'rxjs';
+import { Bind } from 'primeng/bind';
+import { Toast } from 'primeng/toast';
+import { Splitter } from 'primeng/splitter';
+import { ButtonDirective } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { Toolbar } from 'primeng/toolbar';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -27,13 +41,30 @@ interface AutoCompleteCompleteEvent {
 }
 
 @Component({
-    selector: 'app-anlass-book',
-    templateUrl: './anlass-book.component.html',
-    styleUrls: ['./anlass-book.component.scss'],
-    providers: [DialogService],
-    standalone: false
+  selector: 'app-anlass-book',
+  templateUrl: './anlass-book.component.html',
+  styleUrls: ['./anlass-book.component.scss'],
+  providers: [DialogService],
+  imports: [
+    Bind,
+    Toast,
+    Splitter,
+    PrimeTemplate,
+    FormsModule,
+    ButtonDirective,
+    TableModule,
+    ReactiveFormsModule,
+    AutoComplete,
+    Toolbar,
+  ],
 })
 export class AnlassBookComponent implements OnInit, AfterViewInit {
+  private backendService = inject(BackendService);
+  ref = inject(DynamicDialogRef);
+  config = inject(DynamicDialogConfig);
+  private dialogService = inject(DialogService);
+  private messageService = inject(MessageService);
+
   anlass: Anlass = {
     datum: undefined,
     datum_date: undefined,
@@ -50,7 +81,7 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
     vorjahr: undefined,
     anlaesse: undefined,
   };
-  lstMeisterschaft: Meisterschaft[] = [];
+  lstMeisterschaft = signal<Meisterschaft[]>([]);
   selMeisterschaft: Meisterschaft = {
     mitgliedid: undefined,
     eventid: undefined,
@@ -81,23 +112,24 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
   };
   fMeisterschaft = false;
   lstAdressen: Adresse[] = [];
-  lstFilteredAdressen: Adresse[] = [];
+  readonly lstFilteredAdressen = signal<Adresse[]>([]);
   selAdresse?: number;
   subs!: Subscription;
   dialogRef!: DynamicDialogRef;
   subFields: Subscription[] = [];
 
-  public objHeight$ = '0px';
-  public objHeightE$ = '0px';
+  public objHeight$ = signal('0px');
+  public objHeightE$ = signal('0px');
   getScreenWidth = 0;
   getScreenHeight = 0;
 
-  @ViewChild('teilnehmername') private teilnehmerObject!: AutoComplete;
+  private readonly teilnehmerObject =
+    viewChild.required<AutoComplete>('teilnehmername');
 
   fgMeisterschaft = new FormGroup({
     teilnehmername: new FormControl<Adresse | null>(
       { value: null, disabled: false },
-      Validators.required
+      Validators.required,
     ),
     punkte: new FormControl<number | null>({ value: null, disabled: true }, [
       Validators.required,
@@ -128,45 +160,42 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
     total: new FormControl<number | null>({ value: null, disabled: true }),
   });
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     this.getScreenHeight = window.innerHeight;
     console.log(
       'getScreenWidth: ' + this.getScreenWidth,
-      'getScreenHeight' + this.getScreenHeight
+      'getScreenHeight' + this.getScreenHeight,
     );
     this.getHeight();
   }
 
-  constructor(
-    private backendService: BackendService,
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    private dialogService: DialogService,
-    private messageService: MessageService,
-    private renderer: Renderer2
-  ) {
+  private renderer = inject(Renderer2);
+
+  constructor() {
+    const config = this.config;
+
     this.anlass = config.data.anlass;
 
     zip(
       this.backendService.getMeisterschaft(this.anlass.id!),
-      this.backendService.getAdressenData()
+      this.backendService.getAdressenData(),
     )
       .pipe(
         map(([list1, list2]) => {
-          this.lstMeisterschaft = list1.data as Meisterschaft[];
+          this.lstMeisterschaft.set(list1.data as Meisterschaft[]);
           this.lstAdressen = list2.data as Adresse[];
           this.lstAdressen.forEach(
-            (adr) => (adr.fullname = adr.vorname + ' ' + adr.name)
+            (adr) => (adr.fullname = adr.vorname + ' ' + adr.name),
           );
           console.log(this.lstAdressen);
-        })
+        }),
       )
       .subscribe();
   }
   ngAfterViewInit(): void {
-    setTimeout(() => (this.teilnehmerObject.focused = true));
+    setTimeout(() => (this.teilnehmerObject().focused = true));
   }
 
   ngOnInit(): void {
@@ -174,7 +203,7 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
     this.getScreenHeight = window.innerHeight;
     console.log(
       'getScreenWidth: ' + this.getScreenWidth,
-      'getScreenHeight' + this.getScreenHeight
+      'getScreenHeight' + this.getScreenHeight,
     );
     this.getHeight();
   }
@@ -212,9 +241,9 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
   }
 
   private getHeight() {
-    this.objHeight$ = (this.getScreenHeight - 550).toFixed(0) + 'px';
-    console.log('objHeight$: ' + this.objHeight$);
-    this.objHeightE$ = (this.getScreenHeight - 400).toFixed(0) + 'px';
+    this.objHeight$.set((this.getScreenHeight - 700).toFixed(0) + 'px');
+    console.log('objHeight$: ' + this.objHeight$());
+    this.objHeightE$.set((this.getScreenHeight - 550).toFixed(0) + 'px');
   }
 
   inputWurf(wurfControl: number) {
@@ -270,10 +299,10 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
 
   clearTeilnehmer() {
     this.clearMeisterschaft();
-    this.lstFilteredAdressen = [];
+    this.lstFilteredAdressen.set([]);
 
     this.teilnehmername.reset(null);
-    this.teilnehmerObject.focused = true;
+    this.teilnehmerObject().focused = true;
     this.setDisabled(true);
   }
 
@@ -294,9 +323,8 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
   deleteEntry() {
     this.backendService.delMeisterschaft(this.selMeisterschaft).subscribe({
       complete: () => {
-        this.lstMeisterschaft.splice(
-          this.lstMeisterschaft.indexOf(this.selMeisterschaft),
-          1
+        this.lstMeisterschaft.set(
+          this.lstMeisterschaft().filter((m) => m !== this.selMeisterschaft),
         );
         this.messageService.add({
           detail: 'Der Eintrag wurde gelöscht. ',
@@ -313,9 +341,9 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
   selTeilnehmerTable() {
     this.newMeisterschaft = this.selMeisterschaft;
     this.unsubscribeList();
-    this.lstFilteredAdressen = [];
+    this.lstFilteredAdressen.set([]);
     const adr = this.lstAdressen.find(
-      (rec) => rec.fullname == this.selMeisterschaft.adressen?.fullname!
+      (rec) => rec.fullname == this.selMeisterschaft.adressen?.fullname!,
     );
     if (!adr) {
       this.messageService.add({
@@ -328,7 +356,7 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
       return;
     }
     this.teilnehmername.setValue(adr);
-    this.teilnehmerObject.focused = true;
+    this.teilnehmerObject().focused = true;
     this.patchFields();
     this.fgMeisterschaft.markAsUntouched({ onlySelf: false });
 
@@ -339,31 +367,31 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
 
     if (this.anlass.istkegeln) {
       this.subFields.push(
-        this.wurf1.valueChanges.subscribe(() => this.inputWurf(1))
+        this.wurf1.valueChanges.subscribe(() => this.inputWurf(1)),
       );
       this.subFields.push(
-        this.wurf2.valueChanges.subscribe(() => this.inputWurf(2))
+        this.wurf2.valueChanges.subscribe(() => this.inputWurf(2)),
       );
       this.subFields.push(
-        this.wurf3.valueChanges.subscribe(() => this.inputWurf(3))
+        this.wurf3.valueChanges.subscribe(() => this.inputWurf(3)),
       );
       this.subFields.push(
-        this.wurf4.valueChanges.subscribe(() => this.inputWurf(4))
+        this.wurf4.valueChanges.subscribe(() => this.inputWurf(4)),
       );
       this.subFields.push(
-        this.wurf5.valueChanges.subscribe(() => this.inputWurf(5))
+        this.wurf5.valueChanges.subscribe(() => this.inputWurf(5)),
       );
     }
   }
 
   selectTeilnehmer(adr: Adresse) {
-    this.lstFilteredAdressen = [];
+    this.lstFilteredAdressen.set([]);
     this.teilnehmername.setValue(adr);
     this.unsubscribeList();
     this.setDisabled(false);
 
     this.newMeisterschaft =
-      this.lstMeisterschaft.find((rec) => rec.mitgliedid == adr.id) ??
+      this.lstMeisterschaft().find((rec) => rec.mitgliedid == adr.id) ??
       new Meisterschaft();
     if (this.newMeisterschaft.eventid == undefined) {
       this.newMeisterschaft.eventid = this.anlass.id;
@@ -385,19 +413,19 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
 
     if (this.anlass.istkegeln) {
       this.subFields.push(
-        this.wurf1.valueChanges.subscribe(() => this.inputWurf(1))
+        this.wurf1.valueChanges.subscribe(() => this.inputWurf(1)),
       );
       this.subFields.push(
-        this.wurf2.valueChanges.subscribe(() => this.inputWurf(2))
+        this.wurf2.valueChanges.subscribe(() => this.inputWurf(2)),
       );
       this.subFields.push(
-        this.wurf3.valueChanges.subscribe(() => this.inputWurf(3))
+        this.wurf3.valueChanges.subscribe(() => this.inputWurf(3)),
       );
       this.subFields.push(
-        this.wurf4.valueChanges.subscribe(() => this.inputWurf(4))
+        this.wurf4.valueChanges.subscribe(() => this.inputWurf(4)),
       );
       this.subFields.push(
-        this.wurf5.valueChanges.subscribe(() => this.inputWurf(5))
+        this.wurf5.valueChanges.subscribe(() => this.inputWurf(5)),
       );
     }
   }
@@ -405,11 +433,13 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
   searchTeilnehmer(event: AutoCompleteCompleteEvent) {
     this.clearMeisterschaft();
 
-    this.lstFilteredAdressen = [];
     const lstString = event.query.split(' ');
-    if (!lstString || lstString.length == 0) return;
+    if (!lstString || lstString.length == 0) {
+      this.lstFilteredAdressen.set([]);
+      return;
+    }
 
-    this.lstFilteredAdressen = this.lstAdressen.filter((adr) => {
+    const filtered = this.lstAdressen.filter((adr) => {
       let match = false;
       lstString.forEach((text) => {
         const regex = new RegExp(text, 'i');
@@ -419,10 +449,11 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
       });
       return match;
     });
-    if (this.lstFilteredAdressen.length == 1) {
+    this.lstFilteredAdressen.set(filtered);
+    if (filtered.length == 1) {
       this.teilnehmername.patchValue(
-        { fullname: this.lstFilteredAdressen[0].fullname },
-        { onlySelf: true, emitEvent: true, emitModelToViewChange: true }
+        { fullname: filtered[0].fullname },
+        { onlySelf: true, emitEvent: true, emitModelToViewChange: true },
       );
     }
   }
@@ -488,9 +519,9 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
         next: () => {
           this.clearTeilnehmer();
           this.subs = from(
-            this.backendService.getMeisterschaft(this.anlass.id!)
+            this.backendService.getMeisterschaft(this.anlass.id!),
           ).subscribe((list) => {
-            this.lstMeisterschaft = list.data as Meisterschaft[];
+            this.lstMeisterschaft.set(list.data as Meisterschaft[]);
           });
         },
       });
@@ -499,9 +530,9 @@ export class AnlassBookComponent implements OnInit, AfterViewInit {
         next: () => {
           this.clearTeilnehmer();
           this.subs = from(
-            this.backendService.getMeisterschaft(this.anlass.id!)
+            this.backendService.getMeisterschaft(this.anlass.id!),
           ).subscribe((list) => {
-            this.lstMeisterschaft = list.data as Meisterschaft[];
+            this.lstMeisterschaft.set(list.data as Meisterschaft[]);
           });
         },
       });

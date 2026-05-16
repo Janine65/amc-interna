@@ -7,53 +7,55 @@
     </p-tablist>
     <p-tabpanels>
       <p-tabpanel value="0">
-        <div class="grid">
-          <span class="col-4 font-bold">Name:</span
-          ><span class="col-8">{{ pkgFrontend.name }}</span>
-          <span class="col-4 font-bold">Version:</span
-          ><span class="col-8">{{ pkgFrontend.version }}</span>
-          <span class="col-4 font-bold">Licence:</span
-          ><span class="col-8">{{ pkgFrontend.license }}</span>
-          <span class="col-4 font-bold">Description:</span
-          ><span class="col-8">{{ pkgFrontend.description }}</span>
-          <span class="col-4 font-bold">author:</span
-          ><span class="col-8">{{ pkgFrontend.author }}</span>
-          <span class="col-12 font-bold">Dependencies:</span>
-          <div class="grid p-1 ml-2">
-            <div
-              *ngFor="let entry of pkgFrontend.dependencies | keyvalue"
-              class="col-3 grid p-1"
-            >
-              <span class="col-8">{{ entry.key }}:</span>
-              <span class="col-2">{{ entry.value }}</span>
-            </div>
-          </div>
-        </div>
-      </p-tabpanel>
-      <p-tabpanel value="1">
-        <div class="grid">
-          <span class="col-4 font-bold">Name:</span
-          ><span class="col-8">{{ pkgBackend.name }}</span>
-          <span class="col-4 font-bold">Version:</span
-          ><span class="col-8">{{ pkgBackend.version }}</span>
-          <span class="col-4 font-bold">Licence:</span
-          ><span class="col-8">{{ pkgBackend.license }}</span>
-          <span class="col-4 font-bold">Description:</span
-          ><span class="col-8">{{ pkgBackend.description }}</span>
-          <span class="col-4 font-bold">author:</span
-          ><span class="col-8">{{ pkgBackend.author }}</span>
-          <span class="col-12 font-bold">Dependencies:</span>
-          <div class="grid p-1 ml-2">
-            <div
-              *ngFor="let entry of pkgBackend.dependencies | keyvalue"
-              class="col-3 grid p-1"
-            >
-              <span class="col-8">{{ entry.key }}:</span>
-              <span class="col-2">{{ entry.value }}</span>
-            </div>
-          </div>
-        </div>
-      </p-tabpanel>
-    </p-tabpanels>
-  </p-tabs>
-</div>
+        <div class="flex flex-wrap">
+          <span class="w-1/3 font-bold">Name:</span
+            ><span class="w-2/3">{{ pkgFrontend.name }}</span>
+            <span class="w-1/3 font-bold">Version:</span
+              ><span class="w-2/3">{{ pkgFrontend.version }}</span>
+              <span class="w-1/3 font-bold">Licence:</span
+                ><span class="w-2/3">{{ pkgFrontend.license }}</span>
+                <span class="w-1/3 font-bold">Description:</span
+                  ><span class="w-2/3">{{ pkgFrontend.description }}</span>
+                  <span class="w-1/3 font-bold">author:</span
+                    ><span class="w-2/3">{{ pkgFrontend.author }}</span>
+                    <span class="w-full font-bold">Dependencies:</span>
+                    <div class="flex flex-wrap p-1 ml-2">
+                      @for (entry of pkgFrontend.dependencies | keyvalue; track entry) {
+                        <div
+                          class="w-1/4 flex flex-wrap p-1"
+                          >
+                          <span class="w-2/3">{{ entry.key }}:</span>
+                          <span class="w-1/6">{{ entry.value }}</span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </p-tabpanel>
+                <p-tabpanel value="1">
+                  <div class="flex flex-wrap">
+                    <span class="w-1/3 font-bold">Name:</span
+                      ><span class="w-2/3">{{ pkgBackend.name }}</span>
+                      <span class="w-1/3 font-bold">Version:</span
+                        ><span class="w-2/3">{{ pkgBackend.version }}</span>
+                        <span class="w-1/3 font-bold">Licence:</span
+                          ><span class="w-2/3">{{ pkgBackend.license }}</span>
+                          <span class="w-1/3 font-bold">Description:</span
+                            ><span class="w-2/3">{{ pkgBackend.description }}</span>
+                            <span class="w-1/3 font-bold">author:</span
+                              ><span class="w-2/3">{{ pkgBackend.author }}</span>
+                              <span class="w-full font-bold">Dependencies:</span>
+                              <div class="flex flex-wrap p-1 ml-2">
+                                @for (entry of pkgBackend.dependencies | keyvalue; track entry) {
+                                  <div
+                                    class="w-1/4 flex flex-wrap p-1"
+                                    >
+                                    <span class="w-2/3">{{ entry.key }}:</span>
+                                    <span class="w-1/6">{{ entry.value }}</span>
+                                  </div>
+                                }
+                              </div>
+                            </div>
+                          </p-tabpanel>
+                        </p-tabpanels>
+                      </p-tabs>
+                    </div>

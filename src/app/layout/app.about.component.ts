@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Package } from '@model/user';
+import { Bind } from 'primeng/bind';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
+import { Ripple } from 'primeng/ripple';
+import { KeyValuePipe } from '@angular/common';
 
 @Component({
     selector: 'app-app.about',
     templateUrl: './app.about.component.html',
     styleUrls: ['./app.about.component.scss'],
-    standalone: false
+    imports: [Bind, Tabs, TabList, Ripple, Tab, TabPanels, TabPanel, KeyValuePipe]
 })
 export class AppAboutComponent implements OnInit{
   pkgFrontend: Package = {}

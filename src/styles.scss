@@ -1,8 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+/* @use muss vor allen anderen Regeln stehen (SCSS-Anforderung) */
 @use "assets/layout/styles/layout/layout.scss";
-@use "../node_modules/primeflex/primeflex.scss" with (
-  $gutter: 1rem
-);
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import "../node_modules/primeicons/primeicons.css";
 // import Quill styles in styles.scss
 @import "../node_modules/quill/dist/quill.core.css";
@@ -14,4 +17,33 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* PrimeNG Design Token Utilities (PrimeFlex-Kompatibilität) */
+@layer utilities {
+  .surface-overlay {
+    background-color: var(--surface-overlay);
+  }
+  .surface-card {
+    background-color: var(--surface-card);
+  }
+  .surface-border {
+    border-color: var(--surface-border);
+  }
+  .text-color {
+    color: var(--text-color);
+  }
+  .text-900 {
+    color: var(--surface-900);
+  }
+  .border-round {
+    border-radius: var(--border-radius, 6px);
+  }
+}
+
+/* Formular-Feld Beschriftungen (PrimeFlex-Kompatibilität) */
+.mb-4 > label:first-child {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
 }

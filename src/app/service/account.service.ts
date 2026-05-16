@@ -1,5 +1,5 @@
 ﻿/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, timer } from 'rxjs';
@@ -16,6 +16,10 @@ export interface RetDataUser extends RetData {
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
+  private router = inject(Router);
+  private http = inject(HttpClient);
+  private layoutService = inject(LayoutService);
+
   private _userSubject: BehaviorSubject<User> = new BehaviorSubject(new User());
   public get userSubject(): BehaviorSubject<User> {
     return this._userSubject;
@@ -23,11 +27,7 @@ export class AccountService {
   private apiUrl: string;
   private header!: HttpHeaders;
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private layoutService: LayoutService
-  ) {
+  constructor() {
     this.header = new HttpHeaders({
       'Access-Control-Allow-Origin': environment.apiUrlSelf,
       'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',

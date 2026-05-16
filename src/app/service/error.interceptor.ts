@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -7,7 +7,8 @@ import { AccountService } from '@app/service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private accountService: AccountService) {}
+    private accountService = inject(AccountService);
+
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {

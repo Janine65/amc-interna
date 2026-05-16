@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, signal } from '@angular/core';
+import { Directive, ElementRef, signal, inject, input } from '@angular/core';
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { InputPatterns } from './patterns';
 import { InputValidators } from './validators';
@@ -9,21 +9,23 @@ import { InputValidators } from './validators';
   exportAs: 'crinput',
 })
 export class InputDirective implements Validator {
+  private el = inject(ElementRef);
 
-  @Input() min?: number;
-  @Input() max?: number;
-  @Input() minlength?: number;
-  @Input() maxlength?: number;
-  @Input() block?: [number, number];
-  @Input() pattern?: string;
-  @Input() crpattern?: string;
-  @Input() email?: boolean;
 
-  @Input() validator?: string;
-  @Input() params?: any;
+  readonly min = input<number>(undefined);
+  readonly max = input<number>(undefined);
+  readonly minlength = input<number>(undefined);
+  readonly maxlength = input<number>(undefined);
+  readonly block = input<[
+    number,
+    number
+]>(undefined);
+  readonly pattern = input<string>(undefined);
+  readonly crpattern = input<string>(undefined);
+  readonly email = input<boolean>(undefined);
 
-  constructor(private el: ElementRef) {
-  }
+  readonly validator = input<string>(undefined);
+  readonly params = input<any>(undefined);
 
 
   public get element(): HTMLElement {
@@ -34,47 +36,54 @@ export class InputDirective implements Validator {
 
   validate(control: AbstractControl): ValidationErrors | null {
 
-    if (this.validator) {
+    const validator = this.validator();
+    if (validator) {
 
-      const _validator = InputValidators.get(this.validator);
+      const _validator = InputValidators.get(validator);
       if (_validator && !control.hasValidator(_validator)) {
         // if params:
-        if (this.params) {
-          control.addValidators(_validator(this.params));
+        const params = this.params();
+        if (params) {
+          control.addValidators(_validator(params));
         } else {
           control.addValidators(_validator);
         }
       }
     }
     this.errorText.set('Required');
-    if (this.min && control.value) {
-      if (Validators.min(this.min)(control)) {
+    const min = this.min();
+    if (min && control.value) {
+      if (Validators.min(min)(control)) {
         this.errorText.set('Too small');
       }
     }
 
-    if (this.max && control.value) {
-      if (Validators.max(this.max)(control)) {
+    const max = this.max();
+    if (max && control.value) {
+      if (Validators.max(max)(control)) {
         this.errorText.set('Too large');
       }
     }
 
-    if (this.minlength && control.value) {
-      if (Validators.minLength(this.minlength)(control)) {
+    const minlength = this.minlength();
+    if (minlength && control.value) {
+      if (Validators.minLength(minlength)(control)) {
         this.errorText.set('Too short');
       }
     }
 
-    if (this.maxlength && control.value) {
-      if (Validators.maxLength(this.maxlength)(control)) {
+    const maxlength = this.maxlength();
+    if (maxlength && control.value) {
+      if (Validators.maxLength(maxlength)(control)) {
         this.errorText.set('Too long');
       }
     }
 
 
-    if (this.block) {
+    const block = this.block();
+    if (block) {
       // its valid if the value is outside the block array
-      if (control.value >= this.block[0] && control.value <= this.block[1]) {
+      if (control.value >= block[0] && control.value <= block[1]) {
         this.errorText.set('Invalid number');
         return {
           block: true
@@ -82,20 +91,21 @@ export class InputDirective implements Validator {
       }
     }
 
-    if(this.pattern) {
+    if(this.pattern()) {
       this.errorText.set('Invalid format');
     }
-    if(this.email) {
+    if(this.email()) {
       this.errorText.set('Invalid email format');
     }
 
-    if(this.crpattern) {
+    const crpattern = this.crpattern();
+    if(crpattern) {
 
       this.errorText.set('Invalid format');
       // if pattern exists in our list, use validators
-      let _pattern = InputPatterns.get(this.crpattern);
+      let _pattern = InputPatterns.get(crpattern);
       if (_pattern) {
-        this.errorText.set(`Invalid ${this.crpattern} format`);
+        this.errorText.set(`Invalid ${crpattern} format`);
 
         return Validators.pattern(_pattern)(control);
       }

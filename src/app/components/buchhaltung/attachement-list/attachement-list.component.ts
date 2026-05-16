@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Receipt } from '@model/datatypes';
 import { BackendService } from '@app/service';
 import {
   TableOptions,
   TableToolbar,
 } from '@shared/basetable/basetable.component';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {
+  ConfirmationService,
+  MessageService,
+  PrimeTemplate,
+} from 'primeng/api';
 import {
   DialogService,
   DynamicDialogConfig,
@@ -14,40 +18,57 @@ import {
 } from 'primeng/dynamicdialog';
 import { AttachementShowComponent } from '../attachement-show/attachement-show.component';
 import { DecimalPipe } from '@angular/common';
+import { BaseTableComponent } from '../../shared/basetable/basetable.component';
+import { Bind } from 'primeng/bind';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Dialog } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms';
+import { InputText } from 'primeng/inputtext';
+import { Button } from 'primeng/button';
 
 @Component({
-    selector: 'app-attachement-list',
-    templateUrl: './attachement-list.component.html',
-    styleUrls: ['./attachement-list.component.scss'],
-    providers: [DialogService, ConfirmationService],
-    standalone: false
+  selector: 'app-attachement-list',
+  templateUrl: './attachement-list.component.html',
+  styleUrls: ['./attachement-list.component.scss'],
+  providers: [DialogService, ConfirmationService],
+  imports: [
+    BaseTableComponent,
+    Bind,
+    ConfirmDialog,
+    Dialog,
+    PrimeTemplate,
+    FormsModule,
+    InputText,
+    Button,
+  ],
 })
 export class AttachementListComponent {
+  private backendService = inject(BackendService);
+  ref = inject(DynamicDialogRef);
+  config = inject(DynamicDialogConfig);
+  private dialogService = inject(DialogService);
+  private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
+
   journalid: number;
   jahr: number;
-  lstReceipts: Receipt[];
+  readonly lstReceipts = signal<Receipt[]>([]);
   configType = '';
 
   loading = true;
-  cols: TableOptions[] = [];
-  toolbar: TableToolbar[] = [];
+  readonly cols = signal<TableOptions[]>([]);
+  readonly toolbar = signal<TableToolbar[]>([]);
   visible = false;
   selAtt: Receipt = {};
 
-  constructor(
-    private backendService: BackendService,
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    private dialogService: DialogService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
-  ) {
+  constructor() {
+    const config = this.config;
+
     this.journalid = config.data.journalid;
     this.jahr = config.data.jahr;
     this.configType = config.data.type;
 
-    this.lstReceipts = [];
-    this.cols = [
+    const cols: TableOptions[] = [
       {
         field: 'receipt',
         header: 'Attachement',
@@ -65,8 +86,9 @@ export class AttachementListComponent {
         filter: undefined,
       },
     ];
+    this.cols.set(cols);
 
-    this.toolbar = [
+    const toolbar: TableToolbar[] = [
       {
         label: 'Schliessen',
         btnClass: 'p-button-secondary p-button-outlined',
@@ -92,7 +114,7 @@ export class AttachementListComponent {
     ];
 
     if (config.data.editable) {
-      this.toolbar.push(
+      toolbar.push(
         {
           label: 'Ändern',
           btnClass: 'p-button-secondary p-button-outlined',
@@ -114,36 +136,40 @@ export class AttachementListComponent {
           isDefault: false,
           roleNeeded: 'admin',
           isEditFunc: false,
-        }
+        },
       );
     }
     if (this.configType == 'one' && this.journalid) {
       this.backendService.getAttachment(this.journalid).subscribe((list) => {
-        this.lstReceipts = list.data as Receipt[];
+        this.lstReceipts.set(list.data as Receipt[]);
       });
     } else {
       this.backendService
         .getAllAttachment(this.jahr, this.journalid)
         .subscribe((list) => {
-          this.lstReceipts = list.data as Receipt[];
-          this.lstReceipts.forEach(
-            (att) => (att.cntjournal = att.journal_receipt.length)
+          const receipts = list.data as Receipt[];
+          receipts.forEach(
+            (att) => (att.cntjournal = att.journal_receipt.length),
           );
-          this.cols.push({
-            field: 'cntjournal',
-            header: 'Anzahl Journaleinträge',
-            format: false,
-            sortable: true,
-            filtering: false,
-            filter: undefined,
-            pipe: DecimalPipe,
-            args: '1.0-0',
-          });
+          this.lstReceipts.set(receipts);
+          this.cols.set([
+            ...this.cols(),
+            {
+              field: 'cntjournal',
+              header: 'Anzahl Journaleinträge',
+              format: false,
+              sortable: true,
+              filtering: false,
+              filter: undefined,
+              pipe: DecimalPipe,
+              args: '1.0-0',
+            },
+          ]);
         });
       if (this.configType == 'add' && this.journalid) {
         if (config.data.editable) {
-          this.toolbar.splice(3, 1);
-          this.toolbar.push({
+          toolbar.splice(3, 1);
+          toolbar.push({
             label: 'Hinzufügen',
             btnClass: 'p-button-secondary p-button-outlined',
             clickfnc: this.addAtt,
@@ -157,6 +183,7 @@ export class AttachementListComponent {
         }
       }
     }
+    this.toolbar.set(toolbar);
   }
 
   show = (selRec?: Receipt) => {
@@ -183,10 +210,9 @@ export class AttachementListComponent {
     if (selRec) {
       thisRef.backendService.addAtt(this.journalid, [selRec]).subscribe({
         next: () => {
-          const ind = thisRef.lstReceipts.findIndex(
-            (rec) => rec.id === selRec.id
+          thisRef.lstReceipts.set(
+            thisRef.lstReceipts().filter((rec) => rec.id !== selRec.id),
           );
-          thisRef.lstReceipts.splice(ind, 1);
         },
       });
     }
@@ -207,10 +233,10 @@ export class AttachementListComponent {
     this.visible = false;
     this.backendService.updReceipt(this.selAtt).subscribe({
       next: () => {
-        const ind = this.lstReceipts.findIndex(
-          (rec) => rec.id === this.selAtt.id
-        );
-        this.lstReceipts[ind].bezeichnung = this.selAtt.bezeichnung;
+        const list = [...this.lstReceipts()];
+        const ind = list.findIndex((rec) => rec.id === this.selAtt.id);
+        if (ind >= 0) list[ind].bezeichnung = this.selAtt.bezeichnung;
+        this.lstReceipts.set(list);
         this.selAtt = {};
       },
     });
@@ -222,10 +248,9 @@ export class AttachementListComponent {
       if (this.configType == 'one') {
         thisRef.backendService.delAtt(this.journalid, selRec).subscribe({
           next: () => {
-            const ind = thisRef.lstReceipts.findIndex(
-              (rec) => rec.id === selRec.id
+            thisRef.lstReceipts.set(
+              thisRef.lstReceipts().filter((rec) => rec.id !== selRec.id),
             );
-            thisRef.lstReceipts.splice(ind, 1);
           },
         });
       } else {
@@ -236,9 +261,8 @@ export class AttachementListComponent {
             accept: () => {
               thisRef.backendService.delReceipt(selRec).subscribe({
                 next: () => {
-                  thisRef.lstReceipts.splice(
-                    thisRef.lstReceipts.indexOf(selRec),
-                    1
+                  thisRef.lstReceipts.set(
+                    thisRef.lstReceipts().filter((r) => r !== selRec),
                   );
                   thisRef.messageService.add({
                     summary: 'Attachment löschen',
@@ -253,9 +277,8 @@ export class AttachementListComponent {
         } else {
           thisRef.backendService.delReceipt(selRec).subscribe({
             next: () => {
-              thisRef.lstReceipts.splice(
-                thisRef.lstReceipts.indexOf(selRec),
-                1
+              thisRef.lstReceipts.set(
+                thisRef.lstReceipts().filter((r) => r !== selRec),
               );
               thisRef.messageService.add({
                 summary: 'Attachment löschen',

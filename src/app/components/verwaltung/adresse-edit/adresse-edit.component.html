@@ -1,11 +1,12 @@
 <p-scrollPanel [style]="{ width: '100%', height: '80%' }">
   <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
     <div class="card">
-      <div class="formgrid grid">
-        <div class="field col-12 md:col-6">
-          <label for="geschlecht">Geschlecht</label>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-x-4 gap-y-4">
+        <!-- Geschlecht -->
+        <div class="flex flex-col md:col-span-6">
+          <label for="geschlecht" class="mb-1 font-medium">Geschlecht</label>
           <p-selectButton
-            [options]="lstGeschlecht"
+            [options]="lstGeschlecht()"
             [(ngModel)]="adresse.geschlecht"
             optionLabel="name"
             optionValue="code"
@@ -15,19 +16,23 @@
             required
           ></p-selectButton>
         </div>
-        <div class="field col-12 md:col-6">
-          <label for="mnr">MNR</label>
+
+        <!-- MNR -->
+        <div class="flex flex-col md:col-span-6">
+          <label for="mnr" class="mb-1 font-medium">MNR</label>
           <input
             id="mnr"
             [disabled]="true"
             pInputText
-            class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
+            class="w-full"
             [(ngModel)]="adresse.mnr"
             name="mnr"
           />
         </div>
-        <div class="field col-12 md:col-6">
-          <label for="vorname">Vorname</label>
+
+        <!-- Vorname -->
+        <div class="flex flex-col md:col-span-6">
+          <label for="vorname" class="mb-1 font-medium">Vorname</label>
           <input
             type="text"
             id="vorname"
@@ -36,17 +41,19 @@
             #vorname="ngModel"
             minlength="3"
             required
-            class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
+            class="w-full"
             [(ngModel)]="adresse.vorname"
           />
         </div>
-        <div class="field col-12 md:col-6">
-          <label for="name">Nachname</label>
+
+        <!-- Nachname -->
+        <div class="flex flex-col md:col-span-6">
+          <label for="name" class="mb-1 font-medium">Nachname</label>
           <input
             type="text"
             id="name"
             pInputText
-            class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
+            class="w-full"
             name="name"
             #name="ngModel"
             minlength="3"
@@ -54,8 +61,10 @@
             [(ngModel)]="adresse.name"
           />
         </div>
-        <div class="field col-12">
-          <label for="strasse">Strasse</label>
+
+        <!-- Strasse -->
+        <div class="flex flex-col md:col-span-12">
+          <label for="adresse" class="mb-1 font-medium">Strasse</label>
           <input
             type="text"
             id="adresse"
@@ -64,17 +73,19 @@
             #strasse="ngModel"
             minlength="3"
             required
-            class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
+            class="w-full"
             [(ngModel)]="adresse.adresse"
           />
         </div>
-        <div class="field col-12 md:col-4">
-          <label for="plz" class="p-2">PLZ</label>
+
+        <!-- PLZ -->
+        <div class="flex flex-col md:col-span-4">
+          <label for="plz" class="mb-1 font-medium">PLZ</label>
           <input
             type="number"
             id="plz"
             pInputText
-            class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
+            class="w-full"
             name="plz"
             #plz="ngModel"
             minlength="4"
@@ -82,13 +93,15 @@
             [(ngModel)]="adresse.plz"
           />
         </div>
-        <div class="field col-12 md:col-8">
-          <label for="ort" class="p-2">Ort</label>
+
+        <!-- Ort -->
+        <div class="flex flex-col md:col-span-8">
+          <label for="ort" class="mb-1 font-medium">Ort</label>
           <input
             type="text"
             id="ort"
             pInputText
-            class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
+            class="w-full"
             name="ort"
             #ort="ngModel"
             minlength="3"
@@ -96,56 +109,72 @@
             [(ngModel)]="adresse.ort"
           />
         </div>
-        <div class="field col-12 md:col-3">
-          <label for="email" class="p-2">Email</label>
-          <button
-            *ngIf="adresse.email"
-            pButton
-            type="button"
-            icon="pi pi-send"
-            class="p-button-secondary p-button-outlined"
-            styleClass="p-button-sm p-button-icon"
-            (click)="sendEmail()"
-            [disabled]="!adresse.email"
-          ></button>
-          <input
-            type="text"
-            name="email"
-            id="email"
-            pInputText
-            minlength="5"
-            class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
-            [(ngModel)]="adresse.email"
-            ngModel
-            #email="ngModel"
-            name="email"
-            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$"
-          />
+
+        <!-- Email -->
+        <div class="flex flex-col md:col-span-4">
+          <label for="email" class="mb-1 font-medium">Email</label>
+          @if (adresse.email) {
+            <p-iconfield>
+              <input
+                type="text"
+                id="email"
+                pInputText
+                minlength="5"
+                class="w-full"
+                [(ngModel)]="adresse.email"
+                #email="ngModel"
+                name="email"
+                pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$"
+              />
+              <p-inputicon
+                class="pi pi-send cursor-pointer"
+                (click)="sendEmail()"
+              />
+            </p-iconfield>
+          } @else {
+            <input
+              type="text"
+              id="email"
+              pInputText
+              minlength="5"
+              class="w-full"
+              [(ngModel)]="adresse.email"
+              #email="ngModel"
+              name="email"
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$"
+            />
+          }
         </div>
-        <div class="field col-12 md:col-3">
-          <label for="phone">Telefon</label>
+
+        <!-- Telefon -->
+        <div class="flex flex-col md:col-span-4">
+          <label for="phone" class="mb-1 font-medium">Telefon</label>
           <input
             type="text"
             id="phone"
             pInputText
             name="phone"
-            class="text-base text-color surface-overlay p-2 m-3 appearance-none outline-none w-full"
+            class="w-full"
             [(ngModel)]="adresse.telefon_p"
           />
         </div>
-        <div class="field col-12 md:col-3">
-          <label for="mobil">Mobil</label>
+
+        <!-- Mobil -->
+        <div class="flex flex-col md:col-span-4">
+          <label for="mobil" class="mb-1 font-medium">Mobil</label>
           <input
             type="text"
             id="mobil"
             pInputText
             name="mobil"
-            class="text-base text-color surface-overlay p-2 m-3 appearance-none outline-none w-full"
+            class="w-full"
             [(ngModel)]="adresse.mobile"
           />
         </div>
-        <div class="formgroup-inline field col-12">
-          <div class="field-checkbox">
+
+        <!-- Checkboxen -->
+        <div class="md:col-span-12 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <div class="flex items-center gap-2">
             <input
               type="checkbox"
               id="sam"
@@ -154,15 +183,17 @@
             />
             <label for="sam">SAM-Mitglied</label>
           </div>
-          <div class="field" *ngIf="adresse.sam_mitglied">
+          @if (adresse.sam_mitglied) {
             <input
               type="text"
               pInputText
               [(ngModel)]="adresse.mnr_sam"
               name="samnr"
+              placeholder="SAM-Nr."
+              class="w-40"
             />
-          </div>
-          <div class="field-checkbox">
+          }
+          <div class="flex items-center gap-2">
             <input
               type="checkbox"
               id="allianz"
@@ -171,7 +202,7 @@
             />
             <label for="allianz">Allianz</label>
           </div>
-          <div class="field-checkbox">
+          <div class="flex items-center gap-2">
             <input
               type="checkbox"
               id="vorstand"
@@ -180,7 +211,7 @@
             />
             <label for="vorstand">Vorstand</label>
           </div>
-          <div class="field-checkbox">
+          <div class="flex items-center gap-2">
             <input
               type="checkbox"
               id="revisor"
@@ -190,50 +221,56 @@
             <label for="revisor">Revisor</label>
           </div>
         </div>
-        <div class="field col-12 md:col-6">
-          <label for="eintritt">Eintritt</label>
+
+        <!-- Eintritt -->
+        <div class="flex flex-col md:col-span-6">
+          <label for="eintritt" class="mb-1 font-medium">Eintritt</label>
           <p-datepicker
             dateFormat="dd.mm.yy"
-            id="eintritt"
+            inputId="eintritt"
             name="eintritt"
-            class="surface-overlay p-2 appearance-none outline-none w-full"
+            styleClass="w-full"
             [(ngModel)]="adresse.eintritt_date"
           ></p-datepicker>
         </div>
-        <div class="field col-12 md:col-6">
-          <label for="austritt">Austritt</label>
+
+        <!-- Austritt -->
+        <div class="flex flex-col md:col-span-6">
+          <label for="austritt" class="mb-1 font-medium">Austritt</label>
           <p-datepicker
             dateFormat="dd.mm.yy"
-            id="austritt"
+            inputId="austritt"
             name="austritt"
-            class="surface-overlay p-2 appearance-none outline-none w-full"
+            styleClass="w-full"
             [(ngModel)]="adresse.austritt_date"
           ></p-datepicker>
         </div>
-        <div class="field col-12">
-          <label for="notes">Notizen</label>
+
+        <!-- Notizen -->
+        <div class="flex flex-col md:col-span-12">
+          <label for="notes" class="mb-1 font-medium">Notizen</label>
           <textarea
             [(ngModel)]="adresse.notes"
             id="notes"
             [rows]="5"
             name="notes"
-            class="text-base text-color surface-overlay p-2 appearance-none outline-none w-full"
+            class="w-full p-2 border rounded"
           ></textarea>
         </div>
-        <div class="field col-12">
-          <label for="geworben">Geworben von</label>
+
+        <!-- Geworben von -->
+        <div class="flex flex-col md:col-span-12">
+          <label for="geworben" class="mb-1 font-medium">Geworben von</label>
           <p-select
-            id="geworben"
-            [options]="dlstFKAdressen"
+            inputId="geworben"
+            [options]="dlstFKAdressen()"
             optionLabel="value"
             optionValue="id"
             [filter]="true"
             filterBy="value"
-            [autoDisplayFirst]="false"
             [showClear]="true"
             name="geworben"
-            class="text-base text-color surface-overlay p-2 appearance-none outline-none"
-            [style]="{ width: '80%' }"
+            styleClass="w-full md:w-2/3"
             [(ngModel)]="adresse.adressenid"
           ></p-select>
         </div>
@@ -242,58 +279,64 @@
   </form>
 </p-scrollPanel>
 <p-toolbar>
-  <button
-    pButton
-    type="button"
-    label="Zurück"
-    icon="pi pi-back"
-    class="p-button-secondary p-button-outlined"
-    (click)="back()"
-  ></button>
-  <button
-    *ngIf="adresse.sam_mitglied"
-    pButton
-    type="button"
-    label="SAM Adressänderung"
-    icon="pi pi-send"
-    class="p-button-secondary p-button-outlined"
-    (click)="emailSAM(f)"
-  ></button>
-  <button
-    *ngIf="
+  <div class="flex flex-wrap items-center gap-2">
+    <button
+      pButton
+      type="button"
+      label="Zurück"
+      icon="pi pi-back"
+      class="p-button-secondary p-button-outlined"
+      (click)="back()"
+    ></button>
+    @if (adresse.sam_mitglied) {
+      <button
+        pButton
+        type="button"
+        label="SAM Adressänderung"
+        icon="pi pi-send"
+        class="p-button-secondary p-button-outlined"
+        (click)="emailSAM(f)"
+      ></button>
+    }
+    @if (
       adresse.sam_mitglied && adresse.austritt_date?.getFullYear() !== 3000
-    "
-    pButton
-    type="button"
-    label="SAM Austritt"
-    icon="pi pi-send"
-    class="p-button-secondary p-button-outlined"
-    (click)="emailSAMAustritt(f)"
-  ></button>
-  <button
-    *ngIf="adresse.austritt_date?.getFullYear() === 3000"
-    pButton
-    type="button"
-    label="leeres Datenblatt"
-    icon="pi pi-file-excel"
-    class="p-button-secondary p-button-outlined"
-    (click)="exportEmpty()"
-  ></button>
-  <button
-    *ngIf="adresse.austritt_date?.getFullYear() === 3000"
-    pButton
-    type="button"
-    label="volles Datenblatt"
-    icon="pi pi-file-export"
-    class="p-button-secondary p-button-outlined"
-    (click)="exportFull()"
-  ></button>
-  <button
-    pButton
-    type="button"
-    label="Sichern"
-    icon="pi pi-save"
-    class="p-button-primary p-button-outlined"
-    (click)="save(f)"
-  ></button>
+    ) {
+      <button
+        pButton
+        type="button"
+        label="SAM Austritt"
+        icon="pi pi-send"
+        class="p-button-secondary p-button-outlined"
+        (click)="emailSAMAustritt(f)"
+      ></button>
+    }
+    @if (adresse.austritt_date?.getFullYear() === 3000) {
+      <button
+        pButton
+        type="button"
+        label="leeres Datenblatt"
+        icon="pi pi-file-excel"
+        class="p-button-secondary p-button-outlined"
+        (click)="exportEmpty()"
+      ></button>
+    }
+    @if (adresse.austritt_date?.getFullYear() === 3000) {
+      <button
+        pButton
+        type="button"
+        label="volles Datenblatt"
+        icon="pi pi-file-export"
+        class="p-button-secondary p-button-outlined"
+        (click)="exportFull()"
+      ></button>
+    }
+    <button
+      pButton
+      type="button"
+      label="Sichern"
+      icon="pi pi-save"
+      class="p-button-primary p-button-outlined"
+      (click)="save(f)"
+    ></button>
+  </div>
 </p-toolbar>

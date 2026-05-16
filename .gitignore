@@ -46,3 +46,5 @@ package-lock.json
 .nx/cache
 .nx/workspace-data
 .env*
+.claude/worktrees
+pnpm-lock.yaml

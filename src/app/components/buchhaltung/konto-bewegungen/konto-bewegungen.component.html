@@ -2,15 +2,15 @@
   <div class="mb-1">
     <label class="mr-3">Jahr wählen</label>
     <p-select
-      [options]="selJahre"
+      [options]="selJahre()"
       [(ngModel)]="selJahr"
       (onChange)="chgJahr()"
     ></p-select>
   </div>
   <app-basetable
-    [tableOptions]="cols"
-    [tableData]="lstJournal"
-    [tableToolbar]="toolbar"
+    [tableOptions]="cols()"
+    [tableData]="lstJournal()"
+    [tableToolbar]="toolbar()"
     [editable]="false"
     [diffCalcHight]="350"
   >

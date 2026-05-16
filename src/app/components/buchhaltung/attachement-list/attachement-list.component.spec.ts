@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { commonTestProviders } from '@app/testing/test-providers';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 import { AttachementListComponent } from './attachement-list.component';
 
@@ -8,9 +10,17 @@ describe('AttachementListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AttachementListComponent ]
-    })
-    .compileComponents();
+      imports: [AttachementListComponent],
+      providers: [
+        ...commonTestProviders,
+        {
+          provide: DynamicDialogConfig,
+          useValue: {
+            data: { journalid: 0, jahr: '2024', type: '', editable: false },
+          },
+        },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AttachementListComponent);
     component = fixture.componentInstance;

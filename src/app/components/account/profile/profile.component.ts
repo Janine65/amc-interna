@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AccountService } from '@app/service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AddEditComponent } from '../../users/add-edit/add-edit.component';
@@ -8,14 +8,13 @@ import { Router } from '@angular/router';
     selector: 'app-profile',
     templateUrl: './profile.component.html',
     styleUrls: ['./profile.component.scss'],
-    providers: [DialogService],
-    standalone: false
+    providers: [DialogService]
 })
 export class ProfileComponent implements OnInit {
-  constructor(
-    private accountService: AccountService, 
-    private router: Router,
-    private dialogService: DialogService) { }
+  private accountService = inject(AccountService);
+  private router = inject(Router);
+  private dialogService = inject(DialogService);
+
 
      ngOnInit(): void {
       const dialogRef = this.dialogService.open(AddEditComponent, {

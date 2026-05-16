@@ -3,10 +3,10 @@
   <ng-template pTemplate>
     <div
       class="card border-0"
-      [style]="'width: 100%; height: ' + objHeightE$ + ';'"
+      [style]="'width: 100%; height: ' + objHeightE$() + ';'"
       id="table-box"
     >
-      <div class="row col-md-12 mb-3 p-1 border-1 border-round">
+      <div class="row w-full mb-3 p-1 border-1 border-round">
         <label for="gaeste" class="mr-2 mb-1">Gäste</label>
         <input
           type="number"
@@ -23,15 +23,15 @@
           (click)="saveGaeste()"
         ></button>
       </div>
-      <div class="row col-md-12">
+      <div class="row w-full">
         <p-table
           styleClass=" p-datatable-striped"
-          [value]="lstMeisterschaft"
+          [value]="lstMeisterschaft()"
           showGridlines
           selectionMode="single"
           [(selection)]="selMeisterschaft"
           dataKey="id"
-          [scrollHeight]="objHeight$"
+          [scrollHeight]="objHeight$()"
           [virtualScroll]="true"
           [virtualScrollItemSize]="36"
           [tableStyle]="{ 'min-width': '100%' }"
@@ -40,7 +40,8 @@
           <ng-template pTemplate="header">
             <tr>
               <th>
-                {{ lstMeisterschaft ? lstMeisterschaft.length : 0 }} Teilnehmer
+                {{ lstMeisterschaft() ? lstMeisterschaft().length : 0 }}
+                Teilnehmer
               </th>
             </tr>
           </ng-template>
@@ -51,7 +52,7 @@
           </ng-template>
         </p-table>
       </div>
-      <div class="row col-md-12 mt-1">
+      <div class="row w-full mt-1">
         <button
           pButton
           type="button"
@@ -65,19 +66,19 @@
     </div>
   </ng-template>
   <ng-template pTemplate>
-    <div class="card" [style]="'width: 100%; height: ' + objHeightE$ + ';'">
+    <div class="card" [style]="'width: 100%; height: ' + objHeightE$() + ';'">
       <form [formGroup]="fgMeisterschaft" autocomplete="off">
-        <div class="formgroup-inline">
-          <div class="field pb-2">
+        <div class="flex items-center flex-wrap">
+          <div class="mb-4 pb-2">
             <label for="teilnehmer" class="pr-2">Teilnehmer wählen</label>
             <p-autoComplete
               #teilnehmername
               id="teilnehmername"
               formControlName="teilnehmername"
               [autofocus]="true"
-              [suggestions]="lstFilteredAdressen"
+              [suggestions]="lstFilteredAdressen()"
               (completeMethod)="searchTeilnehmer($event)"
-              field="fullname"
+              optionLabel="fullname"
               dataKey="fullname"
               [dropdown]="true"
               (onSelect)="selectTeilnehmer($event.value)"
@@ -85,7 +86,7 @@
             >
             </p-autoComplete>
           </div>
-          <div class="field pb-2 col-12 md:col-12">
+          <div class="mb-4 pb-2 w-full md:w-full">
             <label for="punkte" class="pr-2">Punkte</label>
             <input
               type="number"
@@ -93,144 +94,138 @@
               formControlName="punkte"
               class="wurf input-styling"
             />
-            <div
-              *ngIf="punkte.invalid && (punkte.dirty || punkte.touched)"
-              class="alert alert-danger"
-            >
-              <div
-                *ngIf="punkte.errors?.['required'] || punkte.errors?.['min']"
-              >
-                Punkte müssen angegeben sein.
+            @if (punkte.invalid && (punkte.dirty || punkte.touched)) {
+              <div class="alert alert-danger">
+                @if (punkte.errors?.["required"] || punkte.errors?.["min"]) {
+                  <div>Punkte müssen angegeben sein.</div>
+                }
+                @if (punkte.errors?.["max"]) {
+                  <div>Maximal 200 Punkte sind erlaubt</div>
+                }
               </div>
-              <div *ngIf="punkte.errors?.['max']">
-                Maximal 200 Punkte sind erlaubt
-              </div>
-            </div>
+            }
           </div>
-          <div *ngIf="anlass.istkegeln">
-            <div class="field">
-              <label>Würfe</label>
+          @if (anlass.istkegeln) {
+            <div>
+              <div class="mb-4">
+                <label>Würfe</label>
+              </div>
+              <div class="mb-4">
+                <input
+                  type="number"
+                  id="wurf1"
+                  formControlName="wurf1"
+                  [min]="0"
+                  [max]="9"
+                  class="wurf input-styling pr-1"
+                  (input)="inputWurf(1)"
+                />
+                <input
+                  type="number"
+                  id="wurf2"
+                  formControlName="wurf2"
+                  [min]="0"
+                  [max]="9"
+                  class="wurf input-styling pr-1"
+                  (input)="inputWurf(2)"
+                />
+                <input
+                  type="number"
+                  id="wurf3"
+                  formControlName="wurf3"
+                  [min]="0"
+                  [max]="9"
+                  class="wurf input-styling pr-1"
+                  (input)="inputWurf(3)"
+                />
+                <input
+                  type="number"
+                  id="wurf4"
+                  formControlName="wurf4"
+                  [min]="0"
+                  [max]="9"
+                  class="wurf input-styling pr-1"
+                  (input)="inputWurf(4)"
+                />
+                <input
+                  type="number"
+                  id="wurf5"
+                  formControlName="wurf5"
+                  [min]="0"
+                  [max]="9"
+                  class="wurf input-styling pr-1"
+                  (input)="inputWurf(5)"
+                />
+                <input
+                  type="number"
+                  id="zusatz"
+                  formControlName="zusatz"
+                  class="wurf input-styling pr-1"
+                />
+              </div>
+              @if (wurf1.invalid && (wurf1.dirty || wurf1.touched)) {
+                <div class="alert alert-danger">
+                  @if (wurf1.errors?.["min"]) {
+                    <div>Wurf darf nicht kleiner als 0 sein.</div>
+                  }
+                  @if (wurf1.errors?.["max"]) {
+                    <div>Maximal 9 je Wurf sind erlaubt</div>
+                  }
+                </div>
+              }
+              @if (wurf2.invalid && (wurf2.dirty || wurf2.touched)) {
+                <div class="alert alert-danger">
+                  @if (wurf2.errors?.["min"]) {
+                    <div>Wurf darf nicht kleiner als 0 sein.</div>
+                  }
+                  @if (wurf2.errors?.["max"]) {
+                    <div>Maximal 9 je Wurf sind erlaubt</div>
+                  }
+                </div>
+              }
+              @if (wurf3.invalid && (wurf3.dirty || wurf3.touched)) {
+                <div class="alert alert-danger">
+                  @if (wurf3.errors?.["min"]) {
+                    <div>Wurf darf nicht kleiner als 0 sein.</div>
+                  }
+                  @if (wurf3.errors?.["max"]) {
+                    <div>Maximal 9 je Wurf sind erlaubt</div>
+                  }
+                </div>
+              }
+              @if (wurf4.invalid && (wurf4.dirty || wurf4.touched)) {
+                <div class="alert alert-danger">
+                  @if (wurf4.errors?.["min"]) {
+                    <div>Wurf darf nicht kleiner als 0 sein.</div>
+                  }
+                  @if (wurf4.errors?.["max"]) {
+                    <div>Maximal 9 je Wurf sind erlaubt</div>
+                  }
+                </div>
+              }
+              @if (wurf5.invalid && (wurf5.dirty || wurf5.touched)) {
+                <div class="alert alert-danger">
+                  @if (wurf5.errors?.["min"]) {
+                    <div>Wurf darf nicht kleiner als 0 sein.</div>
+                  }
+                  @if (wurf5.errors?.["max"]) {
+                    <div>Maximal 9 je Wurf sind erlaubt</div>
+                  }
+                </div>
+              }
+              <div class="mb-4 pb-2">
+                <label for="total" class="pr-2">Total</label>
+                <input
+                  type="number"
+                  id="total"
+                  formControlName="total"
+                  class="wurf input-styling pr-1"
+                />
+              </div>
             </div>
-            <div class="field">
-              <input
-                type="number"
-                id="wurf1"
-                formControlName="wurf1"
-                [min]="0"
-                [max]="9"
-                class="wurf input-styling pr-1"
-                (input)="inputWurf(1)"
-              />
-              <input
-                type="number"
-                id="wurf2"
-                formControlName="wurf2"
-                [min]="0"
-                [max]="9"
-                class="wurf input-styling pr-1"
-                (input)="inputWurf(2)"
-              />
-              <input
-                type="number"
-                id="wurf3"
-                formControlName="wurf3"
-                [min]="0"
-                [max]="9"
-                class="wurf input-styling pr-1"
-                (input)="inputWurf(3)"
-              />
-              <input
-                type="number"
-                id="wurf4"
-                formControlName="wurf4"
-                [min]="0"
-                [max]="9"
-                class="wurf input-styling pr-1"
-                (input)="inputWurf(4)"
-              />
-              <input
-                type="number"
-                id="wurf5"
-                formControlName="wurf5"
-                [min]="0"
-                [max]="9"
-                class="wurf input-styling pr-1"
-                (input)="inputWurf(5)"
-              />
-              <input
-                type="number"
-                id="zusatz"
-                formControlName="zusatz"
-                class="wurf input-styling pr-1"
-              />
-            </div>
-            <div
-              *ngIf="wurf1.invalid && (wurf1.dirty || wurf1.touched)"
-              class="alert alert-danger"
-            >
-              <div *ngIf="wurf1.errors?.['min']">
-                Wurf darf nicht kleiner als 0 sein.
-              </div>
-              <div *ngIf="wurf1.errors?.['max']">
-                Maximal 9 je Wurf sind erlaubt
-              </div>
-            </div>
-            <div
-              *ngIf="wurf2.invalid && (wurf2.dirty || wurf2.touched)"
-              class="alert alert-danger"
-            >
-              <div *ngIf="wurf2.errors?.['min']">
-                Wurf darf nicht kleiner als 0 sein.
-              </div>
-              <div *ngIf="wurf2.errors?.['max']">
-                Maximal 9 je Wurf sind erlaubt
-              </div>
-            </div>
-            <div
-              *ngIf="wurf3.invalid && (wurf3.dirty || wurf3.touched)"
-              class="alert alert-danger"
-            >
-              <div *ngIf="wurf3.errors?.['min']">
-                Wurf darf nicht kleiner als 0 sein.
-              </div>
-              <div *ngIf="wurf3.errors?.['max']">
-                Maximal 9 je Wurf sind erlaubt
-              </div>
-            </div>
-            <div
-              *ngIf="wurf4.invalid && (wurf4.dirty || wurf4.touched)"
-              class="alert alert-danger"
-            >
-              <div *ngIf="wurf4.errors?.['min']">
-                Wurf darf nicht kleiner als 0 sein.
-              </div>
-              <div *ngIf="wurf4.errors?.['max']">
-                Maximal 9 je Wurf sind erlaubt
-              </div>
-            </div>
-            <div
-              *ngIf="wurf5.invalid && (wurf5.dirty || wurf5.touched)"
-              class="alert alert-danger"
-            >
-              <div *ngIf="wurf5.errors?.['min']">
-                Wurf darf nicht kleiner als 0 sein.
-              </div>
-              <div *ngIf="wurf5.errors?.['max']">
-                Maximal 9 je Wurf sind erlaubt
-              </div>
-            </div>
-            <div class="field pb-2">
-              <label for="total" class="pr-2">Total</label>
-              <input
-                type="number"
-                id="total"
-                formControlName="total"
-                class="wurf input-styling pr-1"
-              />
-            </div>
-          </div>
+          }
         </div>
-        <div class="field col-12 md:col-12 md:mb-0">
+        <div class="mb-4 w-full md:w-full md:mb-0">
           <button
             pButton
             type="submit"

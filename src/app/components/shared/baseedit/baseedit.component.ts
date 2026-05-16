@@ -1,6 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { TableData } from '../basetable/basetable.component';
 import {DialogService} from 'primeng/dynamicdialog';
+import { Bind } from 'primeng/bind';
+import { ScrollPanel } from 'primeng/scrollpanel';
+import { NgSwitch, NgClass } from '@angular/common';
+import { InputText } from 'primeng/inputtext';
+import { InputNumber } from 'primeng/inputnumber';
+import { DatePicker } from 'primeng/datepicker';
+import { Toolbar } from 'primeng/toolbar';
+import { ButtonDirective } from 'primeng/button';
 
 export class EditOptions {
   public title?: string;
@@ -33,21 +41,22 @@ export class EditToolbar {
     selector: 'app-baseedit',
     templateUrl: './baseedit.component.html',
     styleUrls: ['./baseedit.component.scss'],
-    standalone: false
+    imports: [Bind, ScrollPanel, NgSwitch, InputText, InputNumber, DatePicker, Toolbar, ButtonDirective, NgClass]
 })
 
 export class BaseeditComponent {
-  @Input() editOptions: EditOptions = {};
-  @Input() editFields: EditFields[] = [];
-  @Input() editToolbar: EditToolbar[] = [];
-  @Input() editData: TableData = {};
-  
-  constructor(public dialogService: DialogService) {}
+  dialogService = inject(DialogService);
+
+  readonly editOptions = input<EditOptions>({});
+  readonly editFields = input<EditFields[]>([]);
+  readonly editToolbar = input<EditToolbar[]>([]);
+  readonly editData = input<TableData>({});
 
   clickOnToolbar(ind: number) {      
-    if (this.editToolbar) {
-      console.log(`Button ${this.editToolbar[ind].label} pressed`);
-      this.editToolbar[ind].clickfnc(this.editData);
+    const editToolbar = this.editToolbar();
+    if (editToolbar) {
+      console.log(`Button ${editToolbar[ind].label} pressed`);
+      editToolbar[ind].clickfnc(this.editData());
     }
   }
 }

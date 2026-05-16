@@ -3,13 +3,28 @@ import {
   Component,
   OnInit,
   ViewEncapsulation,
+  inject,
+  signal,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  NgForm,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { last } from 'rxjs/operators';
 import { AccountService, AlertService } from '@app/service';
 import { AlertType } from '@app/models';
 import { MessageService } from 'primeng/api';
+import { CrInputPartial } from '../../shared/input-validation/input.partial';
+import { InputDirective } from '../../shared/input-validation/input.directive';
+import { Bind } from 'primeng/bind';
+import { InputText } from 'primeng/inputtext';
+import { PasswordDirective } from 'primeng/password';
+import { ButtonDirective } from 'primeng/button';
+import { Ripple } from 'primeng/ripple';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,20 +33,28 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./login.component.scss'],
   providers: [MessageService],
   encapsulation: ViewEncapsulation.None,
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    CrInputPartial,
+    InputDirective,
+    Bind,
+    InputText,
+    PasswordDirective,
+    ButtonDirective,
+    Ripple,
+  ],
 })
 export class LoginComponent implements OnInit {
-  loading = false;
-  submitted = false;
-  fg: FormGroup;
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private accountService = inject(AccountService);
+  private alertService = inject(AlertService);
+  private fb = inject(FormBuilder);
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private accountService: AccountService,
-    private alertService: AlertService,
-    private fb: FormBuilder
-  ) {}
+  readonly loading = signal(false);
+  readonly submitted = signal(false);
+  fg: FormGroup;
 
   ngOnInit() {
     this.fg = this.fb.group({
@@ -55,8 +78,8 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.submitted = true;
-    this.loading = true;
+    this.submitted.set(true);
+    this.loading.set(true);
     this.accountService
       .newPasswort(this.fg.get('email').value)
       .pipe(last())
@@ -84,9 +107,9 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.submitted = true;
+    this.submitted.set(true);
 
-    this.loading = true;
+    this.loading.set(true);
 
     this.accountService
       .login(this.fg.get('email').value, this.fg.get('password').value)
@@ -100,7 +123,7 @@ export class LoginComponent implements OnInit {
         },
         error: (error) => {
           this.alertService.error(error);
-          this.loading = false;
+          this.loading.set(false);
         },
       });
   }

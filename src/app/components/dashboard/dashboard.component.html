@@ -1,42 +1,52 @@
-<div *ngIf="!loading">
+@if (!loading()) {
+  <div>
     <p-fieldset legend="Mitglieder">
-        <div class="grid">
-            <p-fieldset legend="Aktive Mitglieder" class="col-4">
-                {{getAnzahlForKey('Aktive Mitglieder')}}
-            </p-fieldset>
-            <p-fieldset legend="SAM Mitglieder" class="col-4">
-                {{getAnzahlForKey('SAM Mitglieder')}}
-            </p-fieldset>
-            <p-fieldset legend="Freimitglieder" class="col-4">
-                {{getAnzahlForKey('Freimitglieder')}}
-            </p-fieldset>
-        </div>
+      <div class="flex flex-wrap">
+        <p-fieldset legend="Aktive Mitglieder" class="w-1/3">
+          {{ getAnzahlForKey("Aktive Mitglieder") }}
+        </p-fieldset>
+        <p-fieldset legend="SAM Mitglieder" class="w-1/3">
+          {{ getAnzahlForKey("SAM Mitglieder") }}
+        </p-fieldset>
+        <p-fieldset legend="Freimitglieder" class="w-1/3">
+          {{ getAnzahlForKey("Freimitglieder") }}
+        </p-fieldset>
+      </div>
     </p-fieldset>
     <p-fieldset legend="Anlässe">
-        <div class="grid">
-            <p-fieldset legend="Total Anlässe" class="col-6">
-                {{getAnzahlForKey('Total Anlässe')}}
-            </p-fieldset>
-            <p-fieldset legend="Zukünftige Anlässe" class="col-6">
-                {{getAnzahlForKey('Zukünftige Anlässe')}}
-            </p-fieldset>
-        </div>
+      <div class="flex flex-wrap">
+        <p-fieldset legend="Total Anlässe" class="w-1/2">
+          {{ getAnzahlForKey("Total Anlässe") }}
+        </p-fieldset>
+        <p-fieldset legend="Zukünftige Anlässe" class="w-1/2">
+          {{ getAnzahlForKey("Zukünftige Anlässe") }}
+        </p-fieldset>
+      </div>
     </p-fieldset>
     <p-fieldset legend="Meisterschaft">
-        <div class="grid">
-            <p-fieldset legend="Clubmeisterschaft" class="col-6">
-                {{getAnzahlForKey('Clubmeisterschaft')}}
-            </p-fieldset>
-            <p-fieldset legend="Kegelmeisterschaft" class="col-6">
-                {{getAnzahlForKey('Kegelmeisterschaft')}}
-            </p-fieldset>
-        </div>
+      <div class="flex flex-wrap">
+        <p-fieldset legend="Clubmeisterschaft" class="w-1/2">
+          {{ getAnzahlForKey("Clubmeisterschaft") }}
+        </p-fieldset>
+        <p-fieldset legend="Kegelmeisterschaft" class="w-1/2">
+          {{ getAnzahlForKey("Kegelmeisterschaft") }}
+        </p-fieldset>
+      </div>
     </p-fieldset>
     <p-fieldset legend="Journal">
-            <p-fieldset legend="Buchhaltung" class="col-6">
-                <div [class]="fiscalyear?.state === 1 ? 'open' : fiscalyear?.state === 2 ? 'prov-closed' : 'closed'">
-                {{getAnzahlForKey('Buchhaltung')}}
-            </div>
-            </p-fieldset>
+      <p-fieldset legend="Buchhaltung" class="w-1/2">
+        <div
+          [class]="
+            fiscalyear()?.state === 1
+              ? 'open'
+              : fiscalyear()?.state === 2
+                ? 'prov-closed'
+                : 'closed'
+          "
+        >
+          {{ getAnzahlForKey("Buchhaltung") }}
+        </div>
+      </p-fieldset>
     </p-fieldset>
-</div>
+  </div>
+}

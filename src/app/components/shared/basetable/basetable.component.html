@@ -1,26 +1,28 @@
 <p-toast key="local"></p-toast>
 <div class="mb-1">
-  <button
-    pButton
-    *ngIf="checkFiltering()"
-    label="Clear"
-    class="p-button-secondary p-button-outlined mb-1"
-    icon="pi pi-filter-slash"
-    (click)="clear(basetable)"
-  ></button>
-  <button
-    pButton
-    *ngFor="let but of tableToolbar; index as ind"
-    [label]="but.label!"
-    [icon]="but.icon!"
-    [ngClass]="but.btnClass! + ' mb-1'"
-    (click)="clickOnToolbar(ind)"
-    [disabled]="isButtonDisabled(ind)"
-  ></button>
+  @if (checkFiltering()) {
+    <button
+      pButton
+      label="Clear"
+      class="p-button-secondary p-button-outlined mb-1"
+      icon="pi pi-filter-slash"
+      (click)="clear(basetable)"
+    ></button>
+  }
+  @for (but of tableToolbar(); track but; let ind = $index) {
+    <button
+      pButton
+      [label]="but.label!"
+      [icon]="but.icon!"
+      [ngClass]="but.btnClass! + ' mb-1'"
+      (click)="clickOnToolbar(ind)"
+      [disabled]="isButtonDisabled(ind)"
+    ></button>
+  }
 </div>
 <p-table
   #basetable
-  [columns]="tableOptions"
+  [columns]="tableOptions()"
   styleClass=" p-datatable-striped"
   [value]="tableData"
   selectionMode="single"
@@ -28,74 +30,87 @@
   (onFilter)="filterEvent($event)"
   dataKey="id"
   sortMode="multiple"
-  [scrollHeight]="objHeight$"
+  [scrollHeight]="objHeight$()"
   [scrollable]="true"
   [tableStyle]="{ 'min-width': '50rem' }"
-  [stateKey]="localStorage"
+  [stateKey]="localStorage()"
   stateStorage="local"
   showGridlines
 >
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th
-        *ngFor="let col of columns"
-        [pSortableColumnDisabled]="!col.sortable"
-        [pSortableColumn]="col.field"
-      >
-        {{ col.header
-        }}<p-sortIcon field="col.field" *ngIf="col.sortable"></p-sortIcon>
-        <p-columnFilter
-          *ngIf="col.filtering"
-          [field]="col.field"
-          [type]="col.filter"
-          display="menu"
-        ></p-columnFilter>
-      </th>
+      @for (col of columns; track col) {
+        <th
+          [pSortableColumnDisabled]="!col.sortable"
+          [pSortableColumn]="col.field"
+        >
+          {{ col.header }}
+          @if (col.sortable) {
+            <p-sortIcon field="col.field"></p-sortIcon>
+          }
+          @if (col.filtering) {
+            <p-columnFilter
+              [field]="col.field"
+              [type]="col.filter"
+              display="menu"
+            ></p-columnFilter>
+          }
+        </th>
+      }
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-data let-columns="columns">
     <tr [pSelectableRow]="data" (dblclick)="selectData(data)">
-      <td *ngFor="let col of columns" [class]="data.classRow">
-        <div
-          *ngIf="col.filter === 'boolean'"
-          class="p-text-secondary text-center font-bold"
-        >
-          <i *ngIf="data[col.field]" class="pi pi-check"></i>
-        </div>
-        <div *ngIf="col.pipe" class="text-right">
-          {{ data[col.field] | dynamicPipe : col.pipe : col.args }}
-        </div>
-        <div *ngIf="col.format && formatFunction">
-          {{ formatFunction(col.field, data[col.field]) }}
-        </div>
-        <div
-          *ngIf="
+      @for (col of columns; track col) {
+        <td [class]="data.classRow">
+          @if (col.filter === "boolean") {
+            <div class="p-text-secondary text-center font-bold">
+              @if (data[col.field]) {
+                <i class="pi pi-check"></i>
+              }
+            </div>
+          }
+          @if (col.pipe) {
+            <div class="text-right">
+              {{ data[col.field] | dynamicPipe: col.pipe : col.args }}
+            </div>
+          }
+          @if (col.format && formatFunction) {
+            <div>
+              {{ formatFunction(col.field, data[col.field]) }}
+            </div>
+          }
+          @if (
             col.format === false &&
-            col.filter !== 'boolean' &&
+            col.filter !== "boolean" &&
             col.pipe === undefined
-          "
-        >
-          {{ data[col.field] }}
-        </div>
-      </td>
-      <td *ngIf="editable">
-        <button
-          type="button"
-          pButton
-          pRipple
-          icon="pi pi-file-edit"
-          (click)="editData(data)"
-        ></button>
-      </td>
+          ) {
+            <div>
+              {{ data[col.field] }}
+            </div>
+          }
+        </td>
+      }
+      @if (editable) {
+        <td>
+          <button
+            type="button"
+            pButton
+            pRipple
+            icon="pi pi-file-edit"
+            (click)="editData(data)"
+          ></button>
+        </td>
+      }
     </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage">
     <tr>
-      <td [colSpan]="tableOptions.length">Keine Datensaätze gefunden.</td>
+      <td [colSpan]="tableOptions().length">Keine Datensaätze gefunden.</td>
     </tr>
   </ng-template>
   <ng-template pTemplate="summary">
-    <div class="flex align-items-center justify-content-between">
+    <div class="flex items-center justify-between">
       {{ tableData ? tableData.length : 0 }} Datensätze.
     </div>
   </ng-template>

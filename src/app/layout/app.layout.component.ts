@@ -1,33 +1,49 @@
-import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import {
+  Component,
+  OnDestroy,
+  Renderer2,
+  inject,
+  viewChild,
+} from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { LayoutService } from '../service/app.layout.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopBarComponent } from './app.topbar.component';
 import { MessageService } from 'primeng/api';
+import { NgClass } from '@angular/common';
+import { AlertComponent } from '../components/shared/alert/alert.component';
+import { AppFooterComponent } from './app.footer.component';
 
 @Component({
-    selector: 'app-layout',
-    templateUrl: './app.layout.component.html',
-    providers: [MessageService],
-    standalone: false
+  selector: 'app-layout',
+  templateUrl: './app.layout.component.html',
+  providers: [MessageService],
+  imports: [
+    NgClass,
+    AppTopBarComponent,
+    AppSidebarComponent,
+    AlertComponent,
+    RouterOutlet,
+    AppFooterComponent,
+  ],
 })
 export class AppLayoutComponent implements OnDestroy {
+  layoutService = inject(LayoutService);
+  renderer = inject(Renderer2);
+  router = inject(Router);
+
   overlayMenuOpenSubscription: Subscription;
 
   menuOutsideClickListener: any;
 
   profileMenuOutsideClickListener: any;
 
-  @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
+  readonly appSidebar = viewChild.required(AppSidebarComponent);
 
-  @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
+  readonly appTopbar = viewChild.required(AppTopBarComponent);
 
-  constructor(
-    public layoutService: LayoutService,
-    public renderer: Renderer2,
-    public router: Router
-  ) {
+  constructor() {
     this.overlayMenuOpenSubscription =
       this.layoutService.overlayOpen$.subscribe(() => {
         if (!this.menuOutsideClickListener) {
@@ -35,19 +51,20 @@ export class AppLayoutComponent implements OnDestroy {
             'document',
             'click',
             (event) => {
+              const appSidebar = this.appSidebar();
+              const appTopbar = this.appTopbar();
+              const menuButton = appTopbar.menuButton();
               const isOutsideClicked = !(
-                this.appSidebar.el.nativeElement.isSameNode(event.target) ||
-                this.appSidebar.el.nativeElement.contains(event.target) ||
-                this.appTopbar.menuButton.nativeElement.isSameNode(
-                  event.target
-                ) ||
-                this.appTopbar.menuButton.nativeElement.contains(event.target)
+                appSidebar.el.nativeElement.isSameNode(event.target) ||
+                appSidebar.el.nativeElement.contains(event.target) ||
+                menuButton.nativeElement.isSameNode(event.target) ||
+                menuButton.nativeElement.contains(event.target)
               );
 
               if (isOutsideClicked) {
                 this.hideMenu();
               }
-            }
+            },
           );
         }
 
@@ -56,15 +73,17 @@ export class AppLayoutComponent implements OnDestroy {
             'document',
             'click',
             (event) => {
+              const appTopbar = this.appTopbar();
+              const menu = appTopbar.menu();
               const isOutsideClicked = !(
-                this.appTopbar.menu.nativeElement.isSameNode(event.target) ||
-                this.appTopbar.menu.nativeElement.contains(event.target)
+                menu.nativeElement.isSameNode(event.target) ||
+                menu.nativeElement.contains(event.target)
               );
 
               if (isOutsideClicked) {
                 this.hideProfileMenu();
               }
-            }
+            },
           );
         }
 
@@ -119,9 +138,9 @@ export class AppLayoutComponent implements OnDestroy {
       document.body.className = document.body.className.replace(
         new RegExp(
           '(^|\\b)' + 'blocked-scroll'.split(' ').join('|') + '(\\b|$)',
-          'gi'
+          'gi',
         ),
-        ' '
+        ' ',
       );
     }
   }
