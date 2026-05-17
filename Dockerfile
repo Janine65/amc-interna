@@ -22,7 +22,7 @@ RUN pnpm run build --prod
 
 # --- Stage 2: Runtime ---
 # Non-root NGINX (läuft als UID 101, kann an Ports >= 1024 binden -> 4200 passt)
-FROM nginxinc/nginx-unprivileged:1.27-alpine
+FROM nginxinc/nginx-unprivileged:1.28-alpine
 
 # nginx.conf erst, damit Server-Block vor den Assets steht
 COPY --chown=nginx:nginx nginx.conf /etc/nginx/conf.d/default.conf

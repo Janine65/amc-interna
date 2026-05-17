@@ -3,6 +3,7 @@
   "nxConsole.nxWorkspacePath": "",
   "chat.tools.terminal.autoApprove": {
     "npx ng": true,
-    "npx nx": true
+    "npx nx": true,
+    "pnpm": true
   }
 }

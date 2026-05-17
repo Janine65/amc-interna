@@ -48,3 +48,4 @@ package-lock.json
 .env*
 .claude/worktrees
 pnpm-lock.yaml
+docker-compose-test.yml

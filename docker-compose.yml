@@ -3,7 +3,11 @@ services:
     build:
       context: ../amc-backend/
       dockerfile: ../amc-backend/Dockerfile
-    image: janine65/amcbackend:latest
+      secrets:
+        - dotenv
+      tags:
+        - "janine65/amcbackend:${BACKEND_VERSION:-latest}"
+    image: janine65/amcbackend
     platform: linux/amd64
     ports:
       - "3001:3001"
@@ -12,19 +16,19 @@ services:
     tty: true # Keeps the container running for debugging
     volumes:
       - documents:/usr/src/app/dist/src/documents:rw
-    env_file:
-      - .env.prod
     networks:
       - back-tier
       - front-tier
 
   amcinternal:
     container_name: amcinternal
-    image: janine65/amcinternal:latest
+    image: janine65/amcinternal
     platform: linux/amd64
     build:
       context: ./
       dockerfile: ./Dockerfile
+      tags:
+        - "janine65/amcinternal:${APP_VERSION:-latest}"
     depends_on:
       - amcbackend
     environment:
@@ -37,6 +41,10 @@ services:
     hostname: amcinternal
     networks:
       - front-tier
+
+secrets:
+  dotenv:
+    file: ../amc-backend/.env.prod
 
 volumes:
   backup:
