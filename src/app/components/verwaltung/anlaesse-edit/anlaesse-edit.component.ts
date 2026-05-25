@@ -115,6 +115,10 @@ export class AnlaesseEditComponent implements OnInit {
         day: '2-digit',
       });
 
+    if (this.anlass.vorjahr == null && this.anlass.anlaesse) {
+      this.anlass.anlaesse = null;
+      this.anlass.anlaesseid = null;
+    }
     const prom =
       this.anlass.id == undefined || this.anlass.id == 0
         ? this.backendService.addAnlaesseData(this.anlass)

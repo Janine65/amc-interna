@@ -3,11 +3,11 @@ services:
     build:
       context: ../amc-backend/
       dockerfile: ../amc-backend/Dockerfile
-      secrets:
-        - dotenv
       tags:
         - "janine65/amcbackend:${BACKEND_VERSION:-latest}"
     image: janine65/amcbackend
+    env_file:
+      - ../amc-backend/.env-prod
     platform: linux/amd64
     ports:
       - "3001:3001"
@@ -41,10 +41,6 @@ services:
     hostname: amcinternal
     networks:
       - front-tier
-
-secrets:
-  dotenv:
-    file: ../amc-backend/.env.prod
 
 volumes:
   backup:

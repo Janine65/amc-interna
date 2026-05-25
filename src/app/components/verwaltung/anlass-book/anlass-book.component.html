@@ -81,6 +81,7 @@
               dataKey="fullname"
               [dropdown]="true"
               (onSelect)="selectTeilnehmer($event.value)"
+              (keydown.tab)="onTeilnehmerTab($event)"
               [forceSelection]="true"
               [autofocus]="true"
             >

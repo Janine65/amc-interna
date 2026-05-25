@@ -118,6 +118,7 @@
             [(ngModel)]="anlass.anlaesseid"
             [style]="{ width: '80%' }"
             appendTo="body"
+            (onClear)="anlass.vorjahr = null"
           ></p-select>
         </div>
       </div>

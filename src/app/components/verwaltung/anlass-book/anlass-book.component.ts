@@ -363,7 +363,7 @@ export class AnlassBookComponent implements OnInit {
   }
 
   selectTeilnehmer(adr: Adresse) {
-    this.lstFilteredAdressen.set([]);
+    this.lstFilteredAdressen.set([adr]);
     this.teilnehmername.setValue(adr);
     this.unsubscribeList();
     this.setDisabled(false);
@@ -418,6 +418,14 @@ export class AnlassBookComponent implements OnInit {
         { fullname: filtered[0].fullname },
         { onlySelf: true, emitEvent: true, emitModelToViewChange: true },
       );
+    }
+  }
+
+  onTeilnehmerTab(event: Event) {
+    const filtered = this.lstFilteredAdressen();
+    if (filtered.length === 1) {
+      event.preventDefault();
+      this.selectTeilnehmer(filtered[0]);
     }
   }
 

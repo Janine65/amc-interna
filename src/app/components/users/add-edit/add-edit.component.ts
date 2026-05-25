@@ -144,6 +144,10 @@ export class AddEditComponent implements OnInit {
       return;
     }
 
+    this.user.name = this.fg.value['name'];
+    this.user.email = this.fg.value['email'];
+    this.user.role = this.fg.value['role'];
+
     if (this.wihtPwd) {
       if (this.fg.value['passwordN'] !== this.fg.value['passwordV']) {
         this.messageService.add({
