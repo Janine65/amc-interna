@@ -6,17 +6,20 @@ import {
   signal,
 } from '@angular/core';
 import { BackendService } from '@app/service';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-attachement-show',
   templateUrl: './attachement-show.component.html',
   styleUrls: ['./attachement-show.component.scss'],
+  imports: [ButtonModule],
 })
 export class AttachementShowComponent implements AfterViewInit, OnDestroy {
   private backendService = inject(BackendService);
   config = inject(DynamicDialogConfig);
+  ref = inject(DynamicDialogRef);
   private sanitizer = inject(DomSanitizer);
 
   receipt = '';
