@@ -11,7 +11,7 @@ import { RetData } from './backend.service';
 import { LayoutService } from './app.layout.service';
 
 export interface RetDataUser extends RetData {
-  cookie: string | undefined;
+  cookie: { accessToken: string; refreshToken: string };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -87,9 +87,8 @@ export class AccountService {
     }
   }
 
-  private saveUser(user: User, cookie: string) {
-    const lCookie = cookie.split(';');
-    user.token = lCookie[0].replace('Authorization=', '');
+  private saveUser(user: User, cookie: { accessToken: string }) {
+    user.token = cookie.accessToken;
     // store user details and jwt token in local storage to keep user logged in between page refreshes
     localStorage.setItem('user', JSON.stringify(user));
     this._userSubject.next(user);
