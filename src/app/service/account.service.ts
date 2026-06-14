@@ -36,7 +36,7 @@ export class AccountService {
       'Content-Type': 'application/json',
     });
     this.apiUrl = environment.apiUrl;
-    const user = localStorage.getItem('user');
+    const user = sessionStorage.getItem('user');
     if (user) {
       this._userSubject.next(JSON.parse(user));
     }
@@ -89,15 +89,15 @@ export class AccountService {
 
   private saveUser(user: User, cookie: { accessToken: string }) {
     user.token = cookie.accessToken;
-    // store user details and jwt token in local storage to keep user logged in between page refreshes
-    localStorage.setItem('user', JSON.stringify(user));
+    // store user details and jwt token in session storage to keep user logged in between page refreshes
+    sessionStorage.setItem('user', JSON.stringify(user));
     this._userSubject.next(user);
     this.layoutService.userActiveSince = new Date();
   }
 
   async logout() {
-    // remove user from local storage and set current user to null
-    localStorage.removeItem('user');
+    // remove user from session storage and set current user to null
+    sessionStorage.removeItem('user');
     this._userSubject?.next(new User());
     await this.router.navigate(['/']);
   }
@@ -128,9 +128,9 @@ export class AccountService {
         map((x) => {
           // update stored user if the logged in user updated their own record
           if (id == this.userValue.id) {
-            // update local storage
+            // update session storage
             const user = { ...this.userValue, ...params };
-            localStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('user', JSON.stringify(user));
 
             // publish updated user to subscribers
             this._userSubject?.next(user);

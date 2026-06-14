@@ -306,7 +306,7 @@ export class KegelkasseComponent implements OnInit {
       },
     ]);
 
-    const str = localStorage.getItem('parameter');
+    const str = sessionStorage.getItem('parameter');
     const parameter = str ? JSON.parse(str) : [];
     const paramJahr = parameter.find((param) => param.key === 'CLUBJAHR');
     const jahr = paramJahr?.value
@@ -405,7 +405,7 @@ export class KegelkasseComponent implements OnInit {
   }
 
   isButtonAllowed(role: string): boolean {
-    const userStr = localStorage.getItem('user');
+    const userStr = sessionStorage.getItem('user');
     if (userStr) {
       const user = JSON.parse(userStr);
       if (user.role == role || user.role == 'admin') return false;
@@ -457,7 +457,7 @@ export class KegelkasseComponent implements OnInit {
               this.franken50.setValue(this.kegelkasse.franken50 ?? 0);
               this.franken100.setValue(this.kegelkasse.franken100 ?? 0);
             } else {
-              const user = localStorage.getItem('user');
+              const user = sessionStorage.getItem('user');
               if (user) {
                 this.kegelkasse.user = new BehaviorSubject<User>(
                   JSON.parse(user),

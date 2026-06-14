@@ -46,7 +46,7 @@ export class KtoAuswertungComponent {
   readonly lstErfolgNodes = signal<AccountAuswertung[]>([]);
 
   constructor() {
-    const str = localStorage.getItem('parameter');
+    const str = sessionStorage.getItem('parameter');
     const parameter: ParamData[] = str ? JSON.parse(str) : [];
     const paramJahr = parameter.find((param) => param.key === 'CLUBJAHR');
     const jahr = Number(paramJahr?.value);

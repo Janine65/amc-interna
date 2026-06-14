@@ -42,7 +42,7 @@ export class KontoBewegungenComponent implements OnInit {
 
     this.accountId = config.data.accountid;
 
-    const str = localStorage.getItem('parameter');
+    const str = sessionStorage.getItem('parameter');
     const parameter: ParamData[] = str ? JSON.parse(str) : [];
     const paramJahr = parameter.find((param) => param.key === 'CLUBJAHR');
     this.selJahr = Number(paramJahr?.value);

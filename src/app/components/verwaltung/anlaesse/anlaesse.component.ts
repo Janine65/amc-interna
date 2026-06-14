@@ -213,7 +213,7 @@ export class AnlaesseComponent implements OnInit {
       },
     ]);
 
-    const str = localStorage.getItem('parameter');
+    const str = sessionStorage.getItem('parameter');
     const parameter = str ? JSON.parse(str) : [];
     const paramJahr = parameter.find((param) => param.key === 'CLUBJAHR');
     const jahr = paramJahr?.value

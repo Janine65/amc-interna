@@ -15,13 +15,13 @@ export class AppFooterComponent implements OnInit {
 
     appVersion = '';
     ngOnInit(): void {
-        const pkgFrontString = localStorage.getItem('aboutFrontend');
+        const pkgFrontString = sessionStorage.getItem('aboutFrontend');
         let pkgFront: Package = {}, pkgBack: Package = {};
         if (pkgFrontString) {
             pkgFront = JSON.parse(pkgFrontString);
             this.appVersion = pkgFront.version ?? '';
         }
-        const pkgBackString = localStorage.getItem('aboutBackend');
+        const pkgBackString = sessionStorage.getItem('aboutBackend');
         if (pkgBackString) {
             pkgBack = JSON.parse(pkgBackString);
             this.appVersion += ' / ' + pkgBack.version;

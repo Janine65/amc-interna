@@ -205,7 +205,7 @@ export class BaseTableComponent implements OnInit, OnDestroy {
     const tableToolbar = this.tableToolbar();
     if (tableToolbar) {
       if (tableToolbar[ind].roleNeeded != '') {
-        const userStr = localStorage.getItem('user');
+        const userStr = sessionStorage.getItem('user');
         if (userStr) {
           const user = JSON.parse(userStr);
           if (user.role != tableToolbar[ind].roleNeeded && user.role != 'admin')

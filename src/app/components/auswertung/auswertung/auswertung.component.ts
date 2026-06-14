@@ -33,7 +33,7 @@ export class AuswertungComponent implements OnInit {
   private lstGraphData: MeisterschaftAuswertung[] = [];
 
   constructor() {
-    const str = localStorage.getItem('parameter');
+    const str = sessionStorage.getItem('parameter');
     this.parameter = str ? JSON.parse(str) : [];
     const paramJahr = this.parameter.find((param) => param.key === 'CLUBJAHR');
     this.jahr = Number(paramJahr?.value);

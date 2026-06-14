@@ -290,7 +290,7 @@ export class AdresseEditComponent {
   }
   exportEmpty = () => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
-    const str = localStorage.getItem('parameter');
+    const str = sessionStorage.getItem('parameter');
     const parameter: ParamData[] = str ? (JSON.parse(str) as ParamData[]) : [];
     const paramJahr = parameter.find(
       (param: ParamData) => param.key === 'CLUBJAHR',
@@ -321,7 +321,7 @@ export class AdresseEditComponent {
   };
   exportFull = () => {
     // eslint-disable-next-line @typescript-eslint/no-this-alias, @typescript-eslint/no-unused-vars
-    const str = localStorage.getItem('parameter');
+    const str = sessionStorage.getItem('parameter');
     const parameter: ParamData[] = str ? (JSON.parse(str) as ParamData[]) : [];
     const paramJahr = parameter.find(
       (param: ParamData) => param.key === 'CLUBJAHR',

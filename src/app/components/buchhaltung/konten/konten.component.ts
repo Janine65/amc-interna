@@ -224,7 +224,7 @@ export class KontenComponent implements OnInit {
     const thisRef: KontenComponent = this;
     thisRef.clearFields();
 
-    const str = localStorage.getItem('parameter');
+    const str = sessionStorage.getItem('parameter');
     const parameter: ParamData[] = str ? JSON.parse(str) : [];
     const paramJahr = parameter.find((param) => param.key === 'CLUBJAHR');
 

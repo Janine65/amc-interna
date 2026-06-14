@@ -16,11 +16,11 @@ export class AppAboutComponent implements OnInit{
   pkgBackend: Package = { }
 
   ngOnInit(): void {
-    const pkgFrontString = localStorage.getItem('aboutFrontend');
+    const pkgFrontString = sessionStorage.getItem('aboutFrontend');
     if (pkgFrontString) {
         this.pkgFrontend = JSON.parse(pkgFrontString);
     }
-    const pkgBackString = localStorage.getItem('aboutBackend');
+    const pkgBackString = sessionStorage.getItem('aboutBackend');
     if (pkgBackString) {
         this.pkgBackend = JSON.parse(pkgBackString);
     }

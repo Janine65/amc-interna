@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.subs = from(this.backendService.getParameterData()).subscribe(
       async (list) => {
         this.parameter = list.data as ParamData[];
-        localStorage.setItem('parameter', JSON.stringify(this.parameter));
+        sessionStorage.setItem('parameter', JSON.stringify(this.parameter));
         const element = this.parameter.find(
           (element) => element.key === 'CLUBJAHR',
         );
@@ -51,8 +51,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
           )
             .pipe(
               map(([about, list1, list2, list3, list4, retdata]) => {
-                localStorage.setItem('aboutBackend', JSON.stringify(about));
-                localStorage.setItem('aboutFrontend', JSON.stringify(pkg));
+                sessionStorage.setItem('aboutBackend', JSON.stringify(about));
+                sessionStorage.setItem('aboutFrontend', JSON.stringify(pkg));
                 const data: OverviewData[] = [];
                 data.push(...(list1.data as OverviewData[]));
                 data.push(...(list2.data as OverviewData[]));
