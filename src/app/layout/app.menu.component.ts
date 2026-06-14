@@ -216,11 +216,7 @@ export class AppMenuComponent implements OnInit, OnChanges {
   }
 
   clearStorage() {
-    const saveUser = sessionStorage.getItem('user');
-    const parameter = sessionStorage.getItem('parameter');
-    sessionStorage.clear();
-    if (saveUser) sessionStorage.setItem('user', saveUser);
-    if (parameter) sessionStorage.setItem('parameter', parameter);
+    localStorage.clear();
   }
 
   public isLoggedIn(): boolean {
