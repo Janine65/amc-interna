@@ -236,8 +236,8 @@ export class AnlassBookComponent implements OnInit {
   }
 
   private getHeight() {
-    this.objHeight$.set((this.getScreenHeight - 700).toFixed(0) + 'px');
-    this.objHeightE$.set((this.getScreenHeight - 550).toFixed(0) + 'px');
+    this.objHeight$.set((this.getScreenHeight-400).toFixed(0) + 'px');
+    this.objHeightE$.set((this.getScreenHeight-550).toFixed(0) + 'px');
   }
 
   inputWurf(wurfControl: number) {

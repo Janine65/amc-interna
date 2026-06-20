@@ -1,9 +1,19 @@
 <p-toast key="local"></p-toast>
-<p-splitter [panelSizes]="[40, 60]" styleClass="mb-1">
+<p-toolbar>
+  <button
+    pButton
+    type="button"
+    label="Zurück"
+    icon="pi pi-back"
+    class="p-button-secondary p-button-outlined"
+    (click)="back()"
+  ></button>
+</p-toolbar>
+<p-splitter [panelSizes]="[40, 60]" class="mb-1">
   <ng-template pTemplate>
     <div
       class="card border-0"
-      [style]="'width: 100%; height: ' + objHeightE$() + ';'"
+      [style]="'width: 100%; height: ' + objHeight$() + ';'"
       id="table-box"
     >
       <div class="row w-full mb-3 p-1 border-1 border-round">
@@ -25,13 +35,13 @@
       </div>
       <div class="row w-full">
         <p-table
-          styleClass=" p-datatable-striped"
+          class=" p-datatable-striped"
           [value]="lstMeisterschaft()"
           showGridlines
           selectionMode="single"
           [(selection)]="selMeisterschaft"
           dataKey="id"
-          [scrollHeight]="objHeight$()"
+          [scrollHeight]="objHeightE$()"
           [virtualScroll]="true"
           [virtualScrollItemSize]="36"
           [tableStyle]="{ 'min-width': '100%' }"
@@ -66,7 +76,7 @@
     </div>
   </ng-template>
   <ng-template pTemplate>
-    <div class="card" [style]="'width: 100%; height: ' + objHeightE$() + ';'">
+    <div class="card" [style]="'width: 100%; height: ' + objHeight$() + ';'">
       <form [formGroup]="fgMeisterschaft" autocomplete="off">
         <div class="flex items-center flex-wrap">
           <div class="mb-4 pb-2">
@@ -252,13 +262,3 @@
     </div>
   </ng-template>
 </p-splitter>
-<p-toolbar>
-  <button
-    pButton
-    type="button"
-    label="Zurück"
-    icon="pi pi-back"
-    class="p-button-secondary p-button-outlined"
-    (click)="back()"
-  ></button>
-</p-toolbar>
