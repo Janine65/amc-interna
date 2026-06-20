@@ -70,7 +70,7 @@
           icon="pi pi-file-delete"
           class="p-button-secondary p-button-outlined"
           (click)="deleteEntry()"
-          [disabled]="!selMeisterschaft"
+          [disabled]="!selMeisterschaft || !selMeisterschaft.id"
         ></button>
       </div>
     </div>

@@ -315,6 +315,7 @@ export class AnlassBookComponent implements OnInit {
   }
 
   deleteEntry() {
+    if (this.selMeisterschaft && this.selMeisterschaft.id) {
     this.backendService.delMeisterschaft(this.selMeisterschaft).subscribe({
       complete: () => {
         this.lstMeisterschaft.set(
@@ -330,6 +331,7 @@ export class AnlassBookComponent implements OnInit {
       },
     });
     this.clearTeilnehmer();
+    }
   }
 
   selTeilnehmerTable() {
