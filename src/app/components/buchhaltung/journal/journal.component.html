@@ -27,11 +27,11 @@
       <div>
         <form autocomplete="off" (ngSubmit)="save()" (reset)="reset()">
           <div class="mb-4 flex flex-wrap">
-            <label for="date" class="w-full mb-2 md:w-1/6 md:mb-0">Datum</label>
+            <label for="jour_date" class="w-full mb-2 md:w-1/6 md:mb-0">Datum</label>
             <div class="w-full md:w-10/12">
               <p-datepicker
                 dateFormat="dd.mm.yy"
-                name="date"
+                name="jour_date"
                 [required]="true"
                 [(ngModel)]="selJournal.date_date"
                 [disabled]="!editMode() && !addMode()"

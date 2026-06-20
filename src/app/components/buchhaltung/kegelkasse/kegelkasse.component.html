@@ -47,6 +47,7 @@
           <label for="date" class="pr-2" style="width: 210px">Anlass</label>
           <p-select
             name="date"
+            id="date"
             appendTo="body"
             [autofocus]="true"
             [options]="lKegelDatum()"
@@ -62,10 +63,12 @@
                 >Kasse</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="kasse"
                 locale="de-CH"
-                [minFractionDigits]="2"
-                id="total"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
+                id="kasse"
                 size="small"
                 formControlName="kasse"
               ></p-inputNumber>
@@ -75,7 +78,7 @@
                 >0.05 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="rappen5"
                 id="rappen5"
                 size="small"
                 formControlName="rappen5"
@@ -88,9 +91,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="rappen5_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="rappen5_sum"
                 size="small"
                 formControlName="rappen5_sum"
@@ -102,7 +107,7 @@
                 >0.10 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="rappen10"
                 id="rappen10"
                 size="small"
                 formControlName="rappen10"
@@ -115,9 +120,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="rappen10_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="rappen10_sum"
                 size="small"
                 formControlName="rappen10_sum"
@@ -129,7 +136,7 @@
                 >0.20 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="rappen20"
                 id="rappen20"
                 size="small"
                 formControlName="rappen20"
@@ -142,9 +149,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="rappen20_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="rappen20_sum"
                 size="small"
                 formControlName="rappen20_sum"
@@ -156,7 +165,7 @@
                 >0.50 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="rappen50"
                 id="rappen50"
                 size="small"
                 formControlName="rappen50"
@@ -169,9 +178,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="rappen50_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="rappen50_sum"
                 size="small"
                 formControlName="rappen50_sum"
@@ -183,7 +194,7 @@
                 >1.00 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="franken1"
                 id="franken1"
                 size="small"
                 formControlName="franken1"
@@ -196,9 +207,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="franken1_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="franken1_sum"
                 size="small"
                 formControlName="franken1_sum"
@@ -212,7 +225,7 @@
                 >2.00 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="franken2"
                 id="franken2"
                 size="small"
                 formControlName="franken2"
@@ -225,9 +238,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="franken2_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="franken2_sum"
                 size="small"
                 formControlName="franken2_sum"
@@ -239,7 +254,7 @@
                 >5.00 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="franken5"
                 id="franken5"
                 size="small"
                 formControlName="franken5"
@@ -252,9 +267,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="franken5_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="franken5_sum"
                 size="small"
                 formControlName="franken5_sum"
@@ -266,7 +283,7 @@
                 >10.00 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="franken10"
                 id="franken10"
                 size="small"
                 formControlName="franken10"
@@ -279,9 +296,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="franken10_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="franken10_sum"
                 size="small"
                 formControlName="franken10_sum"
@@ -293,7 +312,7 @@
                 >20.00 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="franken20"
                 id="franken20"
                 size="small"
                 formControlName="franken20"
@@ -306,9 +325,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="franken20_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="franken20_sum"
                 size="small"
                 formControlName="franken20_sum"
@@ -320,7 +341,7 @@
                 >50.00 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="franken50"
                 id="franken50"
                 size="small"
                 formControlName="franken50"
@@ -333,9 +354,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="franken50_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="franken50_sum"
                 size="small"
                 formControlName="franken50_sum"
@@ -350,7 +373,7 @@
                 >100.00 x</label
               >
               <p-inputNumber
-                inputId="integeronly"
+                inputId="franken100"
                 id="franken100"
                 size="small"
                 formControlName="franken100"
@@ -362,9 +385,11 @@
                 >=</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="franken100_sum"
                 locale="de-CH"
-                [minFractionDigits]="2"
+                minFractionDigits="2"
+                maxFractionDigits="2"
+                mode="decimal"
                 id="franken100_sum"
                 size="small"
                 formControlName="franken100_sum"
@@ -373,7 +398,7 @@
             <div class="mb-4 flex flex-wrap pb-0">
               <label for="total" class="pr-2" style="width: 210px">Total</label>
               <p-inputNumber
-                inputId="decimal"
+                inputId="total"
                 locale="de-CH"
                 [minFractionDigits]="2"
                 id="total"
@@ -386,10 +411,10 @@
                 >Differenz</label
               >
               <p-inputNumber
-                inputId="decimal"
+                inputId="differenz"
                 locale="de-CH"
                 [minFractionDigits]="2"
-                id="total"
+                id="differenz"
                 size="small"
                 formControlName="differenz"
               ></p-inputNumber>

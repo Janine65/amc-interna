@@ -339,13 +339,13 @@ export class AnlassBookComponent implements OnInit {
     this.unsubscribeList();
     this.lstFilteredAdressen.set([]);
     const adr = this.lstAdressen.find(
-      (rec) => rec.fullname == this.selMeisterschaft.adressen?.fullname!,
+      (rec) => rec.id == this.selMeisterschaft.mitgliedid!,
     );
     if (!adr) {
       this.messageService.add({
         closable: true,
         sticky: false,
-        detail: 'Fehler aufgetreten!',
+        detail: 'Fehler aufgetreten! Adresse konnte nicht gefunden werden',
         severity: 'error',
         summary: 'selTeilnehmerTable',
       });
