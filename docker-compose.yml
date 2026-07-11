@@ -43,12 +43,6 @@ services:
       - front-tier
 
 volumes:
-  backup:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: "bind"
-      device: "/volume1/dev/backups/postgres"
   documents:
     driver: local
     driver_opts:
