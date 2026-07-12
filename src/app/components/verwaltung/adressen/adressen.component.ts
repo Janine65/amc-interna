@@ -378,11 +378,11 @@ export class AdressenComponent implements OnInit {
       if (adresse) {
         adresse.eintritt_date = new Date(adresse.eintritt);
         adresse.austritt_date = new Date(adresse.austritt);
-        thisRef.adressList.set(
-          thisRef
-            .adressList()
-            .map((obj) => [adresse].find((o) => o.id === obj.id) ?? obj),
-        );
+        thisRef.adressList.update((list) => {
+          const idx = list.findIndex((o) => o.id === adresse.id);
+          if (idx > -1) Object.assign(list[idx], adresse);
+          return [...list];
+        });
       }
     });
   };
@@ -428,11 +428,11 @@ export class AdressenComponent implements OnInit {
             const adresse = retData.data as Adresse;
             adresse.eintritt_date = new Date(adresse.eintritt);
             adresse.austritt_date = new Date(adresse.austritt);
-            thisRef.adressList.set(
-              thisRef
-                .adressList()
-                .map((obj) => (adresse.id === obj.id ? adresse : obj)),
-            );
+            thisRef.adressList.update((list) => {
+              const idx = list.findIndex((o) => o.id === adresse.id);
+              if (idx > -1) Object.assign(list[idx], adresse);
+              return [...list];
+            });
             thisRef.messageService.add({
               detail: 'Das Austrittsdatum wurde auf den 31.12. gesetz',
               closable: true,

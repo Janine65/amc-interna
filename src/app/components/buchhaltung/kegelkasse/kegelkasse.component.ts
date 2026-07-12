@@ -645,18 +645,6 @@ export class KegelkasseComponent implements OnInit {
         .subscribe({
           next: (list) => {
             const data = list.data as Kegelkasse[];
-            for (const entry of data) {
-              entry.datum_date = new Date(entry.datum);
-              const anl = this.lstAnlaesse().find(
-                (value) => value.datum == entry.datum,
-              );
-              if (anl) entry.cntUsers = anl._count.meisterschaft;
-              if (entry.user) entry.userName = entry.user.name;
-              else entry.userName = '';
-              if (entry.cntUsers && entry.cntUsers > 0)
-                entry.amountProUser = entry.differenz / entry.cntUsers;
-              else entry.amountProUser = 0;
-            }
             this.lstKegelkasse.set(data);
           },
         });
