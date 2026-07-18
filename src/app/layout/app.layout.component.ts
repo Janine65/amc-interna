@@ -4,11 +4,12 @@ import {
   OnDestroy,
   Renderer2,
   inject,
+  OnInit,
   viewChild,
 } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { filter } from 'rxjs';
+import { filter, firstValueFrom } from 'rxjs';
 import { LayoutService } from '../service/app.layout.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopBarComponent } from './app.topbar.component';

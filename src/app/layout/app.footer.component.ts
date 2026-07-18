@@ -1,8 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { LayoutService } from "../service/app.layout.service";
 import { Package } from '@model/user';
+import pkg from './../../../package.json';
 import { AccountService } from '@service/account.service';
 import { RouterLink } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { BackendService } from '@service/backend.service';
 
 @Component({
     selector: 'app-footer',
@@ -12,21 +15,31 @@ import { RouterLink } from '@angular/router';
 export class AppFooterComponent implements OnInit {
     layoutService = inject(LayoutService);
     private accountService = inject(AccountService);
+    private backendService = inject(BackendService);
 
-    appVersion = '';
-    ngOnInit(): void {
-        const pkgFrontString = sessionStorage.getItem('aboutFrontend');
+    readonly appVersion = signal('');
+
+    async ngOnInit() {
+        let appVersion = '';
+        console.debug('AppFooterComponent ngOnInit');
+        let pkgFrontString = sessionStorage.getItem('aboutFrontend');
         let pkgFront: Package = {}, pkgBack: Package = {};
-        if (pkgFrontString) {
-            pkgFront = JSON.parse(pkgFrontString);
-            this.appVersion = pkgFront.version ?? '';
+        if (!pkgFrontString) {
+            pkgFrontString = JSON.stringify(pkg);
+            sessionStorage.setItem('aboutFrontend', pkgFrontString);
         }
-        const pkgBackString = sessionStorage.getItem('aboutBackend');
-        if (pkgBackString) {
-            pkgBack = JSON.parse(pkgBackString);
-            this.appVersion += ' / ' + pkgBack.version;
+        pkgFront = JSON.parse(pkgFrontString);
+        appVersion = pkgFront.version ?? '';
+        let pkgBackString = sessionStorage.getItem('aboutBackend');
+        if (!pkgBackString) {
+            const about = await firstValueFrom(this.backendService.getAbout());
+            console.debug('AppFooterComponent - getAbout', about);
+            pkgBackString = JSON.stringify(about);
+            sessionStorage.setItem('aboutBackend', pkgBackString);
         }
-        
+        pkgBack = JSON.parse(pkgBackString);
+        appVersion += ' / ' + (pkgBack.version ?? '');
+        this.appVersion.set(appVersion);
     }
     public isLoggedIn(): boolean {
         if (this.accountService.userValue.id) {

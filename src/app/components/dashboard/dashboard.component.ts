@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { Subscription, from, map, zip } from 'rxjs';
 import { BackendService } from '@app/service';
 import { Fiscalyear, OverviewData, ParamData } from '@model/datatypes';
-import pkg from './../../../../package.json';
 import { Bind } from 'primeng/bind';
 import { Fieldset } from 'primeng/fieldset';
 
@@ -42,7 +41,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             'Auto-Moto-Club Swissair - Clubjahr ' + this.jahr();
           this.subs.unsubscribe();
           this.subs = zip(
-            this.backendService.getAbout(),
             this.backendService.getDashboardAdressData(),
             this.backendService.getDashboardAnlaesseData(),
             this.backendService.getDashboardClubmeisterData(),
@@ -50,9 +48,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.backendService.getDashboarJournalData(this.jahr()),
           )
             .pipe(
-              map(([about, list1, list2, list3, list4, retdata]) => {
-                sessionStorage.setItem('aboutBackend', JSON.stringify(about));
-                sessionStorage.setItem('aboutFrontend', JSON.stringify(pkg));
+              map(([list1, list2, list3, list4, retdata]) => {
                 const data: OverviewData[] = [];
                 data.push(...(list1.data as OverviewData[]));
                 data.push(...(list2.data as OverviewData[]));
