@@ -96,8 +96,8 @@ export class KontoBewegungenComponent implements OnInit {
         field: 'memo',
         header: 'Text',
         format: false,
-        sortable: false,
-        filtering: false,
+        sortable: true,
+        filtering: true,
         filter: 'text',
       },
       {
